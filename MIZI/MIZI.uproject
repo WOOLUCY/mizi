@@ -1,13 +1,16 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "{5450152A-4D58-66EE-5FC7-A4BF40596F9C}",
+	"EngineAssociation": "{ED8039A6-4099-7B0A-1F38-64A962CC7416}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
 		{
 			"Name": "MIZI",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
 		}
 	],
 	"Plugins": [
