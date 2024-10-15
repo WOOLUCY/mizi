@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "EndWall.h"
 #include "GameFramework/Actor.h"
 #include "Actors/RandomMap/MasterRoom.h"
 
@@ -34,8 +35,7 @@ public:
 	TArray<TSubclassOf<AMasterRoom>> RoomList;
 
 	UPROPERTY(EditAnywhere, Category = "RandomMap")
-	TSubclassOf<AMasterRoom> WallClass;
-
+	TSubclassOf<AEndWall> WallClass;
 };
 
 
@@ -106,6 +106,4 @@ private:
 	bool bRandomMapComplete = false;
 
 	FTimerHandle RandomMapTimerHandle;
-
-	FTimerHandle DelayTimerHandle;
 };

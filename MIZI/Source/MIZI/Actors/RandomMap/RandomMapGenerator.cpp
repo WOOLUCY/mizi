@@ -4,6 +4,7 @@
 #include "Actors/RandomMap/RandomMapGenerator.h"
 #include "Engine/World.h"
 #include "Actors/RandomMap/MasterRoom.h"
+//#include "DataWrappers/ChaosVDQueryDataWrappers.h"
 #include "Misc/Utils.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
@@ -84,29 +85,109 @@ void ARandomMapGenerator::SpawnNextRoom()
         
         AActor* SpawnedActor = World->SpawnActor<AActor>(RoomClass, SelectedTransform, SpawnParams);
         LatestRoom = Cast<AMasterRoom>(SpawnedActor);
+
+        UKismetSystemLibrary::K2_SetTimer(this, TEXT("CheckForOverlap"), 0.1f, false);
     }
 }
 
 
 void ARandomMapGenerator::StartRandomMapTimer()
 {
-
+    GetWorld()->GetTimerManager().SetTimer(
+        RandomMapTimerHandle,
+        this,
+        &ARandomMapGenerator::CheckToRandomMapComplete,
+        1.0f,
+        true
+    );
 }
 
 void ARandomMapGenerator::CheckToRandomMapComplete()
 {
+    UE_LOG(LogTemp, Warning, TEXT("Running"));
+
+    float TimeSeconds = GetWorld()->GetTimeSeconds();
+    if(TimeSeconds >= RandomMapGeneratorDataAsset->MaxDungeonTime)
+    {
+        FString CurrentLevelName = GetWorld()->GetMapName();
+        CurrentLevelName.RemoveFromStart(GetWorld()->StreamingLevelsPrefix);
+        UGameplayStatics::OpenLevel(GetWorld(), FName(*CurrentLevelName));
+    }
+
 }
 
 
 void ARandomMapGenerator::CheckForOverlap()
 {
+    AddOverlappingRoomsToList();
+
+
+    if(!OverlappedList.IsEmpty())
+    {
+        OverlappedList.Empty();
+        LatestRoom->Destroy();
+        SpawnNextRoom();
+    }
+    else
+    {
+        OverlappedList.Empty();
+        uint32 NewRoomAmount = GetRoomAmount() - 1;
+        SetRoomAmount(NewRoomAmount);
+
+        ExitsList.Remove(SelectedExitPoint);
+
+        TArray<USceneComponent*> OutChildren;
+        LatestRoom->ExitsFolder->GetChildrenComponents(false, OutChildren);
+        ExitsList.Append(OutChildren);
+
+        if(GetRoomAmount() > 0)
+        {
+            SpawnNextRoom();
+        }
+        else
+        {
+            UKismetSystemLibrary::K2_SetTimer(this, TEXT("CloseHoles"), 1.f, false);
+            SetDungeonComplete(true);
+
+            GetWorld()->GetTimerManager().ClearTimer(RandomMapTimerHandle);
+            UE_LOG(LogTemp, Warning, TEXT("Dungeon Complete"));
+        }
+    }
 }
 
 void ARandomMapGenerator::AddOverlappingRoomsToList()
 {
+    TArray<USceneComponent*> OutChildren;
+	LatestRoom->OverlapFolder->GetChildrenComponents(false, OutChildren);
+
+    for(USceneComponent* Child : OutChildren)
+    {
+        UBoxComponent* ChildBox = Cast<UBoxComponent>(Child);
+        if(ChildBox)
+        {
+            TArray<UPrimitiveComponent*> OutOverlappingComponents;
+            ChildBox->GetOverlappingComponents(OutOverlappingComponents);
+
+            OverlappedList.Append(OutOverlappingComponents);
+        }
+    }
 }
 
 void ARandomMapGenerator::CloseHoles()
 {
+    // TODO: Close Holes
+    for(USceneComponent* Exit : ExitsList)
+    {
+        if (UWorld* World = GetWorld())
+        {
+            FTransform SelectedTransform = Exit->K2_GetComponentToWorld();
+            FActorSpawnParameters SpawnParams;
+            SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+            //TSubclassOf<AMasterRoom> RoomClass = FUtils::GetRandomElementFromArray(RandomMapGeneratorDataAsset->RoomList);
+
+            AActor* SpawnedActor = World->SpawnActor<AActor>(RandomMapGeneratorDataAsset->WallClass, SelectedTransform, SpawnParams);
+        }
+    }
 }
 

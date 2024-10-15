@@ -43,6 +43,12 @@ AMasterRoom::AMasterRoom()
 	//BoxComponent->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
 	//BoxComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
 
+	if(OverlapBox)
+	{
+		// 프로파일 Util 헤더로 빼기
+		OverlapBox->SetCollisionProfileName(TEXT("Room"));
+	}
+
 	ExitsFolder = CreateDefaultSubobject<USceneComponent>(TEXT("ExitsFolder"));
 	ExitsFolder->SetupAttachment(RootComponent);
 }
