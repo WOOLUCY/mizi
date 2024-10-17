@@ -8,6 +8,8 @@
 #include "Misc/Utils.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetArrayLibrary.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 ARandomMapGenerator::ARandomMapGenerator()
@@ -30,6 +32,8 @@ ARandomMapGenerator::ARandomMapGenerator()
     {
         RandomMapGeneratorDataAsset = DataFinder.Object;
     }
+    
+    Stream.Initialize(RandomMapGeneratorDataAsset->Seed);
 
 }
 
@@ -41,9 +45,14 @@ void ARandomMapGenerator::BeginPlay()
     SetRoomAmount(RandomMapGeneratorDataAsset->MaxRoomAmount);
     //SetRoomAmount(10);
 
+    SetSeed();
     SpawnStartRoom();
     StartRandomMapTimer();
     SpawnNextRoom();
+
+    int32 InitialSeed;
+    UKismetMathLibrary::BreakRandomStream(Stream, InitialSeed);
+    UE_LOG(LogTemp, Warning, TEXT("Seed: %d"), InitialSeed);
 }
 
 // Called every frame
@@ -62,7 +71,7 @@ void ARandomMapGenerator::SpawnStartRoom()
         SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
         AActor* SpawnedActor = World->SpawnActor<AActor>(RandomMapGeneratorDataAsset->StartRoomClass, RootTransform, SpawnParams);
-        
+
         AMasterRoom* SpawnedRoom = Cast<AMasterRoom>(SpawnedActor);
         TArray<USceneComponent*> OutChildren;
         SpawnedRoom->ExitsFolder->GetChildrenComponents(false, OutChildren);
@@ -75,14 +84,16 @@ void ARandomMapGenerator::SpawnNextRoom()
 {
     if (UWorld* World = GetWorld())
     {
-        SelectedExitPoint = FUtils::GetRandomElementFromArray(ExitsList);
+        //SelectedExitPoint = FUtils::GetRandomElementFromArray(ExitsList);
+        SelectedExitPoint = FUtils::RandomArrayItemFromStream(ExitsList, Stream);
 
         FTransform SelectedTransform = SelectedExitPoint->K2_GetComponentToWorld();
         FActorSpawnParameters SpawnParams;
         SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-        TSubclassOf<AMasterRoom> RoomClass = FUtils::GetRandomElementFromArray(RandomMapGeneratorDataAsset->RoomList);
-        
+        //TSubclassOf<AMasterRoom> RoomClass = FUtils::GetRandomElementFromArray(RandomMapGeneratorDataAsset->RoomList);
+        TSubclassOf<AMasterRoom> RoomClass = FUtils::RandomArrayItemFromStream(RandomMapGeneratorDataAsset->RoomList, Stream);
+
         AActor* SpawnedActor = World->SpawnActor<AActor>(RoomClass, SelectedTransform, SpawnParams);
         LatestRoom = Cast<AMasterRoom>(SpawnedActor);
 
@@ -107,7 +118,7 @@ void ARandomMapGenerator::CheckToRandomMapComplete()
     UE_LOG(LogTemp, Warning, TEXT("Running"));
 
     float TimeSeconds = GetWorld()->GetTimeSeconds();
-    if(TimeSeconds >= RandomMapGeneratorDataAsset->MaxDungeonTime)
+    if (TimeSeconds >= RandomMapGeneratorDataAsset->MaxDungeonTime)
     {
         FString CurrentLevelName = GetWorld()->GetMapName();
         CurrentLevelName.RemoveFromStart(GetWorld()->StreamingLevelsPrefix);
@@ -122,7 +133,7 @@ void ARandomMapGenerator::CheckForOverlap()
     AddOverlappingRoomsToList();
 
 
-    if(!OverlappedList.IsEmpty())
+    if (!OverlappedList.IsEmpty())
     {
         OverlappedList.Empty();
         LatestRoom->Destroy();
@@ -140,7 +151,7 @@ void ARandomMapGenerator::CheckForOverlap()
         LatestRoom->ExitsFolder->GetChildrenComponents(false, OutChildren);
         ExitsList.Append(OutChildren);
 
-        if(GetRoomAmount() > 0)
+        if (GetRoomAmount() > 0)
         {
             SpawnNextRoom();
         }
@@ -158,12 +169,12 @@ void ARandomMapGenerator::CheckForOverlap()
 void ARandomMapGenerator::AddOverlappingRoomsToList()
 {
     TArray<USceneComponent*> OutChildren;
-	LatestRoom->OverlapFolder->GetChildrenComponents(false, OutChildren);
+    LatestRoom->OverlapFolder->GetChildrenComponents(false, OutChildren);
 
-    for(USceneComponent* Child : OutChildren)
+    for (USceneComponent* Child : OutChildren)
     {
         UBoxComponent* ChildBox = Cast<UBoxComponent>(Child);
-        if(ChildBox)
+        if (ChildBox)
         {
             TArray<UPrimitiveComponent*> OutOverlappingComponents;
             ChildBox->GetOverlappingComponents(OutOverlappingComponents);
@@ -176,7 +187,7 @@ void ARandomMapGenerator::AddOverlappingRoomsToList()
 void ARandomMapGenerator::CloseHoles()
 {
     // TODO: Close Holes
-    for(USceneComponent* Exit : ExitsList)
+    for (USceneComponent* Exit : ExitsList)
     {
         if (UWorld* World = GetWorld())
         {
@@ -188,6 +199,18 @@ void ARandomMapGenerator::CloseHoles()
 
             AActor* SpawnedActor = World->SpawnActor<AActor>(RandomMapGeneratorDataAsset->WallClass, SelectedTransform, SpawnParams);
         }
+    }
+}
+
+void ARandomMapGenerator::SetSeed()
+{
+    if (RandomMapGeneratorDataAsset->Seed == -1)
+    {
+        UKismetMathLibrary::SeedRandomStream(Stream);
+    }
+    else
+    {
+        UKismetMathLibrary::SetRandomStreamSeed(Stream, RandomMapGeneratorDataAsset->Seed);
     }
 }
 

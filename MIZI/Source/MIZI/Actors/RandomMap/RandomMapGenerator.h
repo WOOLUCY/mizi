@@ -23,7 +23,10 @@ class MIZI_API URandomMapGeneratorDataAsset : public UDataAsset
 
 public:
 	UPROPERTY(EditAnywhere, Category = "RandomMap")
-	uint32 MaxRoomAmount = 10.0f;
+	int32 Seed = -1;
+
+	UPROPERTY(EditAnywhere, Category = "RandomMap")
+	uint32 MaxRoomAmount = 10;
 
 	UPROPERTY(EditAnywhere, Category = "RandomMap")
 	float MaxDungeonTime;
@@ -71,6 +74,8 @@ protected:
 	void AddOverlappingRoomsToList();
 	UFUNCTION(BlueprintCallable, Category = "RandomMap")
 	void CloseHoles();
+	UFUNCTION(BlueprintCallable, Category = "RandomMap")
+	void SetSeed();
 
 
 	uint32 GetRoomAmount() { return CurRoomAmount; };
@@ -101,6 +106,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<UPrimitiveComponent*> OverlappedList;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FRandomStream Stream;
+
+	
 private:
 	uint32 CurRoomAmount;
 	bool bRandomMapComplete = false;
