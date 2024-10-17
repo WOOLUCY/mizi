@@ -5,6 +5,7 @@
 #include "Engine/World.h"
 #include "Actors/RandomMap/MasterRoom.h"
 //#include "DataWrappers/ChaosVDQueryDataWrappers.h"
+#include "RandomItemSpawner.h"
 #include "Misc/Utils.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
@@ -162,6 +163,17 @@ void ARandomMapGenerator::CheckForOverlap()
 
             GetWorld()->GetTimerManager().ClearTimer(RandomMapTimerHandle);
             UE_LOG(LogTemp, Warning, TEXT("Dungeon Complete"));
+
+            UWorld* World = GetWorld();
+            if (!World)
+            {
+                UE_LOG(LogTemp, Warning, TEXT("World is not valid."));
+                return;
+            }
+
+            AActor* FoundActor = UGameplayStatics::GetActorOfClass(World, ARandomItemSpawner::StaticClass());
+            ARandomItemSpawner* RandomItemSpawner =  Cast<ARandomItemSpawner>(FoundActor);
+            RandomItemSpawner->SpawnItemRandomly();
         }
     }
 }
