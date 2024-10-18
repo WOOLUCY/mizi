@@ -79,12 +79,12 @@ void ARandomItemSpawner::SetRandomLocation()
 	FHitResult HitResult;
 
 	FCollisionQueryParams CollisionParams;
-	CollisionParams.AddIgnoredActor(this); // ÀÚ½ÅÀº ¹«½Ã
+	CollisionParams.AddIgnoredActor(this); // ï¿½Ú½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-	// ¶óÀÎ Æ®·¹ÀÌ½º ¼öÇà
+	// ï¿½ï¿½ï¿½ï¿½ Æ®ï¿½ï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, RandomLocation, EndLocation, ECC_Visibility, CollisionParams);
 
-	// µð¹ö±× ¶óÀÎ ±×¸®±â
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½
 	DrawDebugLine(GetWorld(), RandomLocation, EndLocation, FColor::Green, false, 1.0f, 0, 1.0f);
 
 	if(!bHit)
@@ -102,7 +102,7 @@ void ARandomItemSpawner::SpawnItemRandomly()
 			SetRandomLocation();
 
 			FVector SpawnLocation = RandomLocation;
-			FRotator SpawnRotation = FRotator::ZeroRotator; // È¸Àü ¾øÀ½
+			FRotator SpawnRotation = FRotator::ZeroRotator; // È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 			FActorSpawnParameters SpawnParams;
 			SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
