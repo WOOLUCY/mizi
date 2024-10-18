@@ -29,8 +29,6 @@ ABasicCharacter::ABasicCharacter(const FObjectInitializer& ObjectInitializer)
 
 	bUseControllerRotationYaw = false;
 
-	//UCharacterMovementComponent* Movement = GetCharacterMovement();
-	//Movement->bCanWalkOffLedges = false;
 	const FRotator Rotation = FRotator(0., 90.0, 0.);
 	const FVector Translation = FVector(0., 0., 90.0);
 	FTransform SpringArmTransform = FTransform(Rotation, Translation, FVector::OneVector);
@@ -80,7 +78,7 @@ void ABasicCharacter::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 		USkeletalMeshComponent* SkeletalMeshComponent = GetMesh();
 		SkeletalMeshComponent->SetSkeletalMesh(CharacterData->SkeletalMesh);
 		SkeletalMeshComponent->SetRelativeTransform(CharacterData->MeshTransform);
-		//SkeletalMeshComponent->SetAnimClass(CharacterData->AnimClass);
+		SkeletalMeshComponent->SetAnimClass(CharacterData->AnimClass);
 	}
 
 }
@@ -90,12 +88,30 @@ void ABasicCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	ChangeControllerRotationYaw();
 }
 
 // Called to bind functionality to input
 void ABasicCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+}
+
+void ABasicCharacter::ChangeControllerRotationYaw()
+{
+	FVector Velocity = GetVelocity();
+	float Speed = Velocity.Size();
+
+	if (Speed > 0.5f)
+	{
+		bUseControllerRotationYaw = true;
+	}
+
+	else
+	{
+		bUseControllerRotationYaw = false;
+	}
 
 }
 

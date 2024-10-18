@@ -37,6 +37,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+private:
+	void ChangeControllerRotationYaw();
+
+
 protected:	// Components
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TObjectPtr<UCameraComponent> Camera;

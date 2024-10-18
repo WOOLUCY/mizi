@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Misc/Utils.h"
-//#include "Animation/BaisicCharacterAnimInstance.h"
+#include "Animation/BasicCharacterAnimInstance.h"
 
 #include "CharacterData.generated.h"
 
@@ -18,8 +18,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Character")
 	FTransform MeshTransform = FTransform::Identity;
 
-	//UPROPERTY(EditAnywhere, Category = "Pawn|Animation")
-	//TSubclassOf<UBaisicCharacterAnimInstance> AnimClass;
+	UPROPERTY(EditAnywhere, Category = "Character|Animation")
+	TSubclassOf<UBasicCharacterAnimInstance> AnimClass;
 
 public:	// Collision
 	UPROPERTY(EditAnywhere, Category = "Character|Collision")
@@ -32,10 +32,10 @@ public: // Movement
 	float MovementMaxSpeed = 400.f;
 
 public: // Animation
-	//UPROPERTY(EditAnywhere, Category = "Pawn|Animation")
-	//TArray<UAnimMontage*> HitReactMontage;
-	//UPROPERTY(EditAnywhere, Category = "Pawn|Animation")
-	//TArray<UAnimMontage*> DieMontage;
+	UPROPERTY(EditAnywhere, Category = "Character|Animation")
+	TArray<UAnimMontage*> HitReactMontage;
+	UPROPERTY(EditAnywhere, Category = "Character|Animation")
+	TArray<UAnimMontage*> DieMontage;
 
 //public: // Weapon
 	//UPROPERTY(EditAnywhere, Category = "Character|Weapon", meta = (RowType = "/Script/MIZI.WeaponTableRow"))
