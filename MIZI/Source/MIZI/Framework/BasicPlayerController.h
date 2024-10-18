@@ -27,9 +27,19 @@ protected:
 
 protected:
 	void OnMove(const FInputActionValue& InputActionValue);
-	void OnLook(const FInputActionValue& InputActionValue);
+	void OnLookUp(const FInputActionValue& InputActionValue);
+	void OnTurn(const FInputActionValue& InputActionValue);
 	void OnJump(const FInputActionValue& InputActionValue);
+
+	void OnZoomWheel(const FInputActionValue& InputActionValue);
+	void OnZoomIn(const FInputActionValue& InputActionValue);
+	void OnZoomOut(const FInputActionValue& InputActionValue);
 
 protected:
 	UInputMappingContext* IMC_Default = nullptr;
+
+	class USoftWheelSpringArmComponent* SpringArm = nullptr;
+
+	UPROPERTY(BlueprintReadWrite)
+	bool bZoomWheel = true;
 };

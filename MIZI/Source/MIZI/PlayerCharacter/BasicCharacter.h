@@ -8,6 +8,8 @@
 #include "Components/CapsuleComponent.h"
 #include "Misc/Utils.h"
 #include "Data/CharacterData.h"
+#include "Components/SoftWheelSpringArmComponent.h"
+
 
 #include "BasicCharacter.generated.h"
 
@@ -35,10 +37,16 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-protected:
+protected:	// Components
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TObjectPtr<UCameraComponent> Camera;
 
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	TObjectPtr<USoftWheelSpringArmComponent> SpringArm;
+
 protected:
+	UPROPERTY(EditAnywhere, meta = (RowType = "/Script/MIZI.CharacterTableRow"))
+	FDataTableRowHandle DataTableRowHandle;
+
 	FCharacterTableRow* CharacterData;
 };
