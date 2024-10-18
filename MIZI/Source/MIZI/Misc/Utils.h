@@ -1,5 +1,10 @@
 #pragma once
 #include "CoreMinimal.h"
+#include "InputMappingContext.h"
+#include "InputAction.h"
+#include "InputActionValue.h"
+#include "EnhancedInputSubsystems.h"
+#include "EnhancedInputComponent.h"
 
 #include "Containers/Array.h"
 #include "Math/UnrealMathUtility.h"
@@ -23,14 +28,14 @@ public:
     template<typename T>
     static const T RandomArrayItemFromStream(const TArray<T>& Array, FRandomStream& Stream)
     {
-        // ¹è¿­ÀÌ ºñ¾î ÀÖ´ÂÁö °Ë»ç
+        // ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½
         if (Array.Num() == 0)
         {
-            // ¹è¿­ÀÌ ºñ¾îÀÖÀ» °æ¿ì, ±âº»°ª ¹ÝÈ¯ (¿¡·¯ ÇÚµé¸µ ¹æ½Ä¿¡ µû¶ó ¼öÁ¤ °¡´É)
+            // ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½, ï¿½âº»ï¿½ï¿½ ï¿½ï¿½È¯ (ï¿½ï¿½ï¿½ï¿½ ï¿½Úµé¸µ ï¿½ï¿½Ä¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
             return T();
         }
 
-        // ·£´ýÇÑ ÀÎµ¦½º¸¦ »ý¼ºÇÏ¿© ¹è¿­ÀÇ ¿ä¼Ò¸¦ ¹ÝÈ¯
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½Ò¸ï¿½ ï¿½ï¿½È¯
         int32 RandomIndex = Stream.RandRange(0, Array.Num() - 1);
         return Array[RandomIndex];
     }

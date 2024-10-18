@@ -18,7 +18,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	TMap<FString, int32> ItemQuantities;
 
-	// TODO: ¹®ÀÚ¿­ÀÌ ¾Æ´Ñ ¼­ºêÅ¬·¡½º¸¦ Å°°ªÀ¸·Î ¹Þ°Ô µ¥ÀÌÅÍ Å×ÀÌºí º¯°æ
+	// TODO: ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½ï¿½ï¿½ï¿½Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½
 	//UPROPERTY(EditAnywhere, Category = "SpawnableItem")
 	//TMap<TSubclassOf<>
 };
@@ -56,7 +56,7 @@ protected:
 	TObjectPtr<UBoxComponent> Box;
 
 
-	// TODO: µ¥ÀÌÅÍ Å×ÀÌºíÀ» »ç¿ëÇÏ´Â ÄÚµå·Î º¯°æ ÈÄ, ÇØ´ç ¸â¹ö º¯¼öµéÀ» Áö¿ï °Í
+	// TODO: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Úµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 	UPROPERTY(EditAnywhere)
 	UClass* ItemClass;
 
