@@ -39,4 +39,18 @@ public:
         int32 RandomIndex = Stream.RandRange(0, Array.Num() - 1);
         return Array[RandomIndex];
     }
+
+    static const UInputAction* GetInputActionFromName(UInputMappingContext* IMC, const FName& InName)
+    {
+        const TArray<FEnhancedActionKeyMapping>& Mappings = IMC->GetMappings();
+        for (auto& It : Mappings)
+        {
+            if (It.Action->GetFName() == InName)
+            {
+                return It.Action.Get();
+            }
+        }
+
+        return nullptr;
+    }
 };
