@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Misc/Utils.h"
 #include "Animation/BasicCharacterAnimInstance.h"
+#include "Engine/DataTable.h"
 
 #include "CharacterData.generated.h"
 

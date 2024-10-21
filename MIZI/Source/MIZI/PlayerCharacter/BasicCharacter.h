@@ -41,6 +41,10 @@ private:
 	void ChangeControllerRotationYaw();
 
 
+public:
+	void OnScan();
+
+
 protected:	// Components
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TObjectPtr<UCameraComponent> Camera;
