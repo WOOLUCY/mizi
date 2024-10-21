@@ -35,6 +35,8 @@ protected:
 	void OnZoomIn(const FInputActionValue& InputActionValue);
 	void OnZoomOut(const FInputActionValue& InputActionValue);
 
+	void OnScan(const FInputActionValue& InputActionValue);
+
 protected:
 	UInputMappingContext* IMC_Default = nullptr;
 

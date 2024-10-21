@@ -6,6 +6,7 @@
 #include "PlayerCharacter/BasicPlayerCameraManager.h"
 #include "GameFramework/Character.h"
 #include "Components/SoftWheelSpringArmComponent.h"
+#include "PlayerCharacter/BasicCharacter.h"
 
 
 ABasicPlayerController::ABasicPlayerController()
@@ -106,6 +107,20 @@ void ABasicPlayerController::SetupInputComponent()
 			UE_LOG(LogTemp, Warning, TEXT("IA_ZoomWheel is disabled"));
 		}
 	}
+
+	// Scan
+	if (bZoomWheel)
+	{
+		if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_ZoomWheel")))
+		{
+			EnhancedInputComponent->BindAction(InputAction,
+				ETriggerEvent::Started, this, &ThisClass::OnScan);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("IA_Scan is disabled"));
+		}
+	}
 }
 
 void ABasicPlayerController::OnPossess(APawn* InPawn)
@@ -167,4 +182,10 @@ void ABasicPlayerController::OnZoomIn(const FInputActionValue& InputActionValue)
 void ABasicPlayerController::OnZoomOut(const FInputActionValue& InputActionValue)
 {
 	SpringArm->SetDesiredZoom(260.f);
+}
+
+void ABasicPlayerController::OnScan(const FInputActionValue& InputActionValue)
+{
+	ABasicCharacter* BasicCharacter = Cast<ABasicCharacter>(GetPawn());
+	BasicCharacter->OnScan();
 }

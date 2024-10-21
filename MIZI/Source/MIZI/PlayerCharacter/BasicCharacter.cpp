@@ -115,3 +115,9 @@ void ABasicCharacter::ChangeControllerRotationYaw()
 
 }
 
+void ABasicCharacter::OnScan()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Scanning!"));
+
+}
+
