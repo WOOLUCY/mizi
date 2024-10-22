@@ -3,12 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Actors/Item/ItemBase.h"
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Misc/Utils.h"
 #include "Data/CharacterData.h"
 #include "Components/SoftWheelSpringArmComponent.h"
+#include "Components/TimelineComponent.h"
 
 
 #include "BasicCharacter.generated.h"
@@ -44,6 +46,8 @@ private:
 public:
 	void OnScan();
 	void OnChangePerspective();
+	void OnPickUpItem();
+	void OnDropItem();
 
 
 protected:	// Components
@@ -59,6 +63,9 @@ protected:	// Components
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TObjectPtr<USoftWheelSpringArmComponent> SpringArm;
 
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	TObjectPtr<UTimelineComponent> ScanTimelineComponent;
+
 protected:
 	UPROPERTY(EditAnywhere, meta = (RowType = "/Script/MIZI.CharacterTableRow"))
 	FDataTableRowHandle DataTableRowHandle;
@@ -67,4 +74,22 @@ protected:
 
 private:
 	bool bUseFirstPersonCamera = true;
+	FTimeline ScanTimeLine;
+
+	TArray<AItemBase*> ScannedItems;
+
+private:	// Inventory
+	uint32 CurInventoryIndex = 0;
+
+	TMap<uint32, AItemBase*> OwningItems;
+
+	AItemBase* OverlappedItem = nullptr;
+
+
+protected:
+	UFUNCTION()
+	void ScanRadiusUpdate(float Radius);
+
+	UFUNCTION()
+	void OnScanFinished();
 };

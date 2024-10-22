@@ -2,7 +2,11 @@
 
 
 #include "PlayerCharacter/BasicCharacter.h"
+
+#include "AssetTypeActions/AssetDefinition_SoundBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMaterialLibrary.h"
 
 
 // Sets default values
@@ -44,13 +48,26 @@ ABasicCharacter::ABasicCharacter(const FObjectInitializer& ObjectInitializer)
 	FTransform SpringArmTransform = FTransform(Rotation, Translation, FVector::OneVector);
 	SpringArm->SetRelativeTransform(SpringArmTransform);
 
+	/* Timeline Component */
+	ScanTimelineComponent = CreateDefaultSubobject<UTimelineComponent>(TEXT("ScanTimeline"));
+
 }
 
 // Called when the game starts or when spawned
 void ABasicCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	if(CharacterData->ScanTimeline)
+	{
+		FOnTimelineFloat ProgressUpdate;	// Callback Function for Curve
+		ProgressUpdate.BindUFunction(this, FName("ScanRadiusUpdate"));	// Binding
+		ScanTimeLine.AddInterpFloat(CharacterData->ScanTimeline, ProgressUpdate);
+
+		FOnTimelineEvent TimelineFinishedEvent;
+		TimelineFinishedEvent.BindUFunction(this, FName("OnScanFinished"));
+		ScanTimeLine.SetTimelineFinishedFunc(TimelineFinishedEvent);
+	}
 }
 
 void ABasicCharacter::OnConstruction(const FTransform& Transform)
@@ -94,6 +111,13 @@ void ABasicCharacter::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 		SkeletalMeshComponent->SetAnimClass(CharacterData->AnimClass);
 	}
 
+	// Scan
+	//{
+	//	ScanSound = CharacterData->ScanSound;
+	//	ScanCurveFloat = CharacterData->ScanTimeline;
+	//	ScanCollection = CharacterData->ScanCollection;
+	//	ScanRadiusMultiplier = CharacterData->ScanRadiusMultiplier;
+	//}
 }
 
 // Called every frame
@@ -102,6 +126,8 @@ void ABasicCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	//ChangeControllerRotationYaw();
+
+	ScanTimeLine.TickTimeline(DeltaTime);	// Timeline에 DeltaTime 전달
 }
 
 // Called to bind functionality to input
@@ -132,6 +158,17 @@ void ABasicCharacter::OnScan()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Scanning!"));
 
+	// Play Sound 
+	USoundBase* Sound = CharacterData->ScanSound;
+	UGameplayStatics::PlaySound2D(GetWorld(), Sound);
+
+	// Timeline
+	ScanTimeLine.PlayFromStart();
+
+	//for (AItemBase* Item : ScannedItems)
+	//{
+	//	Item->OnScanned();
+	//}
 }
 
 void ABasicCharacter::OnChangePerspective()
@@ -155,5 +192,170 @@ void ABasicCharacter::OnChangePerspective()
 		bUseControllerRotationYaw = true;
 		bUseFirstPersonCamera = true;
 	}
+}
+
+void ABasicCharacter::OnPickUpItem()
+{
+	if (OwningItems.Contains(CurInventoryIndex)) { return; }
+
+	TArray<AActor*> OverlappingActors;
+	GetOverlappingActors(OverlappingActors, AItemBase::StaticClass());
+
+
+	for(AActor* Actor : OverlappingActors)
+	{
+		AItemBase* Item = Cast<AItemBase>(Actor);
+		OverlappedItem = Item;
+		OverlappedItem->SetActorEnableCollision(false);
+		//OverlappedItem->SetActorHiddenInGame(true);
+		OverlappedItem->AttachToComponent(GetMesh(), 
+			FAttachmentTransformRules::SnapToTargetIncludingScale, 
+			OverlappedItem->GetItemTableRow()->EquipSocketName);
+
+		OwningItems.Add(CurInventoryIndex, OverlappedItem);
+
+		// TODO: OnInventoryChanged 호출
+
+		break;
+	}
+}
+
+void ABasicCharacter::OnDropItem()
+{
+	if(OwningItems.Contains(CurInventoryIndex))
+	{
+		// 트레이스 시작 위치와 끝 위치 설정
+		FVector StartLocation = GetActorLocation();
+		FVector EndLocation = StartLocation - FVector(0, 0, 500);
+
+		// 히트 결과를 저장할 변수
+		FHitResult OutHit;
+
+		// 트레이스 실행
+		bool bHit = GetWorld()->LineTraceSingleByChannel(
+			OutHit,                             // 히트 결과 저장할 FHitResult
+			StartLocation,                      // 트레이스 시작 위치
+			EndLocation,                        // 트레이스 끝 위치
+			ECC_Visibility,                     // 트레이스할 충돌 채널 (예: ECC_Visibility)
+			FCollisionQueryParams()             // 추가 옵션 설정 (기본값으로 사용)
+		);
+
+		// 히트된 경우 처리
+		if (bHit)
+		{
+			AActor* HitActor = OutHit.GetActor();
+			if (HitActor)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Hit Actor: %s"), *HitActor->GetName());
+
+				// 히트된 위치 시각화 (디버그)
+				//DrawDebugLine(
+				//	GetWorld(),
+				//	StartLocation,
+				//	EndLocation,
+				//	FColor::Red,
+				//	false, 5.0f, 0, 1.0f
+				//);
+
+				//DrawDebugSphere(
+				//	GetWorld(),
+				//	OutHit.ImpactPoint,
+				//	10.0f,
+				//	12,
+				//	FColor::Green,
+				//	false, 5.0f
+				//);
+
+				FVector NewLocation = OutHit.Location + FVector(100.0, 0.0, 0.0);
+				const FRotator Rotation = FRotator(0., 90.0, 0.);
+				const FVector Translation = FVector(0., 0., 90.0);
+
+				auto item = OwningItems.Find(CurInventoryIndex);
+				(*item)->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+				(*item)->SetActorTransform(FTransform(NewLocation));
+
+				(*item)->SetActorEnableCollision(true);
+				(*item)->SetActorHiddenInGame(false);
+
+				OwningItems.Remove(CurInventoryIndex);
+
+				// TODO: On Inventory Change 호출
+				
+			}
+		}
+	}
+}
+
+void ABasicCharacter::ScanRadiusUpdate(float Radius)
+{
+	if (CharacterData->ScanCollection)
+	{
+		UKismetMaterialLibrary::SetScalarParameterValue(GetWorld(), CharacterData->ScanCollection, TEXT("Radius"), Radius);
+
+
+		/* Sphere Trace */
+		// 시작 위치와 끝 위치 설정
+		FVector StartLocation = FirstPersonCamera->K2_GetComponentLocation();
+		FVector EndLocation = StartLocation + FVector(0, 0, 1); // 위쪽으로 1000 유닛
+
+		// 구의 반지름 설정
+		float SphereRadius = Radius * CharacterData->ScanRadiusMultiplier;
+
+		// 검색할 오브젝트 타입 설정
+		TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
+		ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldDynamic));
+
+		// 무시할 액터 설정
+		TArray<AActor*> ActorsToIgnore;
+		ActorsToIgnore.Add(this); // 현재 액터 무시
+
+		// 히트 결과를 저장할 배열
+		TArray<FHitResult> OutHits;
+
+		// 디버그 옵션 설정
+		EDrawDebugTrace::Type DebugType = EDrawDebugTrace::None;
+
+		// SphereTraceMulti 실행
+		bool bHit = UKismetSystemLibrary::SphereTraceMultiForObjects(
+			GetWorld(),
+			StartLocation,
+			EndLocation,
+			SphereRadius,
+			ObjectTypes,
+			false,           // Complex trace 여부
+			ActorsToIgnore,
+			DebugType,
+			OutHits,
+			true             // 히트 여부 반환
+		);
+
+		// 히트된 오브젝트들 처리
+		if (bHit && OutHits.Num() > 0)
+		{
+			for (const FHitResult& Hit : OutHits)
+			{
+				AActor* HitActor = Hit.GetActor();
+				if (HitActor)
+				{
+					// Set에 넣어서 한번 포착됐으면 한 스캔 내에는 다시 포착되지 않도록 수정했음
+					AItemBase* ScannedItem = Cast<AItemBase>(HitActor);
+					if (ScannedItem)
+					{
+						if (!ScannedItems.Contains(ScannedItem))
+						{
+							ScannedItems.Add(ScannedItem);
+							ScannedItem->OnScanned();
+							UE_LOG(LogTemp, Warning, TEXT("Hit Actor: %s"), *HitActor->GetName());
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+void ABasicCharacter::OnScanFinished()
+{
+	ScannedItems.Empty();
 }
 

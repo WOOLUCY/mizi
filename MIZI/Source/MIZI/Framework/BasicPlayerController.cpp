@@ -90,7 +90,7 @@ void ABasicPlayerController::SetupInputComponent()
 	}
 	else
 	{
-		ensureMsgf(false, TEXT("IA_Move is disabled"));
+		ensureMsgf(false, TEXT("IA_Zoom is disabled"));
 	}
 
 
@@ -109,7 +109,7 @@ void ABasicPlayerController::SetupInputComponent()
 	}
 
 	// Scan
-	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_ZoomWheel")))
+	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Scan")))
 	{
 		EnhancedInputComponent->BindAction(InputAction,
 			ETriggerEvent::Started, this, &ThisClass::OnScan);
@@ -130,6 +130,27 @@ void ABasicPlayerController::SetupInputComponent()
 		UE_LOG(LogTemp, Warning, TEXT("IA_Perspective is disabled"));
 	}
 
+	// Pick
+	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Pick")))
+	{
+		EnhancedInputComponent->BindAction(InputAction,
+			ETriggerEvent::Triggered, this, &ThisClass::OnPickItem);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IA_Pick is disabled"));
+	}
+
+	// Drop
+	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Drop")))
+	{
+		EnhancedInputComponent->BindAction(InputAction,
+			ETriggerEvent::Triggered, this, &ThisClass::OnDropItem);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IA_Drop is disabled"));
+	}
 }
 
 void ABasicPlayerController::OnPossess(APawn* InPawn)
@@ -203,4 +224,16 @@ void ABasicPlayerController::OnChangePerspective(const FInputActionValue& InputA
 {
 	ABasicCharacter* BasicCharacter = Cast<ABasicCharacter>(GetPawn());
 	BasicCharacter->OnChangePerspective();
+}
+
+void ABasicPlayerController::OnPickItem(const FInputActionValue& InputActionValue)
+{
+	ABasicCharacter* BasicCharacter = Cast<ABasicCharacter>(GetPawn());
+	BasicCharacter->OnPickUpItem();
+}
+
+void ABasicPlayerController::OnDropItem(const FInputActionValue& InputActionValue)
+{
+	ABasicCharacter* BasicCharacter = Cast<ABasicCharacter>(GetPawn());
+	BasicCharacter->OnDropItem();
 }
