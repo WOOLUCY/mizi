@@ -48,6 +48,13 @@ public:
 	void OnChangePerspective();
 	void OnPickUpItem();
 	void OnDropItem();
+	void OnInventoryChanged();
+	void OnInventoryIndexChanged(float Value);
+	void OnEquipChanged();
+
+	FCharacterTableRow* GetCharacterData() { return CharacterData; }
+	TMap<uint32, AItemBase*> GetOwningItems() { return OwningItems; }
+	uint32 GetCurInventoryIndex() { return CurInventoryIndex; }
 
 
 protected:	// Components
@@ -80,7 +87,8 @@ private:
 
 private:	// Inventory
 	uint32 CurInventoryIndex = 0;
-
+	uint32 MaxInventoryIndex = 4;
+	uint32 PrevInventoryIndex = 0;
 	TMap<uint32, AItemBase*> OwningItems;
 
 	AItemBase* OverlappedItem = nullptr;

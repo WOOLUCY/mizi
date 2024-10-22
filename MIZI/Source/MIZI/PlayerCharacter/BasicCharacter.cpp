@@ -7,6 +7,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMaterialLibrary.h"
+#include "UI/BasicHUD.h"
 
 
 // Sets default values
@@ -215,6 +216,7 @@ void ABasicCharacter::OnPickUpItem()
 		OwningItems.Add(CurInventoryIndex, OverlappedItem);
 
 		// TODO: OnInventoryChanged 호출
+		OnInventoryChanged();
 
 		break;
 	}
@@ -280,9 +282,58 @@ void ABasicCharacter::OnDropItem()
 				OwningItems.Remove(CurInventoryIndex);
 
 				// TODO: On Inventory Change 호출
+				OnInventoryChanged();
 				
 			}
 		}
+	}
+}
+
+void ABasicCharacter::OnInventoryChanged()
+{
+	OnEquipChanged();
+
+	ABasicHUD* HUD = Cast<ABasicHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
+
+	if (!HUD)
+	{
+		ensure(false);
+		return;
+	}
+	HUD->GetInventoryWidget()->OnInventoryChanged();
+}
+
+void ABasicCharacter::OnInventoryIndexChanged(float Value)
+{
+	PrevInventoryIndex = CurInventoryIndex;
+
+	float AddIndex = CurInventoryIndex + Value;
+	CurInventoryIndex = (int)AddIndex % MaxInventoryIndex;
+
+	OnEquipChanged();
+
+	ABasicHUD* HUD = Cast<ABasicHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
+
+	if(!HUD)
+	{
+		ensure(false);
+		return;
+	}
+	HUD->GetInventoryWidget()->OnInventoryIndexChanged();
+}
+
+void ABasicCharacter::OnEquipChanged()
+{
+	auto PrevEquippedItem = OwningItems.Find(PrevInventoryIndex);
+	if(PrevEquippedItem)
+	{
+		(*PrevEquippedItem)->SetActorHiddenInGame(true);
+	}
+
+	auto CurEquippedItem = OwningItems.Find(CurInventoryIndex);
+	if (CurEquippedItem)
+	{
+		(*CurEquippedItem)->SetActorHiddenInGame(false);
 	}
 }
 

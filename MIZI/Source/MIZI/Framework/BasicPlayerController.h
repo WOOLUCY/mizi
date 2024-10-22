@@ -40,7 +40,8 @@ protected:
 
 	void OnPickItem(const FInputActionValue& InputActionValue);
 	void OnDropItem(const FInputActionValue& InputActionValue);
-	
+
+	void OnInventoryWheel(const FInputActionValue& InputActionValue);
 
 protected:
 	UInputMappingContext* IMC_Default = nullptr;

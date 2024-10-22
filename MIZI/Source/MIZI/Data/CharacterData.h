@@ -50,6 +50,13 @@ public: // Scan
 
 	UPROPERTY(EditAnywhere, Category = "Character|Scan")
 	float ScanRadiusMultiplier = 1500.0f;
+
+public:	// UI
+	UPROPERTY(EditAnywhere, Category = "Character|UI")
+	TSubclassOf<UUserWidget> InventoryWidgetClass = nullptr;
+
+
+
 //public: // Weapon
 	//UPROPERTY(EditAnywhere, Category = "Character|Weapon", meta = (RowType = "/Script/MIZI.WeaponTableRow"))
 	//FDataTableRowHandle Weapon;
