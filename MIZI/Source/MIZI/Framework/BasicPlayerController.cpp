@@ -109,18 +109,27 @@ void ABasicPlayerController::SetupInputComponent()
 	}
 
 	// Scan
-	if (bZoomWheel)
+	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_ZoomWheel")))
 	{
-		if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_ZoomWheel")))
-		{
-			EnhancedInputComponent->BindAction(InputAction,
-				ETriggerEvent::Started, this, &ThisClass::OnScan);
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("IA_Scan is disabled"));
-		}
+		EnhancedInputComponent->BindAction(InputAction,
+			ETriggerEvent::Started, this, &ThisClass::OnScan);
 	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IA_Scan is disabled"));
+	}
+
+	// Change Perspective
+	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Perspective")))
+	{
+		EnhancedInputComponent->BindAction(InputAction,
+			ETriggerEvent::Started, this, &ThisClass::OnChangePerspective);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IA_Perspective is disabled"));
+	}
+
 }
 
 void ABasicPlayerController::OnPossess(APawn* InPawn)
@@ -188,4 +197,10 @@ void ABasicPlayerController::OnScan(const FInputActionValue& InputActionValue)
 {
 	ABasicCharacter* BasicCharacter = Cast<ABasicCharacter>(GetPawn());
 	BasicCharacter->OnScan();
+}
+
+void ABasicPlayerController::OnChangePerspective(const FInputActionValue& InputActionValue)
+{
+	ABasicCharacter* BasicCharacter = Cast<ABasicCharacter>(GetPawn());
+	BasicCharacter->OnChangePerspective();
 }

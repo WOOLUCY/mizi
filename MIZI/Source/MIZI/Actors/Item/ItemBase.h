@@ -50,9 +50,9 @@ protected:
 	UWidgetComponent* Widget;
 
 protected: // Owner
-	//// ÀÌ ¾ÆÀÌÅÛÀÇ ¼ÒÀ¯±ÇÀÚ Pawn
+	//// ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Pawn
 	//APawn* OwningPawn = nullptr;
-	//// ÀÌ ¾ÆÀÌÅÛÀÇ ¼ÒÀ¯±ÇÀÚ PawnÀÇ SkeletalMeshComponent·Î Ä³¸¯ÅÍÀÇ MeshComponent °°Àº °ÍÀ» ÀÇ¹Ì
+	//// ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Pawnï¿½ï¿½ SkeletalMeshComponentï¿½ï¿½ Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ MeshComponent ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¹ï¿½
 	//USkeletalMeshComponent* OwningPawnBodyMesh = nullptr;
 	////UBaisicCharacterAnimInstance* BasicAnimInstance = nullptr;
 
