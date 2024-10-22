@@ -151,6 +151,17 @@ void ABasicPlayerController::SetupInputComponent()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("IA_Drop is disabled"));
 	}
+
+	// Inventory Wheel
+	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_InventoryWheel")))
+	{
+		EnhancedInputComponent->BindAction(InputAction,
+			ETriggerEvent::Triggered, this, &ThisClass::OnInventoryWheel);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IA_InventoryWheel is disabled"));
+	}
 }
 
 void ABasicPlayerController::OnPossess(APawn* InPawn)
@@ -236,4 +247,10 @@ void ABasicPlayerController::OnDropItem(const FInputActionValue& InputActionValu
 {
 	ABasicCharacter* BasicCharacter = Cast<ABasicCharacter>(GetPawn());
 	BasicCharacter->OnDropItem();
+}
+
+void ABasicPlayerController::OnInventoryWheel(const FInputActionValue& InputActionValue)
+{
+	ABasicCharacter* BasicCharacter = Cast<ABasicCharacter>(GetPawn());
+	BasicCharacter->OnInventoryIndexChanged(InputActionValue.Get<float>());
 }

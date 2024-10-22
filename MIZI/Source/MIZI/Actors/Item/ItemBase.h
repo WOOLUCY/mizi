@@ -34,6 +34,7 @@ public:
 
 public:
 	void OnScanned();
+
 	virtual void OnUsed();
 
 	FItemTableRow* GetItemTableRow() { return ItemTableRow; }

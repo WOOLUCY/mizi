@@ -4,9 +4,11 @@
 #include "Framework/BasicGameMode.h"
 #include "Framework/BasicPlayerController.h"
 #include "PlayerCharacter/BasicCharacter.h"
+#include "UI/BasicHUD.h"
 
 ABasicGameMode::ABasicGameMode()
 {
 	PlayerControllerClass = ABasicPlayerController::StaticClass();
 	DefaultPawnClass = ABasicCharacter::StaticClass();
+	HUDClass = ABasicHUD::StaticClass();
 }
