@@ -32,9 +32,15 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 
-protected:
+public:
 	void OnScanned();
 	virtual void OnUsed();
+
+	FItemTableRow* GetItemTableRow() { return ItemTableRow; }
+
+private:
+	UFUNCTION()
+	void OnScanTimer();
 
 protected:
 	UPROPERTY(EditAnywhere)

@@ -38,6 +38,10 @@ protected:
 	void OnScan(const FInputActionValue& InputActionValue);
 	void OnChangePerspective(const FInputActionValue& InputActionValue);
 
+	void OnPickItem(const FInputActionValue& InputActionValue);
+	void OnDropItem(const FInputActionValue& InputActionValue);
+	
+
 protected:
 	UInputMappingContext* IMC_Default = nullptr;
 

@@ -4,6 +4,8 @@
 #include "Actors/Item/ItemBase.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "UI/ScannedItemWidget.h"
+#include "TimerManager.h"
+#include "AssetTypeActions/AssetDefinition_SoundBase.h"
 
 #include "Components/SphereComponent.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -89,10 +91,13 @@ void AItemBase::BeginPlay()
 
 	// TODO: ���� ǥ�� �̸� ����
 	UScannedItemWidget* ItemWidget = Cast<UScannedItemWidget>(Widget->GetWidget());
-	ItemWidget->ItemName->SetText(FText::FromString(ItemName));
+	ItemWidget->ItemName->SetText(ItemTableRow->DisplayName);
 
 	Price = UKismetMathLibrary::RandomIntegerInRange(ItemTableRow->MinPrice, ItemTableRow->MaxPrice);
 	ItemWidget->ItemPrice->SetText(FText::AsNumber(Price));
+
+	if (!Widget) { return; }
+	Widget->SetVisibility(false);
 }
 
 // Called every frame
@@ -104,10 +109,21 @@ void AItemBase::Tick(float DeltaTime)
 
 void AItemBase::OnScanned()
 {
-	// TODO: ���� ���ü� ����, ��ĵ ����Ʈ ���
+	if (!Widget) { return; }
+	Widget->SetVisibility(true);
+	UScannedItemWidget* ScannedItemWidget = Cast<UScannedItemWidget>(Widget->GetWidget());
+	ScannedItemWidget->PlayAnimation(ScannedItemWidget->ScanEffect);
 
+	UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnScanTimer"), 3.f, false);
 }
 
 void AItemBase::OnUsed()
 {
+}
+
+void AItemBase::OnScanTimer()
+{
+	Widget->SetVisibility(false);
+	UScannedItemWidget* ScannedItemWidget = Cast<UScannedItemWidget>(Widget->GetWidget());
+	//ScannedItemWidget->ScanI
 }

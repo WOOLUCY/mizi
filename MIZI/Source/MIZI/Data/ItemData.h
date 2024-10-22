@@ -14,21 +14,24 @@ struct FItemTableRow : public FTableRowBase
 	GENERATED_BODY()
 
 public: // Base
-	// ½ºÅÂÆ½ ¸Þ½¬ Á¤º¸
+	UPROPERTY(EditAnywhere, Category = "Item")
+	FText DisplayName;
+
+	// ï¿½ï¿½ï¿½ï¿½Æ½ ï¿½Þ½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	UPROPERTY(EditAnywhere, Category = "Item")
 	UStaticMesh* StaticMesh = nullptr;
 
-	// ÀåÂø °¡´É ¿©ºÎ
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	UPROPERTY(EditAnywhere, Category = "Item")
 	bool bEquipped = true;
 
 
-	// »ç¿ë °¡´É ¿©ºÎ
+	// ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	UPROPERTY(EditAnywhere, Category = "Item")
 	bool bUsed = false;
 
 
-	// ÆÇ¸Å °¡´É ¿©ºÎ¿Í °¡°Ý
+	// ï¿½Ç¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½
 	UPROPERTY(EditAnywhere, Category = "Item")
 	bool bSold = true;
 

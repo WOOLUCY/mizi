@@ -38,6 +38,18 @@ public: // Animation
 	UPROPERTY(EditAnywhere, Category = "Character|Animation")
 	TArray<UAnimMontage*> DieMontage;
 
+public: // Scan
+	UPROPERTY(EditAnywhere, Category = "Character|Scan")
+	USoundBase* ScanSound = nullptr;
+
+	UPROPERTY(EditAnywhere, Category = "Character|Scan")
+	UCurveFloat* ScanTimeline = nullptr;
+
+	UPROPERTY(EditAnywhere, Category = "Character|Scan")
+	UMaterialParameterCollection* ScanCollection = nullptr;
+
+	UPROPERTY(EditAnywhere, Category = "Character|Scan")
+	float ScanRadiusMultiplier = 1500.0f;
 //public: // Weapon
 	//UPROPERTY(EditAnywhere, Category = "Character|Weapon", meta = (RowType = "/Script/MIZI.WeaponTableRow"))
 	//FDataTableRowHandle Weapon;
