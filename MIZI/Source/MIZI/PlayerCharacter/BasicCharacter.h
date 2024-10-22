@@ -43,13 +43,20 @@ private:
 
 public:
 	void OnScan();
+	void OnChangePerspective();
 
 
 protected:	// Components
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
-	TObjectPtr<UCameraComponent> Camera;
+	//UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	//TObjectPtr<USkeletalMeshComponent> Mesh;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	TObjectPtr<UCameraComponent> FirstPersonCamera;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	TObjectPtr<UCameraComponent> ThirdPersonCamera;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TObjectPtr<USoftWheelSpringArmComponent> SpringArm;
 
 protected:
@@ -57,4 +64,7 @@ protected:
 	FDataTableRowHandle DataTableRowHandle;
 
 	FCharacterTableRow* CharacterData;
+
+private:
+	bool bUseFirstPersonCamera = true;
 };

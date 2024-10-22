@@ -42,7 +42,7 @@ AItemBase::AItemBase()
 
 void AItemBase::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 {
-	// Çà ÀÌ¸§À¸·Î µ¥ÀÌÅÍ °¡Á®¿À±â
+	// ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	DataTableRowHandle = InDataTableRowHandle;
 	if (DataTableRowHandle.IsNull()) { return; }
 	FItemTableRow* Data = DataTableRowHandle.GetRow<FItemTableRow>(ItemName);
@@ -56,7 +56,7 @@ void AItemBase::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 	//check(MeshComponent);
 	//MeshComponent->SetAnimClass(Data->AnimClass);
 
-	// Owner Á¤º¸ ¼¼ÆÃ
+	// Owner ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	{
 		//OwningPawn = Cast<APawn>(GetOwner());
 		//check(OwningPawn);
@@ -87,7 +87,7 @@ void AItemBase::BeginPlay()
 	Super::BeginPlay();
 	SetData(DataTableRowHandle);
 
-	// TODO: À§Á¬ Ç¥½Ã ÀÌ¸§ º¯°æ
+	// TODO: ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½
 	UScannedItemWidget* ItemWidget = Cast<UScannedItemWidget>(Widget->GetWidget());
 	ItemWidget->ItemName->SetText(FText::FromString(ItemName));
 
@@ -104,7 +104,7 @@ void AItemBase::Tick(float DeltaTime)
 
 void AItemBase::OnScanned()
 {
-	// TODO: À§Á¬ °¡½Ã¼º º¯°æ, ½ºÄµ ÀÌÆåÆ® Àç»ý
+	// TODO: ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã¼ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½Äµ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½
 
 }
 
