@@ -13,7 +13,7 @@ void UBasicCharacterAnimInstance::NativeInitializeAnimation()
 	APawn* Pawn = TryGetPawnOwner();
 	if (GIsEditor && FApp::IsGame() && !Pawn)
 	{
-		checkf(false, TEXT("UBaisicCharacterAnimInstance를 사용하려면 소유권자가 Pawn이여야 합니다."));
+		checkf(false, TEXT("UBaisicCharacterAnimInstance를 사용하려면 소유권자가 Pawn이어야 합니다."));
 		return;
 	}
 	else if (!Pawn) { return; }

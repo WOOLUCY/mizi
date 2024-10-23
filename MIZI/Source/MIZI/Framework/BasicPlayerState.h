@@ -17,27 +17,33 @@ class MIZI_API ABasicPlayerState : public APlayerState
 public:
 	ABasicPlayerState();
 
-	uint32 GetCurHealth() const { return CurHealth; }
-	uint32 GetCurStamina() const { return CurStamina; }
-	uint32 GetCurSanity() const { return CurSanity; }
-	uint32 GetMaxHealth() const { return MaxHealth; }
-	uint32 GetMaxStamina() const { return MaxStamina; }
-	uint32 GetMaxSanity() const { return MaxSanity; }
+	int32 GetCurHealth() const { return CurHealth; }
+	int32 GetCurStamina() const { return CurStamina; }
+	int32 GetCurSanity() const { return CurSanity; }
+	int32 GetMaxHealth() const { return MaxHealth; }
+	int32 GetMaxStamina() const { return MaxStamina; }
+	int32 GetMaxSanity() const { return MaxSanity; }
 
-	void SetCurHealth(uint32 InUint) { CurHealth = InUint; }
-	void SetCurStamina(uint32 InUint) { CurStamina = InUint; }
-	void SetCurSanity(uint32 InUint) { CurSanity = InUint; }
-	void SetMaxHealth(uint32 InUint) { MaxHealth = InUint; }
-	void SetMaxStamina(uint32 InUint) { MaxStamina = InUint; }
-	void SetMaxSanity(uint32 InUint) { MaxSanity = InUint; }
+	void SetCurHealth(int32 InUint) { CurHealth = InUint; }
+	void SetCurStamina(int32 InUint) { CurStamina = InUint; }
+	void SetCurSanity(int32 InUint) { CurSanity = InUint; }
+	void SetMaxHealth(int32 InUint) { MaxHealth = InUint; }
+	void SetMaxStamina(int32 InUint) { MaxStamina = InUint; }
+	void SetMaxSanity(int32 InUint) { MaxSanity = InUint; }
 
-private:
-	uint32 CurHealth = 100;
-	uint32 MaxHealth = 100;
+public:
+	UPROPERTY(BlueprintReadWrite)
+	int32 CurHealth;
+	UPROPERTY(BlueprintReadWrite)
+	int32 MaxHealth;
 
-	uint32 CurStamina = 100;
-	uint32 MaxStamina = 100;
-
-	uint32 CurSanity = 100;
-	uint32 MaxSanity = 100;
+	UPROPERTY(BlueprintReadWrite)
+	int32 CurStamina;
+	UPROPERTY(BlueprintReadWrite)
+	int32 MaxStamina;
+			
+	UPROPERTY(BlueprintReadWrite)
+	int32 CurSanity;
+	UPROPERTY(BlueprintReadWrite)
+	int32 MaxSanity;
 };

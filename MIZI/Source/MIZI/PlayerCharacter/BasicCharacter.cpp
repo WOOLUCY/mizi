@@ -73,7 +73,6 @@ void ABasicCharacter::BeginPlay()
 
 	// Player State
 	ABasicPlayerState* BasicPlayerState = Cast<ABasicPlayerState>(GetPlayerState());
-
 	if(BasicPlayerState)
 	{
 		Status = BasicPlayerState;
@@ -128,6 +127,16 @@ void ABasicCharacter::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 	//	ScanCollection = CharacterData->ScanCollection;
 	//	ScanRadiusMultiplier = CharacterData->ScanRadiusMultiplier;
 	//}
+}
+
+float ABasicCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
+	class AController* EventInstigator, AActor* DamageCauser)
+{
+	int32 NewHealth = Status->GetCurHealth() - DamageAmount;
+	UKismetMathLibrary::Clamp(NewHealth, 0, Status->GetMaxHealth());
+	Status->SetCurHealth(NewHealth);
+
+	return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 }
 
 // Called every frame
