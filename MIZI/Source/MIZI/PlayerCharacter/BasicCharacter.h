@@ -11,6 +11,7 @@
 #include "Data/CharacterData.h"
 #include "Components/SoftWheelSpringArmComponent.h"
 #include "Components/TimelineComponent.h"
+#include "Framework/BasicPlayerState.h"
 
 
 #include "BasicCharacter.generated.h"
@@ -51,10 +52,14 @@ public:
 	void OnInventoryChanged();
 	void OnInventoryIndexChanged(float Value);
 	void OnEquipChanged();
+	void StartSprinting();
+	void StopSprinting();
 
-	FCharacterTableRow* GetCharacterData() { return CharacterData; }
+	FCharacterTableRow* GetCharacterData() const { return CharacterData; }
 	TMap<uint32, AItemBase*> GetOwningItems() { return OwningItems; }
-	uint32 GetCurInventoryIndex() { return CurInventoryIndex; }
+	uint32 GetCurInventoryIndex() const { return CurInventoryIndex; }
+	bool GetIsSprinting() const { return bIsSprinting; }
+	void SetIsSprinting(bool InBool) { bIsSprinting = InBool; }
 
 
 protected:	// Components
@@ -72,6 +77,10 @@ protected:	// Components
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TObjectPtr<UTimelineComponent> ScanTimelineComponent;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	TObjectPtr<ABasicPlayerState> Status;
+
 
 protected:
 	UPROPERTY(EditAnywhere, meta = (RowType = "/Script/MIZI.CharacterTableRow"))
@@ -92,6 +101,14 @@ private:	// Inventory
 	TMap<uint32, AItemBase*> OwningItems;
 
 	AItemBase* OverlappedItem = nullptr;
+
+private:	// Sprint
+	bool bIsSprinting = false;
+
+	UFUNCTION()
+	void DrainStamina();
+	UFUNCTION()
+	void RegenStamina();
 
 
 protected:

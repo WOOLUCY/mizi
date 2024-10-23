@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "StatusWidget.h"
 #include "GameFramework/HUD.h"
 #include "UI/InventoryWidget.h"
 #include "BasicHUD.generated.h"
@@ -24,12 +25,19 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 	TSubclassOf<UUserWidget> InventoryWidgetClass;
-	
-public:
-	UInventoryWidget* GetInventoryWidget() {return InventoryWidget;}
 
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
+	TSubclassOf<UUserWidget> StatusWidgetClass;
+
+public:
+	UInventoryWidget* GetInventoryWidget() const {return InventoryWidget;}
+	UStatusWidget* GetStatusWidget() const {return StatusWidget;}
 
 private:
 	UPROPERTY()
 	UInventoryWidget* InventoryWidget;
+
+	UPROPERTY()
+	UStatusWidget* StatusWidget;
+
 };

@@ -30,6 +30,8 @@ protected:
 	void OnLookUp(const FInputActionValue& InputActionValue);
 	void OnTurn(const FInputActionValue& InputActionValue);
 	void OnJump(const FInputActionValue& InputActionValue);
+	void OnStartSprinting(const FInputActionValue& InputActionValue);
+	void OnStopSprinting(const FInputActionValue& InputActionValue);
 
 	void OnZoomWheel(const FInputActionValue& InputActionValue);
 	void OnZoomIn(const FInputActionValue& InputActionValue);
