@@ -14,6 +14,12 @@ ABasicHUD::ABasicHUD()
 		InventoryWidgetClass = InventoryWidgetObject.Class;
 	}
 
+	ConstructorHelpers::FClassFinder<UStatusWidget>  StatusWidgetObject(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Character/Widget/WBP_Status.WBP_Status_C'"));
+	if (StatusWidgetObject.Succeeded())
+	{
+		StatusWidgetClass = StatusWidgetObject.Class;
+	}
+
 }
 
 void ABasicHUD::DrawHUD()
@@ -28,11 +34,17 @@ void ABasicHUD::BeginPlay()
 	//auto test = Character->GetCharacterData()->InventoryWidgetClass;
 
 	InventoryWidget = CreateWidget<UInventoryWidget>(GetWorld(), InventoryWidgetClass);
-
 	if(InventoryWidget)
 	{
 		InventoryWidget->AddToViewport();
 	}
+
+	StatusWidget = CreateWidget<UStatusWidget>(GetWorld(), StatusWidgetClass);
+	if (StatusWidget)
+	{
+		StatusWidget->AddToViewport();
+	}
+
 }
 
 void ABasicHUD::Tick(float DeltaSeconds)

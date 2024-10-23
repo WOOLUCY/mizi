@@ -162,6 +162,20 @@ void ABasicPlayerController::SetupInputComponent()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("IA_InventoryWheel is disabled"));
 	}
+
+	// Sprinting
+	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Dash")))
+	{
+		EnhancedInputComponent->BindAction(InputAction,
+			ETriggerEvent::Triggered, this, &ThisClass::OnStartSprinting);
+		EnhancedInputComponent->BindAction(InputAction,
+			ETriggerEvent::Completed, this, &ThisClass::OnStopSprinting);
+
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IA_Dash is disabled"));
+	}
 }
 
 void ABasicPlayerController::OnPossess(APawn* InPawn)
@@ -203,6 +217,19 @@ void ABasicPlayerController::OnJump(const FInputActionValue& InputActionValue)
 {
 	ACharacter* ControlledCharacter = Cast<ACharacter>(GetPawn());
 	ControlledCharacter->Jump();
+}
+
+void ABasicPlayerController::OnStartSprinting(const FInputActionValue& InputActionValue)
+{
+	ABasicCharacter* ControlledCharacter = Cast<ABasicCharacter>(GetPawn());
+	ControlledCharacter->StartSprinting();
+
+}
+
+void ABasicPlayerController::OnStopSprinting(const FInputActionValue& InputActionValue)
+{
+	ABasicCharacter* ControlledCharacter = Cast<ABasicCharacter>(GetPawn());
+	ControlledCharacter->StopSprinting();
 }
 
 void ABasicPlayerController::OnZoomWheel(const FInputActionValue& InputActionValue)

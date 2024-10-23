@@ -30,7 +30,14 @@ public:	// Collision
 
 public: // Movement
 	UPROPERTY(EditAnywhere, Category = "Character|Movement")
-	float MovementMaxSpeed = 400.f;
+	float WalkMaxSpeed = 600.f;
+	UPROPERTY(EditAnywhere, Category = "Character|Movement")
+	float SprintMaxSpeed = 800.f;
+	UPROPERTY(EditAnywhere, Category = "Character|Movement")
+	float StaminaRegenSpeed = 0.2f;
+	UPROPERTY(EditAnywhere, Category = "Character|Movement")
+	float StaminaDrainSpeed = 0.1f;
+
 
 public: // Animation
 	UPROPERTY(EditAnywhere, Category = "Character|Animation")

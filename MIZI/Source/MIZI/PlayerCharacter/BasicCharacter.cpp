@@ -7,6 +7,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMaterialLibrary.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "UI/BasicHUD.h"
 
 
@@ -69,6 +70,14 @@ void ABasicCharacter::BeginPlay()
 		TimelineFinishedEvent.BindUFunction(this, FName("OnScanFinished"));
 		ScanTimeLine.SetTimelineFinishedFunc(TimelineFinishedEvent);
 	}
+
+	// Player State
+	ABasicPlayerState* BasicPlayerState = Cast<ABasicPlayerState>(GetPlayerState());
+
+	if(BasicPlayerState)
+	{
+		Status = BasicPlayerState;
+	}
 }
 
 void ABasicCharacter::OnConstruction(const FTransform& Transform)
@@ -90,7 +99,7 @@ void ABasicCharacter::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 		//Movement->RotationRate = CharacterData->RotationRate;
 		Movement->bOrientRotationToMovement = true;
 		Movement->GetNavAgentPropertiesRef().bCanCrouch = true;
-		Movement->MaxWalkSpeed = CharacterData->MovementMaxSpeed;
+		Movement->MaxWalkSpeed = CharacterData->WalkMaxSpeed;
 
 		const float NewCapsuleHalfHeight = CharacterData->CollisionCapsuleHalfHeight * 0.5f;
 		Movement->SetCrouchedHalfHeight(NewCapsuleHalfHeight);
@@ -335,6 +344,62 @@ void ABasicCharacter::OnEquipChanged()
 	{
 		(*CurEquippedItem)->SetActorHiddenInGame(false);
 	}
+}
+
+void ABasicCharacter::StartSprinting()
+{
+	GetCharacterMovement()->MaxWalkSpeed = CharacterData->SprintMaxSpeed;
+	SetIsSprinting(true);
+	DrainStamina();
+}
+
+void ABasicCharacter::StopSprinting()
+{
+	GetCharacterMovement()->MaxWalkSpeed = CharacterData->WalkMaxSpeed;
+	SetIsSprinting(false);
+	RegenStamina();
+}
+
+void ABasicCharacter::DrainStamina()
+{
+	uint32 NewStamina = UKismetMathLibrary::Clamp((Status->GetCurStamina() - 1), 0, Status->GetMaxStamina());
+	Status->SetCurStamina(NewStamina);
+
+	if(NewStamina == 0)
+	{
+		StopSprinting();
+	}
+	else
+	{
+		if(GetIsSprinting())
+		{
+			UKismetSystemLibrary::K2_SetTimer(this, TEXT("DrainStamina"), CharacterData->StaminaDrainSpeed, false);
+		}
+	}
+
+}
+
+void ABasicCharacter::RegenStamina()
+{
+	uint32 NewStamina = UKismetMathLibrary::Clamp((Status->GetCurStamina() + 1), 0, Status->GetMaxStamina());
+	Status->SetCurStamina(NewStamina);
+
+	if (Status->GetMaxStamina() == Status->GetCurStamina())
+	{
+		return;
+	}
+	else
+	{
+		if (GetIsSprinting())
+		{
+			return;
+		}
+		else
+		{
+			UKismetSystemLibrary::K2_SetTimer(this, TEXT("RegenStamina"), CharacterData->StaminaRegenSpeed, false);
+		}
+	}
+
 }
 
 void ABasicCharacter::ScanRadiusUpdate(float Radius)

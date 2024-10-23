@@ -11,4 +11,5 @@ ABasicGameMode::ABasicGameMode()
 	PlayerControllerClass = ABasicPlayerController::StaticClass();
 	DefaultPawnClass = ABasicCharacter::StaticClass();
 	HUDClass = ABasicHUD::StaticClass();
+	PlayerStateClass = ABasicPlayerState::StaticClass();
 }
