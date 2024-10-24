@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AI/Interface/EnemyInterface.h"
 #include "GameFramework/Character.h"
 //#include "Data/EnemyData.h"
 
@@ -12,7 +13,7 @@ class ABasicAIController;
 struct FEnemyTableRow;
 
 UCLASS()
-class MIZI_API AEnemyBase : public ACharacter
+class MIZI_API AEnemyBase : public ACharacter, public IEnemyInterface
 {
 	GENERATED_BODY()
 
@@ -32,6 +33,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+public:	// Interface
+	virtual float Attack() override;
+
 public:
 	FEnemyTableRow* GetEnemyData() const { return EnemyData; }
 
@@ -40,4 +44,6 @@ protected:
 	FDataTableRowHandle DataTableRowHandle;
 
 	FEnemyTableRow* EnemyData;
+
+	UAnimMontage* CurrentMontage;
 };

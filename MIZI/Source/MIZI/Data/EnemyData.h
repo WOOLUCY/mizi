@@ -52,21 +52,6 @@ public: // Combat
 	UPROPERTY(EditAnywhere, Category = "Enemy|Combat")
 	int32 Damage;
 
-	//UPROPERTY(EditAnywhere, Category = "Enemy|Combat")
-	//TSubclassOf<ABasicAIController> Controller;
-
-	UPROPERTY(EditAnywhere, Category = "Enemy|Combat")
-	UBehaviorTree* DefaultBehaviorTree;
-
-	UPROPERTY(EditAnywhere, Category = "Enemy|Combat")
-	float SightRadius = 5000.0f;
-
-	UPROPERTY(EditAnywhere, Category = "Enemy|Combat")
-	float LoseSightRadius = 5500.0f;
-
-	UPROPERTY(EditAnywhere, Category = "Enemy|Combat")
-	float PeripheralVisionAngleDegrees = 90.0f;
-
 public:	// UI
 	UPROPERTY(EditAnywhere, Category = "Enemy|UI")
 	TSubclassOf<UUserWidget> EnemyWidgetClass;

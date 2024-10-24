@@ -29,8 +29,6 @@ protected:
     virtual void OnPossess(APawn* InPawn) override;
 
 protected:
-    virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle);
-
 	UFUNCTION()
     void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 
@@ -43,14 +41,14 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI", meta = (AllowPrivateAccess = "true"))
     UAISenseConfig_Sight* SightConfig;
 
-protected:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UBehaviorTree* BehaviorTree;
+private:
+    UPROPERTY(EditAnywhere)
+	UBehaviorTree* BehaviorTree;
 
+    //UPROPERTY(EditAnywhere)
+    UBlackboardComponent* BlackboardComponent;
 
-protected:
-    UPROPERTY(EditAnywhere, meta = (RowType = "/Script/MIZI.EnemyTableRow"))
-    FDataTableRowHandle DataTableRowHandle;
+	UPROPERTY(EditAnywhere)
+    UBlackboardData* BlackboardData;
 
-    FEnemyTableRow* EnemyData;
 };
