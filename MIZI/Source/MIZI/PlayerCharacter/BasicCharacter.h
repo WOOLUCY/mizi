@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GenericTeamAgentInterface.h"
 #include "Actors/Item/ItemBase.h"
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
@@ -64,7 +65,6 @@ public:
 	bool GetIsSprinting() const { return bIsSprinting; }
 	void SetIsSprinting(bool InBool) { bIsSprinting = InBool; }
 
-
 protected:	// Components
 	//UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	//TObjectPtr<USkeletalMeshComponent> Mesh;
@@ -112,8 +112,6 @@ private:	// Sprint
 	void DrainStamina();
 	UFUNCTION()
 	void RegenStamina();
-
-
 protected:
 	UFUNCTION()
 	void ScanRadiusUpdate(float Radius);

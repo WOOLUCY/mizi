@@ -8,6 +8,7 @@
 #include "Data/EnemyData.h"
 #include "Engine/CoreSettings.h"
 #include "Kismet/GameplayStatics.h"
+#include "PlayerCharacter/BasicCharacter.h"
 
 ABasicAIController::ABasicAIController()
 {
@@ -67,8 +68,6 @@ void ABasicAIController::BeginPlay()
 	{
 		RunBehaviorTree(BehaviorTree);
 	}
-
-	AEnemyBase* ControlledPawn = Cast<AEnemyBase>(GetPawn());
 }
 
 void ABasicAIController::OnConstruction(const FTransform& Transform)
@@ -81,6 +80,10 @@ void ABasicAIController::OnPossess(APawn* InPawn)
 	Super::OnPossess(InPawn);
 }
 
+void ABasicAIController::OnUnPossess()
+{
+	Super::OnUnPossess();
+}
 
 void ABasicAIController::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
@@ -89,8 +92,11 @@ void ABasicAIController::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus St
 	{
 		if(Stimulus.WasSuccessfullySensed())
 		{
-			BlackboardComponent->SetValueAsObject(FName("TargetActor"), Actor);
-			BlackboardComponent->SetValueAsVector(FName("LastKnownLocation"), Stimulus.StimulusLocation);
+			if (Cast<ABasicCharacter>(Actor))	// 플레이어만 감지하도록
+			{
+				BlackboardComponent->SetValueAsObject(FName("TargetActor"), Actor);
+				BlackboardComponent->SetValueAsVector(FName("LastKnownLocation"), Stimulus.StimulusLocation);
+			}
 		}
 		else
 		{

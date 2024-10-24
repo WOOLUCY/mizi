@@ -40,6 +40,10 @@ public:
 	FEnemyTableRow* GetEnemyData() const { return EnemyData; }
 
 protected:
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* StaticMeshComponent;
+
+protected:
 	UPROPERTY(EditAnywhere, meta = (RowType = "/Script/MIZI.EnemyTableRow"))
 	FDataTableRowHandle DataTableRowHandle;
 

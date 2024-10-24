@@ -16,6 +16,8 @@ AEnemyBase::AEnemyBase()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
+	StaticMeshComponent->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -57,11 +59,29 @@ void AEnemyBase::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 			Capsule->SetCapsuleHalfHeight(EnemyData->CollisionCapsuleHalfHeight, false);
 		}
 	}
+	if(EnemyData->SkeletalMesh)
 	{
 		USkeletalMeshComponent* SkeletalMeshComponent = GetMesh();
 		SkeletalMeshComponent->SetSkeletalMesh(EnemyData->SkeletalMesh);
 		SkeletalMeshComponent->SetRelativeTransform(EnemyData->MeshTransform);
 		SkeletalMeshComponent->SetAnimClass(EnemyData->AnimClass);
+
+		SkeletalMeshComponent->SetVisibility(true);
+		SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
+		StaticMeshComponent->SetVisibility(false);
+		StaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+	else if(EnemyData->StaticMesh)
+	{
+		StaticMeshComponent->SetStaticMesh(EnemyData->StaticMesh);
+		StaticMeshComponent->SetRelativeTransform(EnemyData->MeshTransform);
+
+		StaticMeshComponent->SetVisibility(true);
+		StaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
+		GetMesh()->SetVisibility(false);
+		GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 	{
 		AIControllerClass = ABasicAIController::StaticClass();

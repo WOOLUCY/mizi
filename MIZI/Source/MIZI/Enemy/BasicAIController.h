@@ -27,6 +27,7 @@ protected:
 	virtual void BeginPlay() override;
     virtual void OnConstruction(const FTransform& Transform) override;
     virtual void OnPossess(APawn* InPawn) override;
+    virtual void OnUnPossess() override;
 
 protected:
 	UFUNCTION()
@@ -51,4 +52,7 @@ private:
 	UPROPERTY(EditAnywhere)
     UBlackboardData* BlackboardData;
 
+public:
+private:
+    class AEnemyBase* Enemy;
 };

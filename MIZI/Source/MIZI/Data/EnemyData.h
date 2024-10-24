@@ -26,6 +26,9 @@ public:
 	USkeletalMesh* SkeletalMesh = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = "Enemy")
+	UStaticMesh* StaticMesh = nullptr;
+
+	UPROPERTY(EditAnywhere, Category = "Enemy")
 	FTransform MeshTransform = FTransform::Identity;
 
 public:	// Collision
