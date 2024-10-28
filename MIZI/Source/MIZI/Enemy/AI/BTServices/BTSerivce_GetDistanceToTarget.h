@@ -22,5 +22,5 @@ protected:
 public:
 	// 블루프린트와 인스턴스 모두에서 편집 가능한 변수
 	UPROPERTY(EditAnywhere, Category = "Settings")
-	float MeleeAttackDistance = 250.0f;
+	float MeleeAttackDistance = 300.f;
 };

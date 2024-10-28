@@ -6,6 +6,7 @@
 #include "BasicAIController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "Data/EnemyData.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -18,6 +19,7 @@ AEnemyBase::AEnemyBase()
 
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
 	StaticMeshComponent->SetupAttachment(RootComponent);
+	StaticMeshComponent->SetCanEverAffectNavigation(false);
 }
 
 // Called when the game starts or when spawned

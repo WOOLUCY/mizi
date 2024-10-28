@@ -33,6 +33,9 @@ protected:
 	UFUNCTION()
     void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 
+public:
+    UBlackboardComponent* GetBlackBoardComponent() {return BlackboardComponent;}
+
 protected:
     // AI 인식 컴포넌트
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI", meta = (AllowPrivateAccess = "true"))
@@ -42,7 +45,7 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI", meta = (AllowPrivateAccess = "true"))
     UAISenseConfig_Sight* SightConfig;
 
-private:
+protected:
     UPROPERTY(EditAnywhere)
 	UBehaviorTree* BehaviorTree;
 
