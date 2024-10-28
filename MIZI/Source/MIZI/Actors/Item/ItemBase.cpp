@@ -30,6 +30,7 @@ AItemBase::AItemBase()
 
 	Widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
 
+	// TODO: 위젯 로드 하드코딩 부분 변경
 	static ConstructorHelpers::FClassFinder<UUserWidget> WidgetClass(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Item/Widget/WBP_ScannedItem.WBP_ScannedItem_C'"));
 	if (WidgetClass.Succeeded())
 	{

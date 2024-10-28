@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GenericTeamAgentInterface.h"
 #include "Actors/Item/ItemBase.h"
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
@@ -33,6 +34,9 @@ protected:
 protected:
 	virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle);
 
+protected:
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -60,7 +64,6 @@ public:
 	uint32 GetCurInventoryIndex() const { return CurInventoryIndex; }
 	bool GetIsSprinting() const { return bIsSprinting; }
 	void SetIsSprinting(bool InBool) { bIsSprinting = InBool; }
-
 
 protected:	// Components
 	//UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
@@ -109,8 +112,6 @@ private:	// Sprint
 	void DrainStamina();
 	UFUNCTION()
 	void RegenStamina();
-
-
 protected:
 	UFUNCTION()
 	void ScanRadiusUpdate(float Radius);
