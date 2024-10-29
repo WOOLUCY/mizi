@@ -3,6 +3,7 @@
 
 #include "PlayerCharacter/BasicCharacter.h"
 
+#include "Actors/Gimmick/Turret.h"
 #include "AssetTypeActions/AssetDefinition_SoundBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -472,6 +473,12 @@ void ABasicCharacter::ScanRadiusUpdate(float Radius)
 							ScannedItem->OnScanned();
 							UE_LOG(LogTemp, Warning, TEXT("Hit Actor: %s"), *HitActor->GetName());
 						}
+					}
+
+					ATurret* Turret = Cast<ATurret>(HitActor);
+					if(Turret)
+					{
+						Turret->OnScanned();
 					}
 				}
 			}

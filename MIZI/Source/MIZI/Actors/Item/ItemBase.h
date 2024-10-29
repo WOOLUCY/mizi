@@ -33,7 +33,7 @@ public:
 
 
 public:
-	void OnScanned();
+	virtual void OnScanned();
 
 	virtual void OnUsed();
 
@@ -41,7 +41,7 @@ public:
 
 private:
 	UFUNCTION()
-	void OnScanTimer();
+	virtual void OnScanTimer();
 
 protected:
 	UPROPERTY(EditAnywhere)
