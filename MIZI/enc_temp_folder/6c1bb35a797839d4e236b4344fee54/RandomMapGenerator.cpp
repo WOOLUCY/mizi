@@ -98,7 +98,7 @@ void ARandomMapGenerator::SpawnNextRoom()
         AActor* SpawnedActor = World->SpawnActor<AActor>(RoomClass, SelectedTransform, SpawnParams);
         LatestRoom = Cast<AMasterRoom>(SpawnedActor);
 
-        UKismetSystemLibrary::K2_SetTimer(this, TEXT("CheckForOverlap"), 0.02f, false);
+        UKismetSystemLibrary::K2_SetTimer(this, TEXT("CheckForOverlap"), 0.1f, false);
     }
 }
 
