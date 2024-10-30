@@ -172,8 +172,11 @@ void ARandomMapGenerator::CheckForOverlap()
             }
 
             AActor* FoundActor = UGameplayStatics::GetActorOfClass(World, ARandomItemSpawner::StaticClass());
-            ARandomItemSpawner* RandomItemSpawner =  Cast<ARandomItemSpawner>(FoundActor);
-            RandomItemSpawner->SpawnItemRandomly();
+            if (FoundActor)
+            {
+                ARandomItemSpawner* RandomItemSpawner = Cast<ARandomItemSpawner>(FoundActor);
+                RandomItemSpawner->SpawnItemRandomly();
+            }
         }
     }
 }
