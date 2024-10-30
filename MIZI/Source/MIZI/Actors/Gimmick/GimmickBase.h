@@ -48,7 +48,7 @@ protected:
 	UPROPERTY(EditAnywhere)
 	USceneComponent* DefaultSceneRoot;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* StaticMeshComponent;
 
 	UPROPERTY(EditAnywhere)
@@ -60,8 +60,9 @@ protected:
 
 	FGimmickTableRow* GimmickData;
 
+	int32 Damage = 5.f;
+
 private:
 	FText SerialNumber;
-	int32 Damage = 5.f;
 
 };

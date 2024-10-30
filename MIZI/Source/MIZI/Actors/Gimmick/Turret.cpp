@@ -3,17 +3,12 @@
 
 #include "Actors/Gimmick/Turret.h"
 
-#include "NavigationSystemTypes.h"
-#include "DSP/MidiNoteQuantizer.h"
-#include "Engine/StaticMeshSocket.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "Math/UnitConversion.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "PlayerCharacter/BasicCharacter.h"
-#include "Preferences/CascadeOptions.h"
-#include "UI/ScannedEnemyWidget.h"
+
 
 // Sets default values
 ATurret::ATurret()
@@ -21,146 +16,101 @@ ATurret::ATurret()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	DefaultSceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultSceneRoot"));
-	RootComponent = DefaultSceneRoot;
-
-	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
-	StaticMeshComponent->SetupAttachment(RootComponent);
-
 	PawnSensing = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComponent"));
 	PawnSensing->SightRadius = 2000.f;
 	PawnSensing->SensingInterval = 0.05f;
 	PawnSensing->SetPeripheralVisionAngle(30.f);
-	PawnSensing->OnSeePawn.AddDynamic(this, &ATurret::OnPawnSeen);
+	//PawnSensing->OnSeePawn.AddDynamic(this, &ATurret::OnPawnSeen);
 
 	RotatingMovement = CreateDefaultSubobject<URotatingMovementComponent>(TEXT("RotatingMovementComponent"));
 	RotatingMovement->RotationRate = FRotator(0.0, 10.0, 0.0);
 
-	// 파티클 컴포넌트 생성 및 초기화
-	Laser = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("BeamParticleComponent"));
-	Laser->SetupAttachment(RootComponent);
-
-	// 빔 파티클 시스템을 로드
-	static ConstructorHelpers::FObjectFinder<UParticleSystem> ParticleAsset(TEXT("/Script/Engine.ParticleSystem'/Game/Blueprint/Gimmick/Turret/PS_Laser.PS_Laser'"));
-	if (ParticleAsset.Succeeded())
-	{
-		BeamParticleSystem = ParticleAsset.Object;
-		Laser->SetTemplate(BeamParticleSystem);
-	}
-
-
-	Widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
-	//static ConstructorHelpers::FClassFinder<UUserWidget> WidgetClass(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Gimmick/WBP_ScannedGimmick.WBP_ScannedGimmick_C'"));
-	//if (WidgetClass.Succeeded())
-	//{
-	//	Widget->SetWidgetClass(WidgetClass.Class);
-	//}
-
-	Widget->SetupAttachment(StaticMeshComponent);
-	Widget->SetWidgetSpace(EWidgetSpace::Screen);
-	Widget->SetPivot(FVector2D(0.3, 0.3));
-
-	TimelineComponent = CreateDefaultSubobject<UTimelineComponent>(TEXT("TimelineComponent"));
+	Laser = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleSystemComponent"));
 }
 
-// Called when the game starts or when spawned
-void ATurret::BeginPlay()
-{
-	Super::BeginPlay();
-	Laser->DeactivateSystem();
-	Laser->SetVisibility(false);
-
-	InitialRotation = GetActorRotation();
-
-	if(BeamParticleSystem)
-	{
-		// 파티클 시스템 활성화
-		FVector SocketLocation = StaticMeshComponent->GetSocketLocation(TEXT("BulletSocket"));
-
-		Laser->SetBeamSourcePoint(0, SocketLocation, 0);
-		Laser->SetBeamEndPoint(0, UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation());
-	}
-
-	if (TimeLineCurve)
-	{
-		FOnTimelineFloat ProgressUpdate;
-		ProgressUpdate.BindUFunction(this, FName("OnLoseSightTimeline"));
-
-		FOnTimelineEvent TimelineFinishedEvent;
-		TimelineFinishedEvent.BindUFunction(this, FName("OnEndLoseSightTimeline"));
-
-
-		TimelineComponent->AddInterpFloat(TimeLineCurve, ProgressUpdate);
-		TimelineComponent->SetTimelineFinishedFunc(TimelineFinishedEvent);
-	}
-
-	// Widget
-	if (Widget)
-	{
-		Widget->SetWidgetClass(WidgetClass);
-		UScannedEnemyWidget* ScanWidget = Cast<UScannedEnemyWidget>(Widget->GetWidget());
-		ScanWidget->DisplayName->SetText(FText::FromString(TEXT("Turret")));
-		Widget->SetVisibility(false);
-	}
-
-
-	MaxTargetRotationAngle = UKismetMathLibrary::RandomFloatInRange(30.0, 180.0);
-}
-
-// Called every frame
 void ATurret::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// Laser
-	//Laser->SetBeamSourcePoint(0, StaticMeshComponent->GetSocketLocation(TEXT("BulletSocket")), 0);
-	FVector SocketLocation = StaticMeshComponent->GetSocketLocation(TEXT("BulletSocket"));
-	Laser->SetBeamSourcePoint(0, SocketLocation, 0);
-	Laser->SetBeamEndPoint(0, UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation());
+	RotateTurretRegularly();
+	SetLaserBeamPoint();
+}
 
-	// Rotating Movement
-	float AngleDiff = GetActorRotation().Yaw - InitialRotation.Yaw;
+void ATurret::BeginPlay()
+{
+	Super::BeginPlay();
 
-	if(AngleDiff >= MaxTargetRotationAngle || AngleDiff <= MinTargetRotationAngle)
+	InitialRotation = GetActorRotation();
+
+	UParticleSystem* ExplosionEffect = LoadObject<UParticleSystem>(nullptr, TEXT("/Script/Engine.ParticleSystem'/Game/Blueprint/Gimmick/Turret/PS_Laser.PS_Laser'"));
+
+	FVector Location = StaticMeshComponent->GetSocketLocation(TEXT("BulletSocket"));
+	FRotator Rotation = FRotator::ZeroRotator;      
+
+	if (ExplosionEffect)
 	{
-		FRotator NewRotationRate = (RotatingMovement->RotationRate) * -1.f;
-		RotatingMovement->RotationRate = NewRotationRate;
+		Laser = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, Location, Rotation, true);
+	}
+
+	Laser->SetVisibility(false);
+
+	if(PawnSensing)
+	{
+		PawnSensing->OnSeePawn.AddDynamic(this, &ATurret::OnPawnSeen);
 	}
 }
 
-void ATurret::OnScanned()
+void ATurret::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 {
-	if (!Widget) { return; }
-	Widget->SetVisibility(true);
-	UScannedEnemyWidget* ScanWidget = Cast<UScannedEnemyWidget>(Widget->GetWidget());
-	ScanWidget->PlayAnimation(ScanWidget->ScanEffect);
+	DataTableRowHandle = InDataTableRowHandle;
+	if (DataTableRowHandle.IsNull()) { return; }
+	FGimmickTableRow* Data = DataTableRowHandle.GetRow<FGimmickTableRow>(TEXT("Turret"));
+	if (!Data) { ensure(false); return; }
 
-	UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnScanTimer"), 3.f, false);
+	GimmickData = Data;
+	if (GimmickData->StaticMesh)
+	{
+		StaticMeshComponent->SetStaticMesh(GimmickData->StaticMesh);
+	}
+
+	if (GimmickData->Damage)
+	{
+		Damage = GimmickData->Damage;
+	}
+
+	if (GimmickData->EnemyWidgetClass)
+	{
+		Widget->SetWidgetClass(GimmickData->EnemyWidgetClass);
+	}
 }
 
-void ATurret::OnScanTimer()
+void ATurret::RotateTurretRegularly()
 {
-	Widget->SetVisibility(false);
-	UScannedEnemyWidget* ScanWidget = Cast<UScannedEnemyWidget>(Widget->GetWidget());
+	if(bIsDetecting)
+	{
+		RotatingMovement->RotationRate.Yaw = 0.0;
+	}
+	else
+	{
+		RotatingMovement->RotationRate.Yaw = 10.0;
+
+		float Diff = GetActorRotation().Yaw - InitialRotation.Yaw;
+		if(Diff <= MinTargetRotationAngle || Diff >= MaxTargetRotationAngle)
+		{
+			RotatingMovement->RotationRate *= -1;
+		}
+	}
 }
 
-void ATurret::OnPawnSeen(APawn* SeenPawn)
+void ATurret::SetLaserBeamPoint()
 {
-	Laser->ActivateSystem();
-	Laser->SetVisibility(true);
+	if (!Laser) return;
 
-	ABasicCharacter* Character = Cast<ABasicCharacter>(SeenPawn);
+	FVector SourceLocation = StaticMeshComponent->GetSocketLocation(TEXT("BulletSocket"));
+	Laser->SetBeamSourcePoint(0, SourceLocation, 0);
 
-	if (!Character) return;
-
-	FVector TargetLocation = SeenPawn->GetActorLocation();
-	TargetLocation.Z = GetActorLocation().Z;
-	FRotator NewRotation =  UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), TargetLocation);
-	SetActorRotation(NewRotation);
-
-	SpawnBullet();
-
-	UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnLoseSightOfPawn"), 0.2f, false);
+	FVector EndLocation = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
+	Laser->SetBeamEndPoint(0, EndLocation);
 }
 
 void ATurret::SpawnBullet()
@@ -170,6 +120,11 @@ void ATurret::SpawnBullet()
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
+	if(!TurretBulletClass)
+	{
+		ensure(false);
+		return;
+	}
 	AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(TurretBulletClass, SocketTransform, SpawnParams);
 	ABulletBase* SpawnedBullet = Cast<ABulletBase>(SpawnedActor);
 
@@ -177,28 +132,38 @@ void ATurret::SpawnBullet()
 	{
 		Bullets.Add(SpawnedBullet);
 	}
+
+	// TODO: 소리 재생
+	//UGameplayStatics::PlaySoundAtLocation
+}
+
+void ATurret::OnPawnSeen(APawn* SeenPawn)
+{
+	if (!Cast<ABasicCharacter>(SeenPawn)) return;
+
+	bIsDetecting = true;
+
+	Laser->SetVisibility(true);
+
+	FVector Start = GetActorLocation();
+	FVector End = SeenPawn->GetActorLocation();
+	FRotator NewRotation = UKismetMathLibrary::FindLookAtRotation(Start, End);
+	NewRotation.Roll = 0.0;
+	NewRotation.Pitch = 0.0;
+	SetActorRotation(NewRotation);
+
+	UKismetSystemLibrary::K2_SetTimer(this, TEXT("SpawnBullet"), 0.2f, false);
+	//UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnLoseSightOfPawn"), 3.f, false);
+
+	//FTimerDelegate TimerDelegate;
+	//TimerDelegate.BindUFunction(this, FName("OnLoseSightOfPawn"));
+
+	//GetWorldTimerManager().SetTimer(TimerHandle, TimerDelegate, 2.0f, false);
 }
 
 void ATurret::OnLoseSightOfPawn()
 {
-	TimelineComponent->PlayFromStart();
-}
-
-void ATurret::OnLoseSightTimeline(float Rotation)
-{
-	Laser->DeactivateSystem();
 	Laser->SetVisibility(false);
-	double NewYaw = UKismetMathLibrary::Lerp(GetActorRotation().Yaw, InitialRotation.Yaw, Rotation);
-	SetActorRotation(FRotator((0.0), NewYaw, (0.0)));
-}
-
-void ATurret::OnEndLoseSightTimeline()
-{
-	for(auto Bullet : Bullets)
-	{
-		if(Bullet)
-			Bullet->Destroy();
-	}
-
-	Bullets.Empty();
+	SetActorRotation(InitialRotation);
+	bIsDetecting = false;
 }
