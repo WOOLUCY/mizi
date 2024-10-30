@@ -99,7 +99,7 @@ void ATurret::BeginPlay()
 	{
 		Widget->SetWidgetClass(WidgetClass);
 		UScannedEnemyWidget* ScanWidget = Cast<UScannedEnemyWidget>(Widget->GetWidget());
-		ScanWidget->EnemyName->SetText(FText::FromString(TEXT("Turret")));
+		ScanWidget->DisplayName->SetText(FText::FromString(TEXT("Turret")));
 		Widget->SetVisibility(false);
 	}
 

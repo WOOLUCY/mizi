@@ -3,6 +3,7 @@
 
 #include "PlayerCharacter/BasicCharacter.h"
 
+#include "Actors/Gimmick/GimmickBase.h"
 #include "Actors/Gimmick/Turret.h"
 #include "AssetTypeActions/AssetDefinition_SoundBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -475,10 +476,14 @@ void ABasicCharacter::ScanRadiusUpdate(float Radius)
 						}
 					}
 
-					ATurret* Turret = Cast<ATurret>(HitActor);
-					if(Turret)
+					AGimmickBase* ScannedGimmick = Cast<AGimmickBase>(HitActor);
+					if(ScannedGimmick)
 					{
-						Turret->OnScanned();
+						if (!ScannedGimmicks.Contains(ScannedGimmick))
+						{
+							ScannedGimmicks.Add(ScannedGimmick);
+							ScannedGimmick->OnScanned();
+						}
 					}
 				}
 			}
@@ -489,5 +494,6 @@ void ABasicCharacter::ScanRadiusUpdate(float Radius)
 void ABasicCharacter::OnScanFinished()
 {
 	ScannedItems.Empty();
+	ScannedGimmicks.Empty();
 }
 

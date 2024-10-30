@@ -1,18 +1,14 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
 #include "Components/TextBlock.h"
 
-#include "ScannedEnemyWidget.generated.h"
+#include "ScannedEnemyWidget.h"
 
-/**
- * 
- */
+#include "ScannedGimmickWidget.generated.h"
+
 UCLASS()
-class MIZI_API UScannedEnemyWidget : public UUserWidget
+class MIZI_API UScannedGimmickWidget : public UScannedEnemyWidget
 {
 	GENERATED_BODY()
 
@@ -24,8 +20,5 @@ protected:
 
 public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	UTextBlock* DisplayName;
-
-	UPROPERTY(BlueprintReadWrite, Transient, meta = (BindWidgetAnim))
-	UWidgetAnimation* ScanEffect;
+	UTextBlock* SerialNumber;
 };

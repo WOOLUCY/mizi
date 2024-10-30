@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GimmickBase.h"
+#include "Actors/Item/ItemBase.h"
 #include "Components/BoxComponent.h"
 #include "LandMine.generated.h"
 
@@ -11,12 +11,25 @@
  * 
  */
 UCLASS()
-class MIZI_API ALandMine : public AGimmickBase
+class MIZI_API ALandMine : public AItemBase
 {
 	GENERATED_BODY()
 
 public:
 	ALandMine();
+
+public:
+	virtual void OnScanned() override;
+
+protected:
+	virtual void OnConstruction(const FTransform& Transform) override;
+
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+private:
+	UFUNCTION()
+	virtual void OnTimer();
 
 protected:
 	UFUNCTION()
@@ -26,4 +39,7 @@ protected:
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UBoxComponent* BoxCollision;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> NewWidgetClass;
 };
