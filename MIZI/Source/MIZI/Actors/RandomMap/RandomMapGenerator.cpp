@@ -98,7 +98,7 @@ void ARandomMapGenerator::SpawnNextRoom()
         AActor* SpawnedActor = World->SpawnActor<AActor>(RoomClass, SelectedTransform, SpawnParams);
         LatestRoom = Cast<AMasterRoom>(SpawnedActor);
 
-        UKismetSystemLibrary::K2_SetTimer(this, TEXT("CheckForOverlap"), 0.1f, false);
+        UKismetSystemLibrary::K2_SetTimer(this, TEXT("CheckForOverlap"), 0.02f, false);
     }
 }
 
@@ -172,8 +172,11 @@ void ARandomMapGenerator::CheckForOverlap()
             }
 
             AActor* FoundActor = UGameplayStatics::GetActorOfClass(World, ARandomItemSpawner::StaticClass());
-            ARandomItemSpawner* RandomItemSpawner =  Cast<ARandomItemSpawner>(FoundActor);
-            RandomItemSpawner->SpawnItemRandomly();
+            if (FoundActor)
+            {
+                ARandomItemSpawner* RandomItemSpawner = Cast<ARandomItemSpawner>(FoundActor);
+                RandomItemSpawner->SpawnItemRandomly();
+            }
         }
     }
 }
