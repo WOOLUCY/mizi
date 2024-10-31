@@ -90,7 +90,6 @@ void AItemBase::BeginPlay()
 	Super::BeginPlay();
 	SetData(DataTableRowHandle);
 
-	// TODO: ���� ǥ�� �̸� ����
 	UScannedItemWidget* ItemWidget = Cast<UScannedItemWidget>(Widget->GetWidget());
 	ItemWidget->ItemName->SetText(ItemTableRow->DisplayName);
 

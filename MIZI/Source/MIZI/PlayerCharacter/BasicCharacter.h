@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GenericTeamAgentInterface.h"
+#include "Actors/Gimmick/GimmickBase.h"
 #include "Actors/Item/ItemBase.h"
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
@@ -96,6 +97,8 @@ private:
 	FTimeline ScanTimeLine;
 
 	TArray<AItemBase*> ScannedItems;
+	TArray<AGimmickBase*> ScannedGimmicks;
+
 
 private:	// Inventory
 	uint32 CurInventoryIndex = 0;

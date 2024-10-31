@@ -3,6 +3,8 @@
 
 #include "PlayerCharacter/BasicCharacter.h"
 
+#include "Actors/Gimmick/GimmickBase.h"
+#include "Actors/Gimmick/Turret.h"
 #include "AssetTypeActions/AssetDefinition_SoundBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -473,6 +475,16 @@ void ABasicCharacter::ScanRadiusUpdate(float Radius)
 							UE_LOG(LogTemp, Warning, TEXT("Hit Actor: %s"), *HitActor->GetName());
 						}
 					}
+
+					AGimmickBase* ScannedGimmick = Cast<AGimmickBase>(HitActor);
+					if(ScannedGimmick)
+					{
+						if (!ScannedGimmicks.Contains(ScannedGimmick))
+						{
+							ScannedGimmicks.Add(ScannedGimmick);
+							ScannedGimmick->OnScanned();
+						}
+					}
 				}
 			}
 		}
@@ -482,5 +494,6 @@ void ABasicCharacter::ScanRadiusUpdate(float Radius)
 void ABasicCharacter::OnScanFinished()
 {
 	ScannedItems.Empty();
+	ScannedGimmicks.Empty();
 }
 
