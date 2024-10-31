@@ -8,8 +8,10 @@
 #include "AssetTypeActions/AssetDefinition_SoundBase.h"
 
 #include "Components/SphereComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
-
+#include "PlayerCharacter/BasicCharacter.h"
+#include "UI/BasicHUD.h"
 
 
 // Sets default values
@@ -119,6 +121,9 @@ void AItemBase::OnScanned()
 
 void AItemBase::OnUsed()
 {
+	ACharacter* Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	ABasicCharacter* BasicCharacter = Cast<ABasicCharacter>(Player);
+	BasicCharacter->OnInventoryChanged();
 }
 
 void AItemBase::OnScanTimer()

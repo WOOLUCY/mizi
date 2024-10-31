@@ -176,6 +176,17 @@ void ABasicPlayerController::SetupInputComponent()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("IA_Dash is disabled"));
 	}
+
+	// Item Use
+	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_ItemUse")))
+	{
+		EnhancedInputComponent->BindAction(InputAction,
+			ETriggerEvent::Started, this, &ThisClass::OnUseItem);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IA_ItemUse is disabled"));
+	}
 }
 
 void ABasicPlayerController::OnPossess(APawn* InPawn)
@@ -280,4 +291,10 @@ void ABasicPlayerController::OnInventoryWheel(const FInputActionValue& InputActi
 {
 	ABasicCharacter* BasicCharacter = Cast<ABasicCharacter>(GetPawn());
 	BasicCharacter->OnInventoryIndexChanged(InputActionValue.Get<float>());
+}
+
+void ABasicPlayerController::OnUseItem(const FInputActionValue& InputActionValue)
+{
+	ABasicCharacter* BasicCharacter = Cast<ABasicCharacter>(GetPawn());
+	BasicCharacter->OnUseItem();
 }

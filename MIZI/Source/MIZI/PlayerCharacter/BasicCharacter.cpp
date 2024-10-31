@@ -371,6 +371,13 @@ void ABasicCharacter::StopSprinting()
 	RegenStamina();
 }
 
+void ABasicCharacter::OnUseItem()
+{
+	auto EquippedItem = OwningItems.Find(CurInventoryIndex);
+	if (!EquippedItem) return;
+	(*EquippedItem)->OnUsed();
+}
+
 void ABasicCharacter::DrainStamina()
 {
 	uint32 NewStamina = UKismetMathLibrary::Clamp((Status->GetCurStamina() - 1), 0, Status->GetMaxStamina());

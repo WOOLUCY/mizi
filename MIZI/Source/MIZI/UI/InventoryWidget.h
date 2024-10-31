@@ -6,6 +6,7 @@
 #include "Actors/Item/ItemBase.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"
+#include "Components/TextBlock.h"
 #include "InventoryWidget.generated.h"
 
 /**
@@ -28,6 +29,7 @@ public:
 	void SetPointVisibility(uint32 PointIndex);
 	void OnInventoryChanged();
 	void OnInventoryIndexChanged();
+	void SetToolTipText(uint32 Index);
 
 
 public:
@@ -55,6 +57,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UImage* Slot04;
 
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UTextBlock* ToolTip;
 private:
 	TMap<uint32, AItemBase*> OwningItems;
 };

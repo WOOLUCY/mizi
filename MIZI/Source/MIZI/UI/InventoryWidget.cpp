@@ -92,6 +92,7 @@ void UInventoryWidget::OnInventoryChanged()
 	ChangeImage(1, Slot02);
 	ChangeImage(2, Slot03);
 	ChangeImage(3, Slot04);
+	SetToolTipText(Character->GetCurInventoryIndex());
 }
 
 void UInventoryWidget::OnInventoryIndexChanged()
@@ -99,9 +100,38 @@ void UInventoryWidget::OnInventoryIndexChanged()
 	ABasicCharacter* Character = Cast<ABasicCharacter>(GetOwningPlayerPawn());
 	if (!Character)
 	{
-		check(Character);
+		ensure(Character);
 		return;
 	}
 	
 	SetPointVisibility(Character->GetCurInventoryIndex());
+	SetToolTipText(Character->GetCurInventoryIndex());
+}
+
+void UInventoryWidget::SetToolTipText(uint32 Index)
+{
+	auto Temp = OwningItems.Find(Index);
+	if(!Temp)
+	{
+		ToolTip->SetText(FText::FromString(TEXT("")));
+		return;
+	}
+
+	ABasicCharacter* Character = Cast<ABasicCharacter>(GetOwningPlayerPawn());
+	if (!Character)
+	{
+		ensure(Character);
+		return;
+	}
+
+	AItemBase* Item = Cast<AItemBase>(*Temp);
+	if (Item->GetItemTableRow()->bUsed)
+	{
+		ToolTip->SetText(FText::FromString(TEXT("PRESS [LMB] TO USE\nPRESS [G] TO DROP")));
+	}
+	else
+	{
+		ToolTip->SetText(FText::FromString(TEXT("PRESS [G] TO DROP")));
+	}
+	
 }

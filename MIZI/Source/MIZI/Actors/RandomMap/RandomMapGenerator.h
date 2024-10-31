@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DoorBase.h"
 #include "EndWall.h"
 #include "GameFramework/Actor.h"
 #include "Actors/RandomMap/MasterRoom.h"
@@ -36,6 +37,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "RandomMap")
 	TArray<TSubclassOf<AMasterRoom>> RoomList;
+
+	UPROPERTY(EditAnywhere, Category = "RandomMap")
+	TArray<TSubclassOf<ADoorBase>> DoorList;
 
 	UPROPERTY(EditAnywhere, Category = "RandomMap")
 	TSubclassOf<AEndWall> WallClass;
