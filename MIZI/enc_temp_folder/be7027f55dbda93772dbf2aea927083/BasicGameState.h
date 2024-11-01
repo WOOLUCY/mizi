@@ -29,7 +29,7 @@ public:
 
 	// 레벨 전체에 배치될 아이템 개수의 상한선
 	UPROPERTY(BlueprintReadWrite)
-	int32 MaxItemAmount = 100;
+	int32 MaxItemAmount = 30;
 
 	UPROPERTY(BlueprintReadWrite)
 	bool bDungeonComplete = false;

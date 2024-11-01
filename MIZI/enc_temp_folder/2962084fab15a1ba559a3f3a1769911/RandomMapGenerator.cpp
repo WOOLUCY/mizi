@@ -228,11 +228,6 @@ void ARandomMapGenerator::SpawnDoors()
 
             TSubclassOf<ADoorBase> DoorClass = FUtils::GetRandomElementFromArray(RandomMapGeneratorDataAsset->DoorList);
 
-            if(!DoorClass)
-            {
-                ensure(false);
-                return;
-            }
             AActor* SpawnedActor = World->SpawnActor<AActor>(DoorClass, SelectedTransform, SpawnParams);
         }
 	}

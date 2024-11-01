@@ -24,7 +24,7 @@ AMasterRoom::AMasterRoom()
 	Arrow->ArrowColor = FColor::Red;
 	Arrow->ArrowSize = 8.f;
 	Arrow->SetRelativeLocation(FVector(760.0, 0.0, 290.0));
-	Arrow->SetHiddenInGame(false);
+	Arrow->SetHiddenInGame(true);
 
 	GeometryFolder = CreateDefaultSubobject<USceneComponent>(TEXT("GeometryFolder"));
 	GeometryFolder->SetupAttachment(RootComponent);
@@ -67,6 +67,9 @@ AMasterRoom::AMasterRoom()
 void AMasterRoom::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Arrow->SetHiddenInGame(true);
+
 	
 }
 

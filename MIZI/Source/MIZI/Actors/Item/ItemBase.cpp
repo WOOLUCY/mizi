@@ -8,6 +8,7 @@
 #include "AssetTypeActions/AssetDefinition_SoundBase.h"
 
 #include "Components/SphereComponent.h"
+#include "Framework/BasicGameState.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "PlayerCharacter/BasicCharacter.h"
@@ -127,6 +128,31 @@ void AItemBase::OnUsed()
 	ACharacter* Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 	ABasicCharacter* BasicCharacter = Cast<ABasicCharacter>(Player);
 	BasicCharacter->OnInventoryChanged();
+}
+
+void AItemBase::OnPicked()
+{
+	// TODO: 게임 스테이트 수정
+	ABasicGameState* GameState = Cast<ABasicGameState>(UGameplayStatics::GetGameState(GetWorld()));
+	if (!GameState)
+	{
+		ensure(false);
+		return;
+	}
+
+	GameState->SpawnedItems[this] = true;
+}
+
+void AItemBase::OnDropped()
+{
+	ABasicGameState* GameState = Cast<ABasicGameState>(UGameplayStatics::GetGameState(GetWorld()));
+	if (!GameState)
+	{
+		ensure(false);
+		return;
+	}
+
+	GameState->SpawnedItems[this] = false;
 }
 
 void AItemBase::OnScanTimer()

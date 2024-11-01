@@ -91,6 +91,8 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "RandomMap")
 	void AddOverlappingRoomsToList();
 	UFUNCTION(BlueprintCallable, Category = "RandomMap")
+	void SpawnDoors();
+	UFUNCTION(BlueprintCallable, Category = "RandomMap")
 	void CloseHoles();
 	UFUNCTION(BlueprintCallable, Category = "RandomMap")
 	void SetSeed();
@@ -118,6 +120,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<USceneComponent*> ExitsList;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<USceneComponent*> DoorList;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<USceneComponent> SelectedExitPoint;

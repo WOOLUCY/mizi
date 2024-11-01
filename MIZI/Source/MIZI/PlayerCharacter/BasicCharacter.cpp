@@ -235,8 +235,9 @@ void ABasicCharacter::OnPickUpItem()
 
 		OwningItems.Add(CurInventoryIndex, OverlappedItem);
 
-		// TODO: OnInventoryChanged 호출
 		OnInventoryChanged();
+
+		Item->OnPicked();
 
 		break;
 	}
@@ -303,6 +304,8 @@ void ABasicCharacter::OnDropItem()
 
 				// TODO: On Inventory Change 호출
 				OnInventoryChanged();
+
+				(*item)->OnDropped();
 				
 			}
 		}
