@@ -6,6 +6,7 @@
 #include "Actors/RandomMap/MasterRoom.h"
 //#include "DataWrappers/ChaosVDQueryDataWrappers.h"
 #include "RandomItemSpawner.h"
+#include "Framework/BasicGameState.h"
 #include "Misc/Utils.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
@@ -35,7 +36,6 @@ ARandomMapGenerator::ARandomMapGenerator()
     }
     
     Stream.Initialize(RandomMapGeneratorDataAsset->Seed);
-
 }
 
 // Called when the game starts or when spawned
@@ -148,12 +148,18 @@ void ARandomMapGenerator::CheckForOverlap()
 
         ExitsList.Remove(SelectedExitPoint);
 
+        // TODO: Add to Door List
+
         TArray<USceneComponent*> OutChildren;
         LatestRoom->ExitsFolder->GetChildrenComponents(false, OutChildren);
         ExitsList.Append(OutChildren);
 
         if (GetRoomAmount() > 0)
         {
+            InitializeItemSpawning();
+
+            // TODO: Specal Room List 처리
+
             SpawnNextRoom();
         }
         else
@@ -162,7 +168,6 @@ void ARandomMapGenerator::CheckForOverlap()
             SetDungeonComplete(true);
 
             GetWorld()->GetTimerManager().ClearTimer(RandomMapTimerHandle);
-            UE_LOG(LogTemp, Warning, TEXT("Dungeon Complete"));
 
             UWorld* World = GetWorld();
             if (!World)
@@ -177,6 +182,15 @@ void ARandomMapGenerator::CheckForOverlap()
                 ARandomItemSpawner* RandomItemSpawner = Cast<ARandomItemSpawner>(FoundActor);
                 RandomItemSpawner->SpawnItemRandomly();
             }
+
+            ABasicGameState* GameState = Cast<ABasicGameState>(UGameplayStatics::GetGameState(GetWorld()));
+            if (!GameState)
+            {
+                ensure(false);
+                return;
+            }
+            GameState->OnRandomMapCompleted();
+            
         }
     }
 }
@@ -226,6 +240,122 @@ void ARandomMapGenerator::SetSeed()
     else
     {
         UKismetMathLibrary::SetRandomStreamSeed(Stream, RandomMapGeneratorDataAsset->Seed);
+    }
+}
+
+void ARandomMapGenerator::InitializeItemSpawning()
+{
+    TArray<USceneComponent*> OutChildren;
+    LatestRoom->SpawnFolder->GetChildrenComponents(false, OutChildren);
+
+    for(auto Child: OutChildren)
+    {
+        UBoxComponent* Box = Cast<UBoxComponent>(Child);
+        if(Box)
+        {
+            SpawnBox = Box;
+            SpawnItems();
+        }
+        else
+        {
+	        ensure(false);
+        }
+    }
+
+}
+
+void ARandomMapGenerator::SpawnItems()
+{
+    // 레벨에 배치된 아이템 수가 상한선을 넘는다면, 더 이상 배치하지 않기
+    ABasicGameState* GameState = Cast<ABasicGameState>(UGameplayStatics::GetGameState(GetWorld()));
+    if (!GameState)
+    {
+        ensure(false);
+        return;
+    }
+    if(GameState->SpawnedItems.Num() >= GameState->MaxItemAmount)
+    {
+        return;
+    }
+
+    // 각 방마다 랜덤한 숫자를 정해 그 수만큼 아이템을 스폰하기
+   uint32 MinItemAmount = RandomMapGeneratorDataAsset->MinItemAMount;
+   uint32 MaxItemAmount = RandomMapGeneratorDataAsset->MaxItemAmount;
+
+   uint32 ItemAmount = UKismetMathLibrary::RandomIntegerInRange(MinItemAmount, MaxItemAmount);
+
+    for(uint32 i = 0; i < ItemAmount; ++i)
+    {
+        // 박스에서 아이템이 스폰될 랜덤한 위치를 가져오기
+        GetRandomPointsFromSpawnBox();
+
+        // 실제 아이템을 스폰하는 코드
+        FVector SpawnLocation = RandomBoxLocation;
+        FRotator SpawnRotation = FRotator::ZeroRotator;
+
+        FActorSpawnParameters SpawnParams;
+        SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+        //TSubclassOf<AMasterRoom> ItemClass = FUtils::RandomArrayItemFromStream(RandomMapGeneratorDataAsset->ItemList, Stream);
+        TSubclassOf<AItemBase> ItemClass = FUtils::GetRandomElementFromArray(RandomMapGeneratorDataAsset->ItemList);
+
+    	if(!ItemClass)
+        {
+            ensure(false);
+            return;
+        }
+
+        if (GameState->SpawnedItems.Num() >= GameState->MaxItemAmount)  // 스폰 직전에 스폰 상한선 넘었는지 다시 확인
+        {
+            return;
+        }
+
+        AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(ItemClass, SpawnLocation, SpawnRotation, SpawnParams);
+
+        // 스폰된 아이템을 게임 스테이트에 추가
+        AItemBase* SpawnedItem = Cast<AItemBase>(SpawnedActor);
+
+        if(!SpawnedItem)
+        {
+	        ensure(false);
+            return;
+        }
+        GameState->SpawnedItems.Add(SpawnedItem, false);
+
+        //UE_LOG(LogTemp, Warning, TEXT("%s is Spawned."), *SpawnedItem->GetItemTableRow()->DisplayName.ToString());
+    }
+}
+
+void ARandomMapGenerator::GetRandomPointsFromSpawnBox(int32 MaxAttempts)
+{
+	// 박스 내의 랜덤한 위치를 구하기
+    if (MaxAttempts <= 0) return; // 시도가 너무 많으면 종료(무한루프 방지)
+    FVector BoxCenter = SpawnBox->GetComponentLocation();
+    FVector BoxScale = SpawnBox->GetScaledBoxExtent();
+
+    double NewX = UKismetMathLibrary::RandomFloatInRange(-BoxScale.X, BoxScale.X);
+    double NewY = UKismetMathLibrary::RandomFloatInRange(-BoxScale.Y, BoxScale.Y);
+    FVector NewVector = UKismetMathLibrary::MakeVector(NewX, NewY, 20.0);
+    RandomBoxLocation = BoxCenter + NewVector;
+
+    // 라인 트레이스를 통해 스폰되는 아이템을 바닥으로 붙이기
+    FVector EndLocation = RandomBoxLocation - FVector(0.0, 0.0, 1000.0);
+    FHitResult HitResult;
+    FCollisionQueryParams CollisionParams;
+    CollisionParams.AddIgnoredActor(this);
+
+    bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, RandomBoxLocation, EndLocation, ECC_Visibility, CollisionParams);
+
+    DrawDebugLine(GetWorld(), RandomBoxLocation, EndLocation, FColor::Green, false, INFINITY, 0, 1.0f);
+
+	// 만약 완전히 공중이라면 랜덤한 위치를 다시 구함
+    if (!bHit)
+    {
+        GetRandomPointsFromSpawnBox(MaxAttempts - 1); // 시도 횟수 감소
+    }
+    else
+    {
+        RandomBoxLocation = HitResult.Location;
     }
 }
 

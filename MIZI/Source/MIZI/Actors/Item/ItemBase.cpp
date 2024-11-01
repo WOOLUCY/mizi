@@ -43,6 +43,9 @@ AItemBase::AItemBase()
 	Widget->SetupAttachment(StaticMeshComponent);
 	Widget->SetWidgetSpace(EWidgetSpace::Screen);
 	Widget->SetPivot(FVector2D(0.3, 0.3));
+
+	// 아이템 태그 설정
+	Tags.Add(FName("Item"));
 }
 
 void AItemBase::SetData(const FDataTableRowHandle& InDataTableRowHandle)

@@ -39,6 +39,8 @@ public:
 
 	FItemTableRow* GetItemTableRow() { return ItemTableRow; }
 
+	uint32 GetActualPrice() const { return Price; }
+
 private:
 	UFUNCTION()
 	virtual void OnScanTimer();

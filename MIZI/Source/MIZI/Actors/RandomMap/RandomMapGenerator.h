@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "DoorBase.h"
 #include "EndWall.h"
+#include "Actors/Item/ItemBase.h"
 #include "GameFramework/Actor.h"
 #include "Actors/RandomMap/MasterRoom.h"
 
@@ -23,28 +24,41 @@ class MIZI_API URandomMapGeneratorDataAsset : public UDataAsset
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, Category = "RandomMap")
+	UPROPERTY(EditAnywhere, Category = "RandomMap|Room")
 	int32 Seed = -1;
 
-	UPROPERTY(EditAnywhere, Category = "RandomMap")
+	UPROPERTY(EditAnywhere, Category = "RandomMap|Room")
 	uint32 MaxRoomAmount = 10;
 
-	UPROPERTY(EditAnywhere, Category = "RandomMap")
+	UPROPERTY(EditAnywhere, Category = "RandomMap|Room")
 	float MaxDungeonTime;
 
-	UPROPERTY(EditAnywhere, Category = "RandomMap")
+	UPROPERTY(EditAnywhere, Category = "RandomMap|Room")
 	TSubclassOf<AMasterRoom> StartRoomClass;
 
-	UPROPERTY(EditAnywhere, Category = "RandomMap")
+	UPROPERTY(EditAnywhere, Category = "RandomMap|Room")
 	TArray<TSubclassOf<AMasterRoom>> RoomList;
 
-	UPROPERTY(EditAnywhere, Category = "RandomMap")
+	UPROPERTY(EditAnywhere, Category = "RandomMap|Room")
 	TArray<TSubclassOf<ADoorBase>> DoorList;
 
-	UPROPERTY(EditAnywhere, Category = "RandomMap")
+	UPROPERTY(EditAnywhere, Category = "RandomMap|Room")
 	TSubclassOf<AEndWall> WallClass;
-};
 
+	// Random Item Spawn
+
+	// 스폰될 아이템의 종류
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RandomMap|Item")
+	TArray<TSubclassOf<AItemBase>> ItemList;
+
+	// 방 하나 당 스폰될 아이템 개수의 상한선
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RandomMap|Item")
+	int32 MaxItemAmount = 5;
+
+	// 방 하나 당 스폰될 아이템 개수의 하한선
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RandomMap|Item")
+	int32 MinItemAMount = 0;
+};
 
 UCLASS()
 class MIZI_API ARandomMapGenerator : public AActor
@@ -81,6 +95,13 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "RandomMap")
 	void SetSeed();
 
+	UFUNCTION(BlueprintCallable, Category = "RandomMap")
+	void InitializeItemSpawning();
+	UFUNCTION(BlueprintCallable, Category = "RandomMap")
+	void SpawnItems();
+	UFUNCTION(BlueprintCallable, Category = "RandomMap")
+	void GetRandomPointsFromSpawnBox(int32 MaxAttempts = 10);
+
 
 	uint32 GetRoomAmount() { return CurRoomAmount; };
 	void SetRoomAmount(uint32 _InAmount) { CurRoomAmount = _InAmount; }
@@ -113,10 +134,16 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FRandomStream Stream;
 
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UBoxComponent* SpawnBox;
+
+
+
 private:
 	uint32 CurRoomAmount;
 	bool bRandomMapComplete = false;
 
 	FTimerHandle RandomMapTimerHandle;
+
+	FVector RandomBoxLocation;
 };

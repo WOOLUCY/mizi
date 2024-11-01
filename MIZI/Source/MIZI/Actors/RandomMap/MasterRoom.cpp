@@ -34,6 +34,8 @@ AMasterRoom::AMasterRoom()
 
 	OverlapBox = CreateDefaultSubobject<UBoxComponent>(TEXT("OverlapBox"));
 	OverlapBox->SetupAttachment(OverlapFolder);
+	OverlapBox->ShapeColor = FColor::Magenta;
+	OverlapBox->SetLineThickness(2.f);
 
 	//// Box 컴포넌트의 크기 설정
 	//BoxComponent->SetBoxExtent(FVector(50.0f, 50.0f, 50.0f)); // X, Y, Z 크기 설정
@@ -51,6 +53,14 @@ AMasterRoom::AMasterRoom()
 
 	ExitsFolder = CreateDefaultSubobject<USceneComponent>(TEXT("ExitsFolder"));
 	ExitsFolder->SetupAttachment(RootComponent);
+
+	SpawnFolder = CreateDefaultSubobject<USceneComponent>(TEXT("SpawnFolder"));
+	SpawnFolder->SetupAttachment(RootComponent);
+
+	SpawnBox = CreateDefaultSubobject<UBoxComponent>(TEXT("SpawnBox"));
+	SpawnBox->SetupAttachment(SpawnFolder);
+	SpawnBox->ShapeColor = FColor::Cyan;
+	SpawnBox->SetLineThickness(2.f);
 }
 
 // Called when the game starts or when spawned
