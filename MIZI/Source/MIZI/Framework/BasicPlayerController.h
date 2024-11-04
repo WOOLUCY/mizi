@@ -47,6 +47,10 @@ protected:
 
 	void OnUseItem(const FInputActionValue& InputActionValue);
 
+	void OnCrouch(const FInputActionValue& InputActionValue);
+	void OnUnCrouch(const FInputActionValue& InputActionValue);
+
+
 protected:
 	UInputMappingContext* IMC_Default = nullptr;
 
