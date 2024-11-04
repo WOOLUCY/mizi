@@ -130,7 +130,24 @@ public:
 
 	void SetOverlappedDoor(ALockedDoor* LockedDoor) { OverlappedDoor = LockedDoor; }
 	ALockedDoor* GetOverlappedDoor()const { return OverlappedDoor; }
+
 private:
 	bool bCanOpenDoor = false;
 	ALockedDoor* OverlappedDoor;
+
+
+	// Parallax HUD
+private:
+	//UPROPERTY(EditAnywhere)
+	UMaterialParameterCollection* ParallaxMPC;
+
+	void SetParallaxHUDOffset();
+	float YawRate;
+	float PitchRate;
+	float MinMaxYawRate = 10.f;
+	float MinMaxPitchRate = 10.0f;
+	FRotator CameraRotator;
+	float PitchParallaxOffset;
+	float YawParallaxOffset;
+	float InterpSpeed = 10.0f;
 };

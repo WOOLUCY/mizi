@@ -11,6 +11,7 @@
 #include "Kismet/KismetMaterialLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "UI/BasicHUD.h"
+#include "Materials/MaterialParameterCollection.h"
 
 
 // Sets default values
@@ -54,6 +55,13 @@ ABasicCharacter::ABasicCharacter(const FObjectInitializer& ObjectInitializer)
 
 	/* Timeline Component */
 	ScanTimelineComponent = CreateDefaultSubobject<UTimelineComponent>(TEXT("ScanTimeline"));
+
+	ParallaxMPC = LoadObject<UMaterialParameterCollection>(nullptr, TEXT("/Script/Engine.MaterialParameterCollection'/Game/Character/Widget/MPC_Parallax.MPC_Parallax'"));
+	if (!ParallaxMPC)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Parallax HUD Material Collection not found!"));
+		return;
+	}
 
 }
 
@@ -149,7 +157,10 @@ void ABasicCharacter::Tick(float DeltaTime)
 	//ChangeControllerRotationYaw();
 
 	ScanTimeLine.TickTimeline(DeltaTime);	// Timeline에 DeltaTime 전달
+
+	SetParallaxHUDOffset();
 }
+
 
 // Called to bind functionality to input
 void ABasicCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -506,4 +517,32 @@ void ABasicCharacter::OnScanFinished()
 	ScannedItems.Empty();
 	ScannedGimmicks.Empty();
 }
+
+void ABasicCharacter::SetParallaxHUDOffset()
+{
+	FRotator InitialRot = FirstPersonCamera->GetComponentRotation();
+
+	float NewPitch = InitialRot.Pitch - CameraRotator.Pitch + PitchRate;
+	NewPitch = UKismetMathLibrary::FClamp(NewPitch, -1.0 * MinMaxPitchRate, MinMaxPitchRate);
+	PitchRate = NewPitch;
+
+	float NewYaw = InitialRot.Yaw - CameraRotator.Yaw + YawRate;
+	NewYaw = UKismetMathLibrary::FClamp(NewYaw, -1.0 * MinMaxYawRate, MinMaxYawRate);
+	YawRate = NewYaw;
+
+	CameraRotator = InitialRot;
+
+	PitchParallaxOffset = UKismetMathLibrary::FInterpTo(PitchParallaxOffset, PitchRate,
+		UGameplayStatics::GetWorldDeltaSeconds(GetWorld()), InterpSpeed);
+	YawParallaxOffset = UKismetMathLibrary::FInterpTo(YawParallaxOffset, YawRate,
+		UGameplayStatics::GetWorldDeltaSeconds(GetWorld()), InterpSpeed);
+	FLinearColor ParallaxOffsetValue = FLinearColor(YawParallaxOffset, PitchParallaxOffset, 0.0f, 1.0f);
+	UKismetMaterialLibrary::SetVectorParameterValue(GetWorld(), ParallaxMPC, FName("ParallaxOffset"), ParallaxOffsetValue);
+
+	PitchRate = UKismetMathLibrary::FInterpTo(PitchRate, 0.0, 
+		UGameplayStatics::GetWorldDeltaSeconds(GetWorld()), InterpSpeed);
+	YawRate = UKismetMathLibrary::FInterpTo(YawRate, 0.0,
+		UGameplayStatics::GetWorldDeltaSeconds(GetWorld()), InterpSpeed);
+}
+
 
