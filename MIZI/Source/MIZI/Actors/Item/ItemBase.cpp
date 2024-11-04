@@ -140,6 +140,11 @@ void AItemBase::OnPicked()
 		return;
 	}
 
+	if (GameState->SpawnedItems.IsEmpty())
+	{
+		return;
+	}
+
 	GameState->SpawnedItems[this] = true;
 }
 
@@ -152,7 +157,13 @@ void AItemBase::OnDropped()
 		return;
 	}
 
+	if (GameState->SpawnedItems.IsEmpty())
+	{
+		return;
+	}
+
 	GameState->SpawnedItems[this] = false;
+	
 }
 
 void AItemBase::OnScanTimer()

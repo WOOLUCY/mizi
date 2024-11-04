@@ -65,6 +65,8 @@ public:
 	void StopSprinting();
 	void OnUseItem();
 
+	float OnSignAttack(TSet<AActor*> DamagedActors);
+
 public:
 	FCharacterTableRow* GetCharacterData() const { return CharacterData; }
 	TMap<uint32, AItemBase*>& GetOwningItems() { return OwningItems; }
