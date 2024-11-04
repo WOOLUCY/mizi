@@ -45,6 +45,8 @@ protected:
 
 	void OnInventoryWheel(const FInputActionValue& InputActionValue);
 
+	void OnUseItem(const FInputActionValue& InputActionValue);
+
 protected:
 	UInputMappingContext* IMC_Default = nullptr;
 

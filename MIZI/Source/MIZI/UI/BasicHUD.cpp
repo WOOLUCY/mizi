@@ -14,7 +14,7 @@ ABasicHUD::ABasicHUD()
 		InventoryWidgetClass = InventoryWidgetObject.Class;
 	}
 
-	ConstructorHelpers::FClassFinder<UStatusWidget>  StatusWidgetObject(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Character/Widget/WBP_Status.WBP_Status_C'"));
+	ConstructorHelpers::FClassFinder<UStatusWidget>  StatusWidgetObject(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Character/Widget/WBP_HUD.WBP_HUD_C'"));
 	if (StatusWidgetObject.Succeeded())
 	{
 		StatusWidgetClass = StatusWidgetObject.Class;

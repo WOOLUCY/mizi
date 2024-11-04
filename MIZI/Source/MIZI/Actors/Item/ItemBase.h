@@ -34,10 +34,13 @@ public:
 
 public:
 	virtual void OnScanned();
-
 	virtual void OnUsed();
+	virtual void OnPicked();
+	virtual void OnDropped();
 
 	FItemTableRow* GetItemTableRow() { return ItemTableRow; }
+
+	uint32 GetActualPrice() const { return Price; }
 
 private:
 	UFUNCTION()

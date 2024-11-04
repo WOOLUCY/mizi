@@ -6,6 +6,7 @@
 #include "GenericTeamAgentInterface.h"
 #include "Actors/Gimmick/GimmickBase.h"
 #include "Actors/Item/ItemBase.h"
+#include "Actors/RandomMap/LockedDoor.h"
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -59,9 +60,10 @@ public:
 	void OnEquipChanged();
 	void StartSprinting();
 	void StopSprinting();
+	void OnUseItem();
 
 	FCharacterTableRow* GetCharacterData() const { return CharacterData; }
-	TMap<uint32, AItemBase*> GetOwningItems() { return OwningItems; }
+	TMap<uint32, AItemBase*>& GetOwningItems() { return OwningItems; }
 	uint32 GetCurInventoryIndex() const { return CurInventoryIndex; }
 	bool GetIsSprinting() const { return bIsSprinting; }
 	void SetIsSprinting(bool InBool) { bIsSprinting = InBool; }
@@ -100,7 +102,7 @@ private:
 	TArray<AGimmickBase*> ScannedGimmicks;
 
 
-private:	// Inventory
+protected:	// Inventory
 	uint32 CurInventoryIndex = 0;
 	uint32 MaxInventoryIndex = 4;
 	uint32 PrevInventoryIndex = 0;
@@ -121,4 +123,14 @@ protected:
 
 	UFUNCTION()
 	void OnScanFinished();
+
+public:
+	bool GetCanOpenDoor() const { return bCanOpenDoor; }
+	void SetCanOpenDoor(const bool InBool) {bCanOpenDoor = InBool;}
+
+	void SetOverlappedDoor(ALockedDoor* LockedDoor) { OverlappedDoor = LockedDoor; }
+	ALockedDoor* GetOverlappedDoor()const { return OverlappedDoor; }
+private:
+	bool bCanOpenDoor = false;
+	ALockedDoor* OverlappedDoor;
 };

@@ -40,10 +40,16 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* GeometryFolder = nullptr;
 
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* SpawnFolder = nullptr;
+
 protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UArrowComponent> Arrow;
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UBoxComponent> OverlapBox;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBoxComponent> SpawnBox;
 };
