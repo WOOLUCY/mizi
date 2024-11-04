@@ -392,6 +392,29 @@ void ABasicCharacter::OnUseItem()
 	(*EquippedItem)->OnUsed();
 }
 
+float ABasicCharacter::OnSignAttack(TSet<AActor*> DamagedActors)
+{
+	GetMovementComponent()->StopMovementImmediately();
+
+	TArray<UAnimMontage*> AttackMontages = CharacterData->SignAttackMontage;
+	if (AttackMontages.IsEmpty())
+	{
+		ensure(false);
+		return 0.f;
+	}
+	float AnimationDuration = PlayAnimMontage(AttackMontages[0]);
+
+	TSubclassOf<UDamageType> DamageType;
+
+	for(AActor* DamagedActor : DamagedActors)
+	{
+		float Damage = UGameplayStatics::ApplyDamage(DamagedActor, 20.f, nullptr, this, DamageType);
+		UE_LOG(LogTemp, Log, TEXT("Player is attacking %s: %f"), *(DamagedActor->GetName()), Damage);
+	}
+
+	return AnimationDuration;
+}
+
 
 void ABasicCharacter::DrainStamina()
 {

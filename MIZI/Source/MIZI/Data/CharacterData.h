@@ -41,6 +41,8 @@ public: // Movement
 
 public: // Animation
 	UPROPERTY(EditAnywhere, Category = "Character|Animation")
+	TArray<UAnimMontage*> SignAttackMontage;
+	UPROPERTY(EditAnywhere, Category = "Character|Animation")
 	TArray<UAnimMontage*> HitReactMontage;
 	UPROPERTY(EditAnywhere, Category = "Character|Animation")
 	TArray<UAnimMontage*> DieMontage;
