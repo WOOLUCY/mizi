@@ -218,6 +218,8 @@ void ARandomMapGenerator::AddOverlappingRoomsToList()
 
 void ARandomMapGenerator::SpawnDoors()
 {
+    int CurDoorNum = 0;
+
 	for(USceneComponent* Door : DoorList)
 	{
         if (UWorld* World = GetWorld())
@@ -226,7 +228,17 @@ void ARandomMapGenerator::SpawnDoors()
             FActorSpawnParameters SpawnParams;
             SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-            TSubclassOf<ADoorBase> DoorClass = FUtils::GetRandomElementFromArray(RandomMapGeneratorDataAsset->DoorList);
+            TSubclassOf<ADoorBase> DoorClass;
+
+        	if(CurDoorNum % 10 == 0)    // 문 10개마다 하나씩 잠긴문으로
+            {
+                DoorClass = RandomMapGeneratorDataAsset->DoorList[1];
+            }
+            else
+            {
+                DoorClass = RandomMapGeneratorDataAsset->DoorList[0];
+            }
+            //TSubclassOf<ADoorBase> DoorClass = FUtils::GetRandomElementFromArray(RandomMapGeneratorDataAsset->DoorList);
 
             if(!DoorClass)
             {
@@ -234,6 +246,8 @@ void ARandomMapGenerator::SpawnDoors()
                 return;
             }
             AActor* SpawnedActor = World->SpawnActor<AActor>(DoorClass, SelectedTransform, SpawnParams);
+
+            CurDoorNum++;
         }
 	}
 }
