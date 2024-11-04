@@ -392,6 +392,7 @@ void ABasicCharacter::OnUseItem()
 	(*EquippedItem)->OnUsed();
 }
 
+
 void ABasicCharacter::DrainStamina()
 {
 	uint32 NewStamina = UKismetMathLibrary::Clamp((Status->GetCurStamina() - 1), 0, Status->GetMaxStamina());
@@ -545,4 +546,24 @@ void ABasicCharacter::SetParallaxHUDOffset()
 		UGameplayStatics::GetWorldDeltaSeconds(GetWorld()), InterpSpeed);
 }
 
+void ABasicCharacter::OnStartCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust)
+{
+	RecalculateBaseEyeHeight();
+	FVector& MeshRelativeLocation = GetMesh()->GetRelativeLocation_DirectMutable();
+	MeshRelativeLocation.Z = CharacterData->MeshTransform.GetLocation().Z + HalfHeightAdjust;
+	BaseTranslationOffset.Z = MeshRelativeLocation.Z;
+
+	K2_OnStartCrouch(HalfHeightAdjust, ScaledHalfHeightAdjust);
+}
+
+void ABasicCharacter::OnEndCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust)
+{
+	RecalculateBaseEyeHeight();
+
+	FVector& MeshRelativeLocation = GetMesh()->GetRelativeLocation_DirectMutable();
+	MeshRelativeLocation.Z = CharacterData->MeshTransform.GetLocation().Z;
+	BaseTranslationOffset.Z = MeshRelativeLocation.Z;
+
+	K2_OnEndCrouch(HalfHeightAdjust, ScaledHalfHeightAdjust);
+}
 

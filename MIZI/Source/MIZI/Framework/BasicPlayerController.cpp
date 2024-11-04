@@ -6,6 +6,7 @@
 #include "PlayerCharacter/BasicPlayerCameraManager.h"
 #include "GameFramework/Character.h"
 #include "Components/SoftWheelSpringArmComponent.h"
+#include "GameFramework/PawnMovementComponent.h"
 #include "PlayerCharacter/BasicCharacter.h"
 
 
@@ -187,6 +188,17 @@ void ABasicPlayerController::SetupInputComponent()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("IA_ItemUse is disabled"));
 	}
+
+	// Crouch
+	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Crouch")))
+	{
+		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Triggered, this, &ThisClass::OnCrouch);
+		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &ThisClass::OnUnCrouch);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IA_Crouch is disabled"));
+	}
 }
 
 void ABasicPlayerController::OnPossess(APawn* InPawn)
@@ -297,4 +309,17 @@ void ABasicPlayerController::OnUseItem(const FInputActionValue& InputActionValue
 {
 	ABasicCharacter* BasicCharacter = Cast<ABasicCharacter>(GetPawn());
 	BasicCharacter->OnUseItem();
+}
+
+void ABasicPlayerController::OnCrouch(const FInputActionValue& InputActionValue)
+{
+	ACharacter* ControlledCharacter = Cast<ACharacter>(GetPawn());
+	if (ControlledCharacter->GetMovementComponent()->IsFalling()) { return; }
+	ControlledCharacter->Crouch();
+}
+
+void ABasicPlayerController::OnUnCrouch(const FInputActionValue& InputActionValue)
+{
+	ACharacter* ControlledCharacter = Cast<ACharacter>(GetPawn());
+	ControlledCharacter->UnCrouch();
 }

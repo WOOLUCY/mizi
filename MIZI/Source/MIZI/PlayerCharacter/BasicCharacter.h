@@ -49,6 +49,9 @@ public:
 private:
 	void ChangeControllerRotationYaw();
 
+protected:
+	virtual void OnStartCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust);
+	virtual void OnEndCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust);
 
 public:
 	void OnScan();
@@ -62,6 +65,7 @@ public:
 	void StopSprinting();
 	void OnUseItem();
 
+public:
 	FCharacterTableRow* GetCharacterData() const { return CharacterData; }
 	TMap<uint32, AItemBase*>& GetOwningItems() { return OwningItems; }
 	uint32 GetCurInventoryIndex() const { return CurInventoryIndex; }
