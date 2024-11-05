@@ -38,6 +38,9 @@ public:
 	virtual void OnPicked();
 	virtual void OnDropped();
 
+	virtual void OnEquiped();
+	virtual void OnUnEquiped();
+
 	FItemTableRow* GetItemTableRow() { return ItemTableRow; }
 
 	uint32 GetActualPrice() const { return Price; }
@@ -50,7 +53,7 @@ protected:
 	UPROPERTY(EditAnywhere)
 	USceneComponent* DefaultSceneRoot;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* StaticMeshComponent;
 
 	UPROPERTY(EditAnywhere)

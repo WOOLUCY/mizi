@@ -42,4 +42,7 @@ void UStatusWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 		float Percent = ((float)(Status->GetCurSanity())) / ((float)(Status->GetMaxSanity()));
 		SANBar->SetPercent(Percent);
 	}
+	{
+		//TODO: 남은 총알 업데이트
+	}
 }

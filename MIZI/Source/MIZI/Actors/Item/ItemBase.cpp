@@ -166,6 +166,14 @@ void AItemBase::OnDropped()
 	
 }
 
+void AItemBase::OnEquiped()
+{
+}
+
+void AItemBase::OnUnEquiped()
+{
+}
+
 void AItemBase::OnScanTimer()
 {
 	Widget->SetVisibility(false);

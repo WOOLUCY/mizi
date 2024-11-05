@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/ProgressBar.h"
+#include "Components/TextBlock.h"
 #include "Framework/BasicPlayerState.h"
 #include "StatusWidget.generated.h"
 
@@ -31,6 +32,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<UProgressBar> SANBar;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<UTextBlock> CurBulletAmountText;
 
 private:
 	TObjectPtr<ABasicPlayerState> Status = nullptr;

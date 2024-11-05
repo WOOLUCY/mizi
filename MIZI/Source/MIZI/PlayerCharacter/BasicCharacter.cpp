@@ -362,12 +362,14 @@ void ABasicCharacter::OnEquipChanged()
 	if(PrevEquippedItem)
 	{
 		(*PrevEquippedItem)->SetActorHiddenInGame(true);
+		(*PrevEquippedItem)->OnUnEquiped();
 	}
 
 	auto CurEquippedItem = OwningItems.Find(CurInventoryIndex);
 	if (CurEquippedItem)
 	{
 		(*CurEquippedItem)->SetActorHiddenInGame(false);
+		(*CurEquippedItem)->OnEquiped();
 	}
 }
 
