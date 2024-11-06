@@ -24,6 +24,6 @@ void AKeyCard::OnUsed()
 		Items.Remove(Key);
 	}
 
-	Destroy();
 	Super::OnUsed();
+	Destroy();
 }

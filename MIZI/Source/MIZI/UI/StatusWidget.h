@@ -24,6 +24,10 @@ protected:
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
 
 public:
+	void RevealBulletWidget();
+	void HideBulletWidget();
+
+public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<UProgressBar> HPBar;
 

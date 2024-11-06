@@ -9,6 +9,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "PlayerCharacter/BasicCharacter.h"
+#include "UI/BasicHUD.h"
 
 ARifle::ARifle()
 {
@@ -50,7 +51,16 @@ void ARifle::OnEquiped()
 		return;
 	}
 
+	// 애니메이션 변경
 	Character->GetMesh()->SetAnimClass(Character->GetCharacterData()->GunAnimClass);
+
+	// 위젯 표시
+	ABasicHUD* HUD = Cast<ABasicHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
+
+	if (HUD)
+	{
+		HUD->GetStatusWidget()->RevealBulletWidget();
+	}
 }
 
 void ARifle::OnUnEquiped()
@@ -64,8 +74,16 @@ void ARifle::OnUnEquiped()
 		return;
 	}
 
+	// 애니메이션 변경
 	Character->GetMesh()->SetAnimClass(Character->GetCharacterData()->AnimClass);
 
+	// 위젯 숨김
+	ABasicHUD* HUD = Cast<ABasicHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
+
+	if (HUD)
+	{
+		HUD->GetStatusWidget()->HideBulletWidget();
+	}
 }
 
 void ARifle::FireBullet()

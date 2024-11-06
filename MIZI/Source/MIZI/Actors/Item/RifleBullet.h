@@ -13,5 +13,17 @@ UCLASS()
 class MIZI_API ARifleBullet : public AItemBase
 {
 	GENERATED_BODY()
-	
+
+public:
+	ARifleBullet();
+	virtual void OnUsed() override;
+
+private:
+	UFUNCTION()
+	void ReloadBullets();
+
+protected:
+	UPROPERTY(EditAnywhere)
+	int32 BulletAmount = 10;
+
 };
