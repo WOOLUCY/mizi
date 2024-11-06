@@ -74,6 +74,9 @@ public:
 	bool GetIsSprinting() const { return bIsSprinting; }
 	void SetIsSprinting(bool InBool) { bIsSprinting = InBool; }
 
+	FVector GetCameraWorldLocation() { return FirstPersonCamera->K2_GetComponentLocation(); }
+	FVector GetCameraForwardVector() {return FirstPersonCamera->GetForwardVector();}
+
 protected:	// Components
 	//UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	//TObjectPtr<USkeletalMeshComponent> Mesh;

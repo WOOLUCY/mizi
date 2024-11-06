@@ -22,6 +22,10 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Character|Animation")
 	TSubclassOf<UBasicCharacterAnimInstance> AnimClass;
 
+	UPROPERTY(EditAnywhere, Category = "Character|Animation")
+	TSubclassOf<UBasicCharacterAnimInstance> GunAnimClass;
+
+
 public:	// Collision
 	UPROPERTY(EditAnywhere, Category = "Character|Collision")
 	float CollisionCapsuleRadius = 22.f;
@@ -46,6 +50,16 @@ public: // Animation
 	TArray<UAnimMontage*> HitReactMontage;
 	UPROPERTY(EditAnywhere, Category = "Character|Animation")
 	TArray<UAnimMontage*> DieMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Character|Animation")
+	UAnimMontage* RiffleEquipMontage;
+	UPROPERTY(EditAnywhere, Category = "Character|Animation")
+	UAnimMontage* RiffleUnEquipMontage;
+	UPROPERTY(EditAnywhere, Category = "Character|Animation")
+	UAnimMontage* RiffleFireMontage;
+	UPROPERTY(EditAnywhere, Category = "Character|Animation")
+	UAnimMontage* ReloadMontage;
+
 
 public: // Scan
 	UPROPERTY(EditAnywhere, Category = "Character|Scan")

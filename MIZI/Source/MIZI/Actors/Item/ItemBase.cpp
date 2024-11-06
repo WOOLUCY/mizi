@@ -132,7 +132,8 @@ void AItemBase::OnUsed()
 
 void AItemBase::OnPicked()
 {
-	// TODO: 게임 스테이트 수정
+	OnEquiped();
+
 	ABasicGameState* GameState = Cast<ABasicGameState>(UGameplayStatics::GetGameState(GetWorld()));
 	if (!GameState)
 	{
@@ -150,6 +151,8 @@ void AItemBase::OnPicked()
 
 void AItemBase::OnDropped()
 {
+	OnUnEquiped();
+
 	ABasicGameState* GameState = Cast<ABasicGameState>(UGameplayStatics::GetGameState(GetWorld()));
 	if (!GameState)
 	{
@@ -163,7 +166,14 @@ void AItemBase::OnDropped()
 	}
 
 	GameState->SpawnedItems[this] = false;
-	
+}
+
+void AItemBase::OnEquiped()
+{
+}
+
+void AItemBase::OnUnEquiped()
+{
 }
 
 void AItemBase::OnScanTimer()
