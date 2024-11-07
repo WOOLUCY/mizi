@@ -199,6 +199,17 @@ void ABasicPlayerController::SetupInputComponent()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("IA_Crouch is disabled"));
 	}
+
+	// Terminal Click
+	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_TerminalClick")))
+	{
+		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Started, this, &ThisClass::OnTerminalClick);
+		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &ThisClass::OnTerminalRelease);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IA_TerminalClick is disabled"));
+	}
 }
 
 void ABasicPlayerController::OnPossess(APawn* InPawn)
@@ -322,4 +333,22 @@ void ABasicPlayerController::OnUnCrouch(const FInputActionValue& InputActionValu
 {
 	ACharacter* ControlledCharacter = Cast<ACharacter>(GetPawn());
 	ControlledCharacter->UnCrouch();
+}
+
+void ABasicPlayerController::OnTerminalClick(const FInputActionValue& InputActionValue)
+{
+	ABasicCharacter* BasicCharacter = Cast<ABasicCharacter>(GetPawn());
+	if(BasicCharacter)
+	{
+		BasicCharacter->OnTerminalPressed();
+	}
+}
+
+void ABasicPlayerController::OnTerminalRelease(const FInputActionValue& InputActionValue)
+{
+	ABasicCharacter* BasicCharacter = Cast<ABasicCharacter>(GetPawn());
+	if (BasicCharacter)
+	{
+		BasicCharacter->OnTerminalReleased();
+	}
 }

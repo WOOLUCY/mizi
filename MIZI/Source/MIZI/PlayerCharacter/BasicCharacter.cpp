@@ -63,6 +63,9 @@ ABasicCharacter::ABasicCharacter(const FObjectInitializer& ObjectInitializer)
 		return;
 	}
 
+	// Widget Interaction
+	WidgetInteraction = CreateDefaultSubobject<UWidgetInteractionComponent>(TEXT("WidgetInteraction"));
+	WidgetInteraction->SetupAttachment(FirstPersonCamera);
 }
 
 // Called when the game starts or when spawned
@@ -392,6 +395,23 @@ void ABasicCharacter::OnUseItem()
 	auto EquippedItem = OwningItems.Find(CurInventoryIndex);
 	if (!EquippedItem) return;
 	(*EquippedItem)->OnUsed();
+}
+
+void ABasicCharacter::OnTerminalPressed()
+{
+	if(bCanUseConsole)
+	{
+		WidgetInteraction->PressPointerKey(EKeys::LeftMouseButton);
+	}
+	else
+	{
+		WidgetInteraction->ReleasePointerKey(EKeys::LeftMouseButton);
+	}
+}
+
+void ABasicCharacter::OnTerminalReleased()
+{
+	WidgetInteraction->ReleasePointerKey(EKeys::LeftMouseButton);
 }
 
 float ABasicCharacter::OnSignAttack(TSet<AActor*> DamagedActors)
