@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Actors/Item/ItemBase.h"
 #include "Components/BoxComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/Actor.h"
@@ -24,6 +25,9 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+public:
+	void SpawnOrderdItem(FString Item, FString Amount);
 
 private:
 	UFUNCTION()
@@ -49,4 +53,8 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	UWidgetComponent* ScreenWidget;
+
+protected:
+	UPROPERTY(EditAnywhere)
+	TMap<FString, TSubclassOf<AItemBase>> ItemLists;
 };

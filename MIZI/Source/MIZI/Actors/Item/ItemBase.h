@@ -44,6 +44,7 @@ public:
 	FItemTableRow* GetItemTableRow() { return ItemTableRow; }
 
 	uint32 GetActualPrice() const { return Price; }
+	void SetActualPrice(uint32 In) { Price = In; }
 
 private:
 	UFUNCTION()

@@ -9,6 +9,19 @@
 #include "Containers/Array.h"
 #include "Math/UnrealMathUtility.h"
 
+UENUM(BlueprintType)
+enum class ETerminalCommand : uint8
+{
+    HELP = 0	UMETA(DisplayName = "Help"),
+    MOONS		UMETA(DisplayName = "Moons"),
+    STORE		UMETA(DisplayName = "Store"),
+    BESTIARY	UMETA(DisplayName = "Bestiary"),
+
+    ITEM  UMETA(DisplayName = "Item"),
+
+    UNKNOWN		UMETA(DisplayName = "Unknown"),
+};
+
 class FUtils
 {
 public:

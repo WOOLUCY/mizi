@@ -3,6 +3,9 @@
 
 #include "Actors/Terminal/Terminal.h"
 
+#include "Framework/BasicGameState.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetStringLibrary.h"
 #include "PlayerCharacter/BasicCharacter.h"
 
 // Sets default values
@@ -38,7 +41,6 @@ ATerminal::ATerminal()
 
 	ScreenWidget->SetupAttachment(StaticMeshComponent);
 	ScreenWidget->SetRelativeLocation(FVector(0.0f, 0.0f, 100.0f));
-
 }
 
 // Called when the game starts or when spawned
@@ -62,8 +64,38 @@ void ATerminal::Tick(float DeltaTime)
 
 }
 
+void ATerminal::SpawnOrderdItem(FString Item, FString Amount)
+{
+	auto Class = ItemLists.Find(Item);
+
+	if (!Class)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UnFound Item Class"));
+		return;
+	}
+
+	int RepeatNum = UKismetStringLibrary::Conv_StringToInt(Amount);
+
+	if (RepeatNum == 0)
+	{
+		++RepeatNum;
+	}
+
+	// 지정된 아이템을 수량만큼 스폰
+	for (int i = 1; i <= RepeatNum; ++i)
+	{
+		FTransform SpawnTransform = SpawnBox->GetComponentToWorld();
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+		AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(*Class, SpawnTransform, SpawnParams);
+	}
+
+
+}
+
 void ATerminal::OnOverlapBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                         UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	ABasicCharacter* Character = Cast<ABasicCharacter>(OtherActor);
 	if(!Character)

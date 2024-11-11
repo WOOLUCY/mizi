@@ -7,6 +7,8 @@
 #include "Components/EditableText.h"
 #include "Components/EditableTextBox.h"
 #include "Components/TextBlock.h"
+#include "Data/CommandData.h"
+#include "Misc/Utils.h"
 
 
 #include "TerminalScreenWidget.generated.h"
@@ -14,19 +16,6 @@
 /**
  * 
  */
-
-UENUM(BlueprintType)
-enum class ETerminalCommand : uint8
-{
-	HELP = 0	UMETA(DisplayName = "Help"),
-	MOONS		UMETA(DisplayName = "Moons"),
-	STORE		UMETA(DisplayName = "Store"),
-	BESTIARY	UMETA(DisplayName = "Bestiary"),
-
-
-	UNKNOWN		UMETA(DisplayName = "Unknown"),
-};
-
 
 UCLASS()
 class MIZI_API UTerminalScreenWidget : public UUserWidget
@@ -40,6 +29,10 @@ protected:
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
 
 protected:
+	virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle);
+
+
+protected:
 	UFUNCTION()
 	void OnInputButtonClicked();
 
@@ -50,12 +43,15 @@ private:
 	void SplitCommand(FText WholeCommand);
 	void ExecuteCommand();
 	ETerminalCommand GetCommandEnum(const FString& Command);
+	FText ChangeOutputText(const FDataTableRowHandle& InDataTableRowHandle, FString String);
 
 private:
 	void OnHelp();
 	void OnMoons();
 	void OnStore();
 	void OnBestiary();
+	void OnPurchaseItem();
+	void UpdateMoneyText();
 
 public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
@@ -67,8 +63,17 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UButton* InputButton;
 
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UTextBlock* MoneyText;
+
 private:
 	FString Command;
 	FString Argument;
+
+protected:
+	UPROPERTY(EditAnywhere, meta = (RowType = "/Script/MIZI.CommandTableRow"))
+	FDataTableRowHandle DataTableRowHandle;
+
+	FCommandTableRow* CommandData;
 
 };
