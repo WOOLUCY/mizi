@@ -27,9 +27,9 @@ void ABasicPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SpringArm = GetPawn()->GetComponentByClass<USoftWheelSpringArmComponent>();
-	check(SpringArm);
-	SpringArm->SetMinMaxTargetArmLength(160.f, 260.f);
+	//SpringArm = GetPawn()->GetComponentByClass<USoftWheelSpringArmComponent>();
+	//check(SpringArm);
+	//SpringArm->SetMinMaxTargetArmLength(160.f, 260.f);
 
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
 	Subsystem->AddMappingContext(IMC_Default, 0);
@@ -84,30 +84,30 @@ void ABasicPlayerController::SetupInputComponent()
 	}
 
 	// Zoom
-	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Zoom")))
-	{
-		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Started, this, &ThisClass::OnZoomIn);
-		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &ThisClass::OnZoomOut);
-	}
-	else
-	{
-		ensureMsgf(false, TEXT("IA_Zoom is disabled"));
-	}
+	//if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Zoom")))
+	//{
+	//	EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Started, this, &ThisClass::OnZoomIn);
+	//	EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &ThisClass::OnZoomOut);
+	//}
+	//else
+	//{
+	//	ensureMsgf(false, TEXT("IA_Zoom is disabled"));
+	//}
 
 
 	// ZoomWheel
-	if (bZoomWheel)
-	{
-		if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_ZoomWheel")))
-		{
-			EnhancedInputComponent->BindAction(InputAction,
-				ETriggerEvent::Triggered, this, &ThisClass::OnZoomWheel);
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("IA_ZoomWheel is disabled"));
-		}
-	}
+	//if (bZoomWheel)
+	//{
+	//	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_ZoomWheel")))
+	//	{
+	//		EnhancedInputComponent->BindAction(InputAction,
+	//			ETriggerEvent::Triggered, this, &ThisClass::OnZoomWheel);
+	//	}
+	//	else
+	//	{
+	//		UE_LOG(LogTemp, Warning, TEXT("IA_ZoomWheel is disabled"));
+	//	}
+	//}
 
 	// Scan
 	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Scan")))
@@ -268,12 +268,12 @@ void ABasicPlayerController::OnStopSprinting(const FInputActionValue& InputActio
 
 void ABasicPlayerController::OnZoomWheel(const FInputActionValue& InputActionValue)
 {
-	if (!SpringArm) { ensure(false); return; }
+	//if (!SpringArm) { ensure(false); return; }
 
-	const float ActionValue = InputActionValue.Get<float>();
-	//UE_LOG(LogTemp, Warning, TEXT("Wheel: %f"), ActionValue);
-	if (FMath::IsNearlyZero(ActionValue)) { return; }
-	SpringArm->OnZoomWheel(ActionValue * 20.f);
+	//const float ActionValue = InputActionValue.Get<float>();
+	////UE_LOG(LogTemp, Warning, TEXT("Wheel: %f"), ActionValue);
+	//if (FMath::IsNearlyZero(ActionValue)) { return; }
+	//SpringArm->OnZoomWheel(ActionValue * 20.f);
 }
 
 void ABasicPlayerController::OnZoomIn(const FInputActionValue& InputActionValue)

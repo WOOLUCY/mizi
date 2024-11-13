@@ -13,7 +13,7 @@ Moons,Moons,"Welcome to the exomoons catalogue.
 To route the autopilot to a moon, use the word ROUTE.
 ---------------------------------
 
-* Factory"
+* Mizi"
 Store,Store,"Welcome to the Company store.
 Order tools in bulk by typing a number.
 ---------------------------------
@@ -23,3 +23,4 @@ Unknown,Unknown,"It's not valid command.
 Please check command list using ""Help""."
 Refuse,Refuse,"You can't afford to buy it.
 Please check your budget again."
+Mizi,Mizi,You are in Mizi.

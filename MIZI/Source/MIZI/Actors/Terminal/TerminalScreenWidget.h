@@ -53,6 +53,8 @@ private:
 	void OnPurchaseItem();
 	void UpdateMoneyText();
 
+	void OnMizi();
+
 public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UTextBlock* OutputText;

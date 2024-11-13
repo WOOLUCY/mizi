@@ -109,6 +109,8 @@ void UTerminalScreenWidget::ExecuteCommand()
 		break;
 	case ETerminalCommand::ITEM:
 		OnPurchaseItem();
+	case ETerminalCommand::MIZI:
+		OnMizi();
 		break;
 	default:
 		//ChangeOutputText(DataTableRowHandle, "Unknown");
@@ -129,6 +131,10 @@ ETerminalCommand UTerminalScreenWidget::GetCommandEnum(const FString& InString)
 		{"RifleBullet", ETerminalCommand::ITEM},
 		{"Shovel", ETerminalCommand::ITEM},
 		{"Grenade", ETerminalCommand::ITEM},
+
+
+		{"Mizi", ETerminalCommand::MIZI},
+			
 
 		{"Unknown", ETerminalCommand::UNKNOWN},
 	};
@@ -300,4 +306,13 @@ void UTerminalScreenWidget::UpdateMoneyText()
 		FString String = FString::FromInt(PlayerState->GetCurMoney());
 		MoneyText->SetText(FText::FromString(String));
 	}
+}
+
+void UTerminalScreenWidget::OnMizi()
+{
+	// 레벨 이름은 문자열로 지정합니다 (예: "NewLevel").
+	FName LevelName = "FactoryLevel";
+
+	// Level을 전환하며 레벨 옵션을 적용합니다.
+	UGameplayStatics::OpenLevel(this, LevelName);
 }

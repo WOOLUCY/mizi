@@ -17,7 +17,9 @@ enum class ETerminalCommand : uint8
     STORE		UMETA(DisplayName = "Store"),
     BESTIARY	UMETA(DisplayName = "Bestiary"),
 
-    ITEM  UMETA(DisplayName = "Item"),
+    ITEM        UMETA(DisplayName = "Item"),
+
+    MIZI        UMETA(DisplayName = "Mizi"),
 
     UNKNOWN		UMETA(DisplayName = "Unknown"),
 };

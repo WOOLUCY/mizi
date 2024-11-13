@@ -12,10 +12,10 @@
 #include "Components/CapsuleComponent.h"
 #include "Misc/Utils.h"
 #include "Data/CharacterData.h"
-#include "Components/SoftWheelSpringArmComponent.h"
 #include "Components/TimelineComponent.h"
 #include "Components/WidgetInteractionComponent.h"
 #include "Framework/BasicPlayerState.h"
+#include "GameFramework/SpringArmComponent.h"
 
 
 #include "BasicCharacter.generated.h"
@@ -88,22 +88,22 @@ protected:	// Components
 	//UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	//TObjectPtr<USkeletalMeshComponent> Mesh;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<UCameraComponent> FirstPersonCamera;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<UCameraComponent> ThirdPersonCamera;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-	TObjectPtr<USoftWheelSpringArmComponent> SpringArm;
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<USpringArmComponent> SpringArm;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<UTimelineComponent> ScanTimelineComponent;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<ABasicPlayerState> Status;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<UWidgetInteractionComponent> WidgetInteraction;
 
 protected:
