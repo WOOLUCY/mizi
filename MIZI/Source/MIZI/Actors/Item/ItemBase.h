@@ -46,6 +46,9 @@ public:
 	uint32 GetActualPrice() const { return Price; }
 	void SetActualPrice(uint32 In) { Price = In; }
 
+	float GetWeight() const { return Weight; }
+	void SetWeight(float In) { Weight = In; }
+
 private:
 	UFUNCTION()
 	virtual void OnScanTimer();
@@ -76,6 +79,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	uint32 Price = 5;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Weight = 10.0f;
 
 	UPROPERTY(EditAnywhere, meta = (RowType = "/Script/MIZI.ItemTableRow"))
 	FDataTableRowHandle DataTableRowHandle;

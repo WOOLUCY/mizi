@@ -84,6 +84,9 @@ public:
 	bool GetCanUseConsole() const { return bCanUseConsole; }
 	void SetCanUseConsole(const bool InBool) { bCanUseConsole = InBool; }
 
+	float GetWeight() const { return Weight; }
+	void SetWeight(float In) { Weight = In; }
+
 protected:	// Components
 	//UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	//TObjectPtr<USkeletalMeshComponent> Mesh;
@@ -169,6 +172,12 @@ private:
 	float YawParallaxOffset;
 	float InterpSpeed = 10.0f;
 
-private:
+protected:
 	bool bCanUseConsole = false;
+
+	UPROPERTY(BlueprintReadWrite)
+	float Weight = 0.f;
+
+private:
+	float CalculatePlayerSpeed();
 };

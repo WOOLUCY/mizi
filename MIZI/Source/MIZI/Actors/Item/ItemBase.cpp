@@ -101,6 +101,8 @@ void AItemBase::BeginPlay()
 	Price = UKismetMathLibrary::RandomIntegerInRange(ItemTableRow->MinPrice, ItemTableRow->MaxPrice);
 	ItemWidget->ItemPrice->SetText(FText::AsNumber(Price));
 
+	Weight = ItemTableRow->Weight;
+
 	if (!Widget) { return; }
 	Widget->SetVisibility(false);
 }

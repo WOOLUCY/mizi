@@ -78,3 +78,15 @@ void UStatusWidget::HideBulletWidget()
 {
 	CurBulletAmountText->SetVisibility(ESlateVisibility::Hidden);
 }
+
+void UStatusWidget::UpdateWeightText()
+{
+	ABasicCharacter* Character = Cast<ABasicCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	if (!Character)
+	{
+		ensure(false);
+		return;
+	}
+
+	WeightText->SetText(FText::AsNumber(Character->GetWeight()));
+}

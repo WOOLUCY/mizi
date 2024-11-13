@@ -20,10 +20,12 @@ public:
 	ABasicGameState();
 	virtual void BeginPlay() override;
 	virtual void OnConstruction(const FTransform& Transform) override;
+	virtual void Tick(float DeltaTime) override;
 
 protected:
 	virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle);
 	uint32 SetItemPrice(const FDataTableRowHandle& InDataTableRowHandle, FString String);
+	void UpdateTime(float DeltaTime);
 
 public:
 	UFUNCTION()
@@ -51,4 +53,10 @@ protected:
 
 	FItemTableRow* ItemData = nullptr;
 
+
+	// Time System
+private:
+	float CurrentTime = 0.0f;
+	float SecondsInGameDay = 900.0f;
+	float ElapsedHours = 0.0f;
 };

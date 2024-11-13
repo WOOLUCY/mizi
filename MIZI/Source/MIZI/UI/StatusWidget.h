@@ -28,6 +28,9 @@ public:
 	void HideBulletWidget();
 
 public:
+	void UpdateWeightText();
+
+public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<UProgressBar> HPBar;
 
@@ -39,6 +42,12 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<UTextBlock> CurBulletAmountText;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<UTextBlock> WeightText;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<UTextBlock> TimeText;
 
 private:
 	TObjectPtr<ABasicPlayerState> Status = nullptr;

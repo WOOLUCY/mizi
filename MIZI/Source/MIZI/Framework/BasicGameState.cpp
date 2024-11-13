@@ -4,9 +4,13 @@
 #include "Framework/BasicGameState.h"
 
 #include "Data/CommandData.h"
+#include "Kismet/GameplayStatics.h"
+#include "UI/BasicHUD.h"
 
 ABasicGameState::ABasicGameState()
 {
+    PrimaryActorTick.bCanEverTick = true;
+
     StoreItemList.Add("Rifle");
     StoreItemList.Add("RifleBullet");
 }
@@ -15,6 +19,13 @@ void ABasicGameState::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
     SetData(DataTableRowHandle);
+}
+
+void ABasicGameState::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+    UpdateTime(DeltaTime);
 }
 
 void ABasicGameState::SetData(const FDataTableRowHandle& InDataTableRowHandle)
@@ -58,6 +69,30 @@ uint32 ABasicGameState::SetItemPrice(const FDataTableRowHandle& InDataTableRowHa
     }
 
     return -1;
+}
+
+void ABasicGameState::UpdateTime(float DeltaTime)
+{
+    CurrentTime += DeltaTime;
+
+    ElapsedHours = (CurrentTime / SecondsInGameDay) * 17.0f;
+
+    int32 Hour = 0.0f;
+    int32 Minute = 0.0f;
+
+    Hour = 7 + FMath::FloorToInt(ElapsedHours);
+    Minute = FMath::FloorToInt((ElapsedHours - FMath::FloorToInt(ElapsedHours)) * 60);
+
+    FString FormattedTime = FString::Printf(TEXT("%02d:%02d"), Hour, Minute);
+
+    ABasicHUD* HUD = Cast<ABasicHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
+    if (!HUD)
+    {
+        ensure(false);
+        return;
+    }
+
+    HUD->GetStatusWidget()->TimeText->SetText(FText::FromString(FormattedTime));
 }
 
 void ABasicGameState::OnRandomMapCompleted()
