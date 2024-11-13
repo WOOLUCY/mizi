@@ -1,0 +1,26 @@
+---,Command,OutputText
+Help,Help,"> Moons
+To see the list of moons the autopilot 
+can routs to.
+
+>Store
+To see the company store's selection 
+of useful items.
+
+> Bestiary
+To see the list of wildlife on record."
+Moons,Moons,"Welcome to the exomoons catalogue.
+To route the autopilot to a moon, use the word ROUTE.
+---------------------------------
+
+* Mizi"
+Store,Store,"Welcome to the Company store.
+Order tools in bulk by typing a number.
+---------------------------------
+"
+Bestiary,Bestiary,
+Unknown,Unknown,"It's not valid command.
+Please check command list using ""Help""."
+Refuse,Refuse,"You can't afford to buy it.
+Please check your budget again."
+Mizi,Mizi,You are in Mizi.

@@ -50,6 +50,9 @@ protected:
 	void OnCrouch(const FInputActionValue& InputActionValue);
 	void OnUnCrouch(const FInputActionValue& InputActionValue);
 
+	void OnTerminalClick(const FInputActionValue& InputActionValue);
+	void OnTerminalRelease(const FInputActionValue& InputActionValue);
+
 
 protected:
 	UInputMappingContext* IMC_Default = nullptr;

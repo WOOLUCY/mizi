@@ -30,7 +30,9 @@ protected:
 	TSubclassOf<UUserWidget> StatusWidgetClass;
 
 public:
+	UFUNCTION(BlueprintCallable)
 	UInventoryWidget* GetInventoryWidget() const {return InventoryWidget;}
+	UFUNCTION(BlueprintCallable)
 	UStatusWidget* GetStatusWidget() const {return StatusWidget;}
 
 private:

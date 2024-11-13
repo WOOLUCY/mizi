@@ -30,7 +30,6 @@ public: // Base
 	UPROPERTY(EditAnywhere, Category = "Item")
 	bool bUsed = false;
 
-
 	// �Ǹ� ���� ���ο� ����
 	UPROPERTY(EditAnywhere, Category = "Item")
 	bool bSold = true;

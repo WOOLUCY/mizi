@@ -4,8 +4,6 @@
 #include "PlayerCharacter/BasicCharacter.h"
 
 #include "Actors/Gimmick/GimmickBase.h"
-#include "Actors/Gimmick/Turret.h"
-#include "AssetTypeActions/AssetDefinition_SoundBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMaterialLibrary.h"
@@ -33,7 +31,7 @@ ABasicCharacter::ABasicCharacter(const FObjectInitializer& ObjectInitializer)
 	//FirstPersonCamera->SetAutoActivate(true);
 
 	/* Third Person Camera */
-	SpringArm = CreateDefaultSubobject<USoftWheelSpringArmComponent>(TEXT("SpringArm"));
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	ThirdPersonCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ThirdPersonCamera"));
 	{
 		SpringArm->SetupAttachment(GetMesh());
@@ -41,17 +39,17 @@ ABasicCharacter::ABasicCharacter(const FObjectInitializer& ObjectInitializer)
 		SpringArm->bUsePawnControlRotation = true;
 		SpringArm->bEnableCameraRotationLag = true;
 		SpringArm->bInheritRoll = false;
-		SpringArm->SetMinMaxTargetArmLength(200.f, SpringArm->GetMaxTargetArmLength());
+		//SpringArm->SetMinMaxTargetArmLength(200.f, SpringArm->GetMaxTargetArmLength());
 	}
 	ThirdPersonCamera->SetupAttachment(SpringArm);
 	ThirdPersonCamera->SetAutoActivate(false);
 
 	//bUseControllerRotationYaw = false;
 
-	const FRotator Rotation = FRotator(0., 90.0, 0.);
-	const FVector Translation = FVector(0., 0., 90.0);
-	FTransform SpringArmTransform = FTransform(Rotation, Translation, FVector::OneVector);
-	SpringArm->SetRelativeTransform(SpringArmTransform);
+	//const FRotator Rotation = FRotator(0., 90.0, 0.);
+	//const FVector Translation = FVector(0., 0., 90.0);
+	//FTransform SpringArmTransform = FTransform(Rotation, Translation, FVector::OneVector);
+	//SpringArm->SetRelativeTransform(SpringArmTransform);
 
 	/* Timeline Component */
 	ScanTimelineComponent = CreateDefaultSubobject<UTimelineComponent>(TEXT("ScanTimeline"));
@@ -63,6 +61,9 @@ ABasicCharacter::ABasicCharacter(const FObjectInitializer& ObjectInitializer)
 		return;
 	}
 
+	// Widget Interaction
+	WidgetInteraction = CreateDefaultSubobject<UWidgetInteractionComponent>(TEXT("WidgetInteraction"));
+	WidgetInteraction->SetupAttachment(FirstPersonCamera);
 }
 
 // Called when the game starts or when spawned
@@ -392,6 +393,23 @@ void ABasicCharacter::OnUseItem()
 	auto EquippedItem = OwningItems.Find(CurInventoryIndex);
 	if (!EquippedItem) return;
 	(*EquippedItem)->OnUsed();
+}
+
+void ABasicCharacter::OnTerminalPressed()
+{
+	if(bCanUseConsole)
+	{
+		WidgetInteraction->PressPointerKey(EKeys::LeftMouseButton);
+	}
+	else
+	{
+		WidgetInteraction->ReleasePointerKey(EKeys::LeftMouseButton);
+	}
+}
+
+void ABasicCharacter::OnTerminalReleased()
+{
+	WidgetInteraction->ReleasePointerKey(EKeys::LeftMouseButton);
 }
 
 float ABasicCharacter::OnSignAttack(TSet<AActor*> DamagedActors)

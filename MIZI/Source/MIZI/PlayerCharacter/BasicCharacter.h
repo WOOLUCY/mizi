@@ -12,9 +12,10 @@
 #include "Components/CapsuleComponent.h"
 #include "Misc/Utils.h"
 #include "Data/CharacterData.h"
-#include "Components/SoftWheelSpringArmComponent.h"
 #include "Components/TimelineComponent.h"
+#include "Components/WidgetInteractionComponent.h"
 #include "Framework/BasicPlayerState.h"
+#include "GameFramework/SpringArmComponent.h"
 
 
 #include "BasicCharacter.generated.h"
@@ -65,6 +66,9 @@ public:
 	void StopSprinting();
 	void OnUseItem();
 
+	void OnTerminalPressed();
+	void OnTerminalReleased();
+
 	float OnSignAttack(TSet<AActor*> DamagedActors);
 
 public:
@@ -77,25 +81,30 @@ public:
 	FVector GetCameraWorldLocation() { return FirstPersonCamera->K2_GetComponentLocation(); }
 	FVector GetCameraForwardVector() {return FirstPersonCamera->GetForwardVector();}
 
+	bool GetCanUseConsole() const { return bCanUseConsole; }
+	void SetCanUseConsole(const bool InBool) { bCanUseConsole = InBool; }
+
 protected:	// Components
 	//UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	//TObjectPtr<USkeletalMeshComponent> Mesh;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<UCameraComponent> FirstPersonCamera;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<UCameraComponent> ThirdPersonCamera;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-	TObjectPtr<USoftWheelSpringArmComponent> SpringArm;
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<USpringArmComponent> SpringArm;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<UTimelineComponent> ScanTimelineComponent;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<ABasicPlayerState> Status;
 
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UWidgetInteractionComponent> WidgetInteraction;
 
 protected:
 	UPROPERTY(EditAnywhere, meta = (RowType = "/Script/MIZI.CharacterTableRow"))
@@ -159,4 +168,7 @@ private:
 	float PitchParallaxOffset;
 	float YawParallaxOffset;
 	float InterpSpeed = 10.0f;
+
+private:
+	bool bCanUseConsole = false;
 };

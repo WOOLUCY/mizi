@@ -5,7 +5,6 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "UI/ScannedItemWidget.h"
 #include "TimerManager.h"
-#include "AssetTypeActions/AssetDefinition_SoundBase.h"
 
 #include "Components/SphereComponent.h"
 #include "Framework/BasicGameState.h"
