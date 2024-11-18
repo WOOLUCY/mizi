@@ -75,6 +75,7 @@ public:
 	FCharacterTableRow* GetCharacterData() const { return CharacterData; }
 	TMap<uint32, AItemBase*>& GetOwningItems() { return OwningItems; }
 	uint32 GetCurInventoryIndex() const { return CurInventoryIndex; }
+	uint32 GetPrevInventoryIndex() const { return PrevInventoryIndex; }
 	bool GetIsSprinting() const { return bIsSprinting; }
 	void SetIsSprinting(bool InBool) { bIsSprinting = InBool; }
 

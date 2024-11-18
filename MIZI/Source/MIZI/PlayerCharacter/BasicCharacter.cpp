@@ -343,7 +343,8 @@ void ABasicCharacter::OnInventoryChanged()
 		ensure(false);
 		return;
 	}
-	HUD->GetInventoryWidget()->OnInventoryChanged();
+	//HUD->GetInventoryWidget()->OnInventoryChanged();
+	HUD->GetStatusWidget()->OnInventoryChanged();
 	HUD->GetStatusWidget()->UpdateWeightText();
 }
 
@@ -363,7 +364,8 @@ void ABasicCharacter::OnInventoryIndexChanged(float Value)
 		ensure(false);
 		return;
 	}
-	HUD->GetInventoryWidget()->OnInventoryIndexChanged();
+	//HUD->GetInventoryWidget()->OnInventoryIndexChanged();
+	HUD->GetStatusWidget()->OnInventoryIndexChanged();
 }
 
 void ABasicCharacter::OnEquipChanged()
@@ -468,7 +470,7 @@ void ABasicCharacter::DrainStamina()
 
 void ABasicCharacter::RegenStamina()
 {
-	uint32 NewStamina = UKismetMathLibrary::Clamp((Status->GetCurStamina() + 1), 0, Status->GetMaxStamina());
+	uint32 NewStamina = UKismetMathLibrary::Clamp((Status->GetCurStamina() + 2), 0, Status->GetMaxStamina());
 	Status->SetCurStamina(NewStamina);
 
 	if (Status->GetMaxStamina() == Status->GetCurStamina())

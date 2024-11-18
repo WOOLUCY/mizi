@@ -53,6 +53,9 @@ protected:
 	void OnTerminalClick(const FInputActionValue& InputActionValue);
 	void OnTerminalRelease(const FInputActionValue& InputActionValue);
 
+	void OnMapOn(const FInputActionValue& InputActionValue);
+	void OnMapOff(const FInputActionValue& InputActionValue);
+
 
 protected:
 	UInputMappingContext* IMC_Default = nullptr;

@@ -109,6 +109,7 @@ void UTerminalScreenWidget::ExecuteCommand()
 		break;
 	case ETerminalCommand::ITEM:
 		OnPurchaseItem();
+		break;
 	case ETerminalCommand::MIZI:
 		OnMizi();
 		break;
