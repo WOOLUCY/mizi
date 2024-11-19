@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Drone.h"
 #include "Actors/Item/ItemBase.h"
 #include "Components/BoxComponent.h"
 #include "Components/WidgetComponent.h"
@@ -54,7 +55,11 @@ protected:
 	UPROPERTY(EditAnywhere)
 	UWidgetComponent* ScreenWidget;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<ADrone> DroneClass;
+
 protected:
 	UPROPERTY(EditAnywhere)
 	TMap<FString, TSubclassOf<AItemBase>> ItemLists;
+
 };

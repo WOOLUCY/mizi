@@ -130,7 +130,7 @@ ETerminalCommand UTerminalScreenWidget::GetCommandEnum(const FString& InString)
 		{"Store", ETerminalCommand::STORE},
 		{"Bestiary", ETerminalCommand::BESTIARY},
 
-		{"Flashlight", ETerminalCommand::ITEM},
+		{"Flash", ETerminalCommand::ITEM},
 		{"Rifle", ETerminalCommand::ITEM},
 		{"RifleBullet", ETerminalCommand::ITEM},
 		{"Shovel", ETerminalCommand::ITEM},

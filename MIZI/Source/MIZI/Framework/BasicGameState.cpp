@@ -13,6 +13,7 @@ ABasicGameState::ABasicGameState()
 
     StoreItemList.Add("Rifle");
     StoreItemList.Add("RifleBullet");
+    StoreItemList.Add("Flash");
 }
 
 void ABasicGameState::OnConstruction(const FTransform& Transform)

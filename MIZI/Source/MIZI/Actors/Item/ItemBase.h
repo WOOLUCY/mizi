@@ -53,7 +53,7 @@ private:
 	UFUNCTION()
 	virtual void OnScanTimer();
 
-protected:
+public:
 	UPROPERTY(EditAnywhere)
 	USceneComponent* DefaultSceneRoot;
 
