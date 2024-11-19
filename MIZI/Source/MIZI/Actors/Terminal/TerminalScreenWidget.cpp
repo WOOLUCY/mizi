@@ -40,6 +40,9 @@ void UTerminalScreenWidget::NativeTick(const FGeometry& MyGeometry, float InDelt
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
+	// TODO: C++ 포팅 시 변경할 것
+	// 틱마다 수행할 것이 아니라, 구매랑 판매 시에만 적용
+	UpdateMoneyText();
 
 }
 

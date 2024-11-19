@@ -51,9 +51,12 @@ private:
 	void OnStore();
 	void OnBestiary();
 	void OnPurchaseItem();
+	void OnMizi();
+
+public:
+	UFUNCTION(BlueprintCallable, Category = "Money")
 	void UpdateMoneyText();
 
-	void OnMizi();
 
 public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))

@@ -114,6 +114,10 @@ void ARifle::FireBullet()
 		return;
 	}
 
+	// Widget Animation
+	ABasicHUD* HUD = Cast<ABasicHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
+	HUD->GetStatusWidget()->PlayAnimation(HUD->GetStatusWidget()->FireGun);
+
 	FVector StartLocation = Character->GetCameraWorldLocation();
 	FVector EndLocation = Character->GetCameraForwardVector() * 3000.f + StartLocation;
 	FHitResult HitResult;

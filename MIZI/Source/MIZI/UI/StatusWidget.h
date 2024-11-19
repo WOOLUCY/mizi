@@ -75,6 +75,8 @@ public:
 	TObjectPtr<UWidgetAnimation> MapOn;
 	UPROPERTY(meta = (BindWidgetAnim), Transient)
 	TObjectPtr<UWidgetAnimation> MapOff;
+	UPROPERTY(meta = (BindWidgetAnim), Transient)
+	TObjectPtr<UWidgetAnimation> FireGun;
 
 	// Inventory
 public:

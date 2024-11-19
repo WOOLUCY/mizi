@@ -77,8 +77,8 @@ protected:
 	UPROPERTY(EditAnywhere)
 	FString ItemName = TEXT("Flash");
 
-	UPROPERTY(VisibleAnywhere)
-	uint32 Price = 5;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 Price = 5;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Weight = 10.0f;
