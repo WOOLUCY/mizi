@@ -3,10 +3,8 @@
 
 #include "Actors/Terminal/Drone.h"
 
-#include "AssetTypeActions/AssetDefinition_SoundBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "Misc/MapErrors.h"
 
 // Sets default values
 ADrone::ADrone()

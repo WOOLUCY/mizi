@@ -34,7 +34,7 @@ ATerminal::ATerminal()
 	// Screen Widget
 	ScreenWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
 
-	static ConstructorHelpers::FClassFinder<UUserWidget> WidgetClass(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/StoreSystem/WBP_Console.WBP_Console_C'"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> WidgetClass(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Terminal/WBP_Console.WBP_Console_C'"));
 	if (WidgetClass.Succeeded())
 	{
 		ScreenWidget->SetWidgetClass(WidgetClass.Class);
