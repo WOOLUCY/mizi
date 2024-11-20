@@ -17,7 +17,7 @@ void UStatusWidget::NativeOnInitialized()
 
 	OnInventoryChanged();
 	OnInventoryIndexChanged();
-	OnMapOff();
+	//OnMapOff();
 }
 
 void UStatusWidget::NativePreConstruct()

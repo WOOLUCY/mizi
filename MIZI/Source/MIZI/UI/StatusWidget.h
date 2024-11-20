@@ -65,10 +65,15 @@ public:
 	TObjectPtr<UTextBlock> TimeText;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<UTextBlock> BatteryText;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<UTextBlock> MoveText;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<UImage> Minimap;
+
+
 
 public:
 	UPROPERTY(meta = (BindWidgetAnim), Transient)

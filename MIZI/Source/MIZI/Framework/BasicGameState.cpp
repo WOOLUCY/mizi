@@ -84,7 +84,7 @@ void ABasicGameState::UpdateTime(float DeltaTime)
     Hour = 7 + FMath::FloorToInt(ElapsedHours);
     Minute = FMath::FloorToInt((ElapsedHours - FMath::FloorToInt(ElapsedHours)) * 60);
 
-    FString FormattedTime = FString::Printf(TEXT("%02d   %02d"), Hour, Minute);
+    FString FormattedTime = FString::Printf(TEXT("%02d:%02d"), Hour, Minute);
 
     ABasicHUD* HUD = Cast<ABasicHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
     if (!HUD)
