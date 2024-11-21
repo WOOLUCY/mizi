@@ -27,6 +27,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION()
+	void SpawnRandomEnemy();
+
 public:
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* DefaultSceneRoot = nullptr;
@@ -42,6 +45,10 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* SpawnFolder = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UBoxComponent> EnemySpawnPoint;
+
 
 protected:
 	UPROPERTY(EditAnywhere)

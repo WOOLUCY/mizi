@@ -3,6 +3,11 @@
 
 #include "Actors/RandomMap/MasterRoom.h"
 
+#include "Framework/BasicGameMode.h"
+#include "Framework/BasicGameState.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetArrayLibrary.h"
+
 // Sets default values
 AMasterRoom::AMasterRoom()
 {
@@ -10,6 +15,7 @@ AMasterRoom::AMasterRoom()
 	PrimaryActorTick.bCanEverTick = true;
 
 	// DefaultSceneRoot
+	// EnemySpawnPoint
 	//	Arrow
 	//	GeometryFolder
 	//	OverlapFolder
@@ -61,6 +67,11 @@ AMasterRoom::AMasterRoom()
 	SpawnBox->SetupAttachment(SpawnFolder);
 	SpawnBox->ShapeColor = FColor::Cyan;
 	SpawnBox->SetLineThickness(2.f);
+
+	EnemySpawnPoint = CreateDefaultSubobject<UBoxComponent>(TEXT("Vent"));
+	EnemySpawnPoint->SetupAttachment(RootComponent);
+	EnemySpawnPoint->ShapeColor = FColor::Magenta;
+	EnemySpawnPoint->SetLineThickness(2.f);
 }
 
 // Called when the game starts or when spawned
@@ -78,5 +89,36 @@ void AMasterRoom::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AMasterRoom::SpawnRandomEnemy()
+{
+	ABasicGameState* GameState = Cast<ABasicGameState>(UGameplayStatics::GetGameState(GetWorld()));
+	if(!GameState)
+	{
+		ensure(false);
+		return;
+	}
+
+	TArray<UClass*> Keys;
+	GameState->GetEnemyList().GetKeys(Keys);
+
+	auto EnemyClass = FUtils::GetRandomElementFromArray(Keys);		// Selected Key
+	auto Num = GameState->GetEnemyList().Find(EnemyClass);			// Selected Value
+	if (!Num) return;
+	if (*Num <= 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Enemy isn't spawned"));
+		return;
+	}
+
+	// 적을 스폰
+	FTransform Transform = EnemySpawnPoint->K2_GetComponentToWorld();
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+	AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(EnemyClass, Transform, SpawnParams);
+	GameState->GetEnemyList().Add(EnemyClass, *Num-1);
+	UE_LOG(LogTemp, Warning, TEXT("%s are spawned."), *SpawnedActor->GetName());
 }
 

@@ -5,6 +5,7 @@
 
 #include "Data/CommandData.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "UI/BasicHUD.h"
 
 ABasicGameState::ABasicGameState()
@@ -27,6 +28,7 @@ void ABasicGameState::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
     UpdateTime(DeltaTime);
+    SpawnEnemys();
 }
 
 void ABasicGameState::SetData(const FDataTableRowHandle& InDataTableRowHandle)
@@ -94,6 +96,23 @@ void ABasicGameState::UpdateTime(float DeltaTime)
     }
 
     HUD->GetStatusWidget()->TimeText->SetText(FText::FromString(FormattedTime));
+}
+
+void ABasicGameState::SpawnEnemys()
+{
+    int32 CurHour = UKismetMathLibrary::FFloor(ElapsedHours);
+    if (CurHour == PrevHour)   return;      // 시간 단위로 계산
+    if (CurHour % EnemySpawnInterval != 0) return;  // 설정한 인터벌만큼 시간이 지났는지 확인
+
+    // 레벨에 배치된 모든 방을 찾고, 거기서 임의의 방을 선택
+    TArray<AActor*> FoundActors;
+    UGameplayStatics::GetAllActorsOfClass(GetWorld(), AMasterRoom::StaticClass(), FoundActors);
+    auto SelectedRoom = FUtils::GetRandomElementFromArray(FoundActors);
+
+    AMasterRoom* Room = Cast<AMasterRoom>(SelectedRoom);
+    Room->SpawnRandomEnemy();
+
+    PrevHour = CurHour;
 }
 
 void ABasicGameState::OnRandomMapCompleted()

@@ -26,10 +26,14 @@ protected:
 	virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle);
 	uint32 SetItemPrice(const FDataTableRowHandle& InDataTableRowHandle, FString String);
 	void UpdateTime(float DeltaTime);
+	void SpawnEnemys();
 
 public:
 	UFUNCTION()
 	void OnRandomMapCompleted();
+
+	UFUNCTION()
+	TMap<UClass*, int32>& GetEnemyList() { return EnemyList; }
 
 public:
 	// 레벨에 스폰된 아이템을 저장하는 배열
@@ -47,16 +51,23 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TMap<FString, int32> StoreItemList;
 
+	// 레벨에 스폰될 적과 그 상한
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<UClass*, int32> EnemyList;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float ElapsedHours = 0.0f;
+
+	float CurrentTime = 0.0f;
+	float SecondsInGameDay = 60.0f * 15;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 EnemySpawnInterval = 2;
+
+	int32 PrevHour = 0;
 protected:
 	UPROPERTY(EditAnywhere, meta = (RowType = "/Script/MIZI.ItemTableRow"))
 	FDataTableRowHandle DataTableRowHandle;
 
 	FItemTableRow* ItemData = nullptr;
-
-
-	// Time System
-private:
-	float CurrentTime = 0.0f;
-	float SecondsInGameDay = 900.0f;
-	float ElapsedHours = 0.0f;
 };
