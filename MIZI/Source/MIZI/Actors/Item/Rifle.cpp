@@ -35,7 +35,7 @@ void ARifle::OnUsed()
 
 	CurBulletAmount--;
 
-	UKismetSystemLibrary::K2_SetTimer(this, TEXT("FireBullet"), 0.2f, false);
+	UKismetSystemLibrary::K2_SetTimer(this, TEXT("FireBullet"), 0.1f, false);
 
 	Super::OnUsed();
 }
@@ -147,6 +147,21 @@ void ARifle::FireBullet()
 		Decal->SetFadeScreenSize(0.f);	// 멀리 가면 데칼이 화면에 보이지 않는 것을 방지
 	}
 
-	TSubclassOf<UDamageType> DamageTypeClass;
-	UGameplayStatics::ApplyDamage(HitResult.GetActor(), RiffleDamage, nullptr, GetOwner(), DamageTypeClass);
+	//TSubclassOf<UDamageType> DamageTypeClass;
+	//UGameplayStatics::ApplyDamage(HitResult.GetActor(), RiffleDamage, nullptr, GetOwner(), DamageTypeClass);
+	//
+	AActor* HitActor = HitResult.GetActor();
+	if (HitActor)
+	{
+		// 피해를 적용
+		UGameplayStatics::ApplyPointDamage(
+			HitActor,									// 피해를 받을 액터
+			RiffleDamage,								// 기본 피해량
+			EndLocation - StartLocation,				// 피해 방향
+			HitResult,									// 충돌 정보
+			UGameplayStatics::GetPlayerController(GetWorld(), 0),                   // 피해를 입힌 컨트롤러
+			this,										// 피해를 입힌 액터 (총알)
+			UDamageType::StaticClass()					// 피해 유형
+		);
+	}
 }

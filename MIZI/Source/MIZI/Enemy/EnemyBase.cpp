@@ -92,6 +92,21 @@ void AEnemyBase::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 
 }
 
+//float AEnemyBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+//{
+//	//GetMovementComponent()->StopMovementImmediately();
+//
+//	//TArray<UAnimMontage*> ReactMontages = EnemyData->HitReactMontage;
+//	//if (ReactMontages.IsEmpty())
+//	//{
+//	//	ensure(false);
+//	//	return 0.f;
+//	//}
+//	//float AnimationDuration = PlayAnimMontage(ReactMontages[0]);
+//
+//	return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+//}
+
 // Called every frame
 void AEnemyBase::Tick(float DeltaTime)
 {

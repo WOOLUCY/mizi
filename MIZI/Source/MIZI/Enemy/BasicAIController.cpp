@@ -22,7 +22,7 @@ ABasicAIController::ABasicAIController()
 	// 시야 감각 설정 값 조정 (시야 반경, 시야각 등)
 	SightConfig->SightRadius = 800.f;
 	SightConfig->LoseSightRadius = 900.f;
-	SightConfig->PeripheralVisionAngleDegrees = 90.0f;
+	SightConfig->PeripheralVisionAngleDegrees = 110.0f;
 	SightConfig->SetMaxAge(5.0f);
 	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
 	SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
