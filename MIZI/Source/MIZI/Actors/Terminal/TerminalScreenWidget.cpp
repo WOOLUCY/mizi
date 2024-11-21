@@ -70,6 +70,17 @@ void UTerminalScreenWidget::OnInputTextCommitted(const FText& Text, ETextCommit:
 	SplitCommand(Text);
 
 	InputText->SetText(FText());
+
+	if (CommitMethod == ETextCommit::OnEnter)
+	{
+		UE_LOG(LogTemp, Log, TEXT("텍스트 커밋: Enter 키로 입력 완료"));
+		// Enter 키로 커밋된 경우에만 동작
+	}
+	else if (CommitMethod == ETextCommit::OnUserMovedFocus)
+	{
+		UE_LOG(LogTemp, Log, TEXT("텍스트 커밋: 포커스가 다른 곳으로 이동"));
+		// 포커스 이동으로 커밋된 경우 동작
+	}
 }
 
 void UTerminalScreenWidget::SplitCommand(FText WholeCommand)

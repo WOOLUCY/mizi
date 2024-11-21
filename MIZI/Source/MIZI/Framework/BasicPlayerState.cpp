@@ -14,5 +14,5 @@ ABasicPlayerState::ABasicPlayerState()
 	CurSanity = 100;
 	MaxSanity = 100;
 
-	CurMoney = 300;
+	//CurMoney = 300;
 }

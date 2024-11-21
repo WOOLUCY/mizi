@@ -113,7 +113,7 @@ void ADrone::FindFloor()
 {
 	// 라인 트레이스를 통해 착지 지점 확인
 	FVector StartLocation = GetActorLocation();
-	FVector EndLocation = GetActorLocation() - FVector(0.0, 0.0, 5000.0);
+	FVector EndLocation = GetActorLocation() - FVector(0.0, 0.0, 10000.0);
 	FHitResult HitResult;
 	FCollisionQueryParams CollisionParams;
 	CollisionParams.AddIgnoredActor(this);

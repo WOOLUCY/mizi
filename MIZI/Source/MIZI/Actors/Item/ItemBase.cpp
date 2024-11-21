@@ -147,7 +147,10 @@ void AItemBase::OnPicked()
 		return;
 	}
 
-	GameState->SpawnedItems[this] = true;
+	if (GameState->SpawnedItems.Find(this))
+	{
+		GameState->SpawnedItems[this] = true;
+	}
 }
 
 void AItemBase::OnDropped()
@@ -166,7 +169,10 @@ void AItemBase::OnDropped()
 		return;
 	}
 
-	GameState->SpawnedItems[this] = false;
+	if (GameState->SpawnedItems.Find(this))
+	{
+		GameState->SpawnedItems[this] = false;
+	}
 }
 
 void AItemBase::OnEquiped()

@@ -58,8 +58,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float ElapsedHours = 0.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 Battery = 100;
+
 	float CurrentTime = 0.0f;
-	float SecondsInGameDay = 60.0f * 15;
+	float SecondsInGameDay = 60.0f * 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 EnemySpawnInterval = 2;

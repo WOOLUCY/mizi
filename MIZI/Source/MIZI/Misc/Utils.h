@@ -21,6 +21,8 @@ enum class ETerminalCommand : uint8
 
     MIZI        UMETA(DisplayName = "Mizi"),
 
+    LEAVE       UMETA(DisplayName = "Leave"),
+
     UNKNOWN		UMETA(DisplayName = "Unknown"),
 };
 
