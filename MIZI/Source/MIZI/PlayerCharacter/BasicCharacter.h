@@ -75,6 +75,7 @@ public:
 	FCharacterTableRow* GetCharacterData() const { return CharacterData; }
 	TMap<uint32, AItemBase*>& GetOwningItems() { return OwningItems; }
 	uint32 GetCurInventoryIndex() const { return CurInventoryIndex; }
+	uint32 GetPrevInventoryIndex() const { return PrevInventoryIndex; }
 	bool GetIsSprinting() const { return bIsSprinting; }
 	void SetIsSprinting(bool InBool) { bIsSprinting = InBool; }
 
@@ -83,6 +84,9 @@ public:
 
 	bool GetCanUseConsole() const { return bCanUseConsole; }
 	void SetCanUseConsole(const bool InBool) { bCanUseConsole = InBool; }
+
+	float GetWeight() const { return Weight; }
+	void SetWeight(float In) { Weight = In; }
 
 protected:	// Components
 	//UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
@@ -169,6 +173,12 @@ private:
 	float YawParallaxOffset;
 	float InterpSpeed = 10.0f;
 
-private:
+protected:
 	bool bCanUseConsole = false;
+
+	UPROPERTY(BlueprintReadWrite)
+	float Weight = 0.f;
+
+private:
+	float CalculatePlayerSpeed();
 };

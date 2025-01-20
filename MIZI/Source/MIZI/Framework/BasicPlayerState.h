@@ -50,5 +50,5 @@ public:
 	int32 MaxSanity;
 
 	UPROPERTY(BlueprintReadWrite)
-	int32 CurMoney;
+	int32 CurMoney = 300;
 };

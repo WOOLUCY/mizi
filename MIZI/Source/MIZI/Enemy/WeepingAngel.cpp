@@ -79,17 +79,19 @@ void AWeepingAngel::Tick(float DeltaTime)
 		return;
 	}
 
-	if(StaticMeshComponent->UPrimitiveComponent::WasRecentlyRendered())
-	{
-		auto BB = AIController->GetBlackBoardComponent();
-		BB->SetValueAsBool(FName("IsDetected"), false);
-	}
-	else
-	{
-		auto BB = AIController->GetBlackBoardComponent();
-		BB->SetValueAsBool(FName("IsDetected"), false);
-		AIController->GetBlackboardComponent()->SetValueAsBool(FName("IsDetected"), true);
-	}
+	//if(StaticMeshComponent->UPrimitiveComponent::WasRecentlyRendered())
+	//{
+	//	auto BB = AIController->GetBlackBoardComponent();
+	//	//BB->SetValueAsBool(FName("IsDetected"), true);
+	//	AIController->GetBlackboardComponent()->SetValueAsBool(FName("IsDetected"), false);
+	//}
+	//else
+	//{
+	//	auto BB = AIController->GetBlackBoardComponent();
+	//	//BB->SetValueAsBool(FName("IsDetected"), false);
+	//	AIController->GetBlackboardComponent()->SetValueAsBool(FName("IsDetected"), true);
+	//}
+
 }
 
 float AWeepingAngel::Attack()

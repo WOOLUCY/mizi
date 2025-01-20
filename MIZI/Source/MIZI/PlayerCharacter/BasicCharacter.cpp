@@ -330,12 +330,22 @@ void ABasicCharacter::OnInventoryChanged()
 
 	ABasicHUD* HUD = Cast<ABasicHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
 
+	// 전체 무게 수정
+	Weight = 0;
+	for(auto Iter : OwningItems)
+	{
+		Weight += Iter.Value->GetWeight();
+	}
+	CalculatePlayerSpeed();
+
 	if (!HUD)
 	{
 		ensure(false);
 		return;
 	}
-	HUD->GetInventoryWidget()->OnInventoryChanged();
+	//HUD->GetInventoryWidget()->OnInventoryChanged();
+	HUD->GetStatusWidget()->OnInventoryChanged();
+	HUD->GetStatusWidget()->UpdateWeightText();
 }
 
 void ABasicCharacter::OnInventoryIndexChanged(float Value)
@@ -354,7 +364,8 @@ void ABasicCharacter::OnInventoryIndexChanged(float Value)
 		ensure(false);
 		return;
 	}
-	HUD->GetInventoryWidget()->OnInventoryIndexChanged();
+	//HUD->GetInventoryWidget()->OnInventoryIndexChanged();
+	HUD->GetStatusWidget()->OnInventoryIndexChanged();
 }
 
 void ABasicCharacter::OnEquipChanged()
@@ -376,14 +387,16 @@ void ABasicCharacter::OnEquipChanged()
 
 void ABasicCharacter::StartSprinting()
 {
-	GetCharacterMovement()->MaxWalkSpeed = CharacterData->SprintMaxSpeed;
+	float NewSpeed = CalculatePlayerSpeed() + 200.0f;
+	GetCharacterMovement()->MaxWalkSpeed = NewSpeed;
+
 	SetIsSprinting(true);
 	DrainStamina();
 }
 
 void ABasicCharacter::StopSprinting()
 {
-	GetCharacterMovement()->MaxWalkSpeed = CharacterData->WalkMaxSpeed;
+	CalculatePlayerSpeed();
 	SetIsSprinting(false);
 	RegenStamina();
 }
@@ -457,7 +470,7 @@ void ABasicCharacter::DrainStamina()
 
 void ABasicCharacter::RegenStamina()
 {
-	uint32 NewStamina = UKismetMathLibrary::Clamp((Status->GetCurStamina() + 1), 0, Status->GetMaxStamina());
+	uint32 NewStamina = UKismetMathLibrary::Clamp((Status->GetCurStamina() + 2), 0, Status->GetMaxStamina());
 	Status->SetCurStamina(NewStamina);
 
 	if (Status->GetMaxStamina() == Status->GetCurStamina())
@@ -587,6 +600,30 @@ void ABasicCharacter::SetParallaxHUDOffset()
 		UGameplayStatics::GetWorldDeltaSeconds(GetWorld()), InterpSpeed);
 	YawRate = UKismetMathLibrary::FInterpTo(YawRate, 0.0,
 		UGameplayStatics::GetWorldDeltaSeconds(GetWorld()), InterpSpeed);
+}
+
+float ABasicCharacter::CalculatePlayerSpeed()
+{
+	UCharacterMovementComponent* Movement = GetCharacterMovement();
+	if(Weight <= CharacterData->WeightNoEffect)
+	{
+		// 10kg 이하일 때는 기본 속도 유지
+		Movement->MaxWalkSpeed = CharacterData->WalkMaxSpeed;
+		return CharacterData->WalkMaxSpeed;
+	}
+	else if(Weight <= CharacterData->WeightThreshold)
+	{
+		// 10kg 이상 40kg 이하일 때는 속도가 기본 속도에서 점차 감소
+		float Speed = CharacterData->WalkMaxSpeed - (CharacterData->WalkMaxSpeed - CharacterData->WalkMinSpeed) * (Weight - CharacterData->WeightNoEffect) / (CharacterData->WeightThreshold - CharacterData->WeightNoEffect);
+		Movement->MaxWalkSpeed = Speed;
+		return Speed;
+	}
+	else
+	{
+		// 40kg 이상일 때는 최소 속도 400으로 고정
+		Movement->MaxWalkSpeed = CharacterData->WalkMinSpeed;
+		return CharacterData->WalkMinSpeed;
+	}
 }
 
 void ABasicCharacter::OnStartCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust)

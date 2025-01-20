@@ -40,6 +40,9 @@ void UTerminalScreenWidget::NativeTick(const FGeometry& MyGeometry, float InDelt
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
+	// TODO: C++ 포팅 시 변경할 것
+	// 틱마다 수행할 것이 아니라, 구매랑 판매 시에만 적용
+	UpdateMoneyText();
 
 }
 
@@ -67,6 +70,17 @@ void UTerminalScreenWidget::OnInputTextCommitted(const FText& Text, ETextCommit:
 	SplitCommand(Text);
 
 	InputText->SetText(FText());
+
+	if (CommitMethod == ETextCommit::OnEnter)
+	{
+		UE_LOG(LogTemp, Log, TEXT("텍스트 커밋: Enter 키로 입력 완료"));
+		// Enter 키로 커밋된 경우에만 동작
+	}
+	else if (CommitMethod == ETextCommit::OnUserMovedFocus)
+	{
+		UE_LOG(LogTemp, Log, TEXT("텍스트 커밋: 포커스가 다른 곳으로 이동"));
+		// 포커스 이동으로 커밋된 경우 동작
+	}
 }
 
 void UTerminalScreenWidget::SplitCommand(FText WholeCommand)
@@ -109,6 +123,7 @@ void UTerminalScreenWidget::ExecuteCommand()
 		break;
 	case ETerminalCommand::ITEM:
 		OnPurchaseItem();
+		break;
 	case ETerminalCommand::MIZI:
 		OnMizi();
 		break;
@@ -126,7 +141,7 @@ ETerminalCommand UTerminalScreenWidget::GetCommandEnum(const FString& InString)
 		{"Store", ETerminalCommand::STORE},
 		{"Bestiary", ETerminalCommand::BESTIARY},
 
-		{"Flashlight", ETerminalCommand::ITEM},
+		{"Flash", ETerminalCommand::ITEM},
 		{"Rifle", ETerminalCommand::ITEM},
 		{"RifleBullet", ETerminalCommand::ITEM},
 		{"Shovel", ETerminalCommand::ITEM},

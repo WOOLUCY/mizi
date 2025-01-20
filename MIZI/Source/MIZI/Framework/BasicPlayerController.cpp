@@ -7,7 +7,9 @@
 #include "GameFramework/Character.h"
 #include "Components/SoftWheelSpringArmComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "PlayerCharacter/BasicCharacter.h"
+#include "UI/BasicHUD.h"
 
 
 ABasicPlayerController::ABasicPlayerController()
@@ -210,6 +212,19 @@ void ABasicPlayerController::SetupInputComponent()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("IA_TerminalClick is disabled"));
 	}
+
+	// MiniMap
+	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Map")))
+	{
+		EnhancedInputComponent->BindAction(InputAction,
+			ETriggerEvent::Started, this, &ThisClass::OnMapOn);
+		EnhancedInputComponent->BindAction(InputAction,
+			ETriggerEvent::Completed, this, &ThisClass::OnMapOff);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IA_Dash is disabled"));
+	}
 }
 
 void ABasicPlayerController::OnPossess(APawn* InPawn)
@@ -351,4 +366,16 @@ void ABasicPlayerController::OnTerminalRelease(const FInputActionValue& InputAct
 	{
 		BasicCharacter->OnTerminalReleased();
 	}
+}
+
+void ABasicPlayerController::OnMapOn(const FInputActionValue& InputActionValue)
+{
+	ABasicHUD* HUD = Cast<ABasicHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
+	HUD->GetStatusWidget()->OnMapOn();
+}
+
+void ABasicPlayerController::OnMapOff(const FInputActionValue& InputActionValue)
+{
+	ABasicHUD* HUD = Cast<ABasicHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
+	HUD->GetStatusWidget()->OnMapOff();
 }

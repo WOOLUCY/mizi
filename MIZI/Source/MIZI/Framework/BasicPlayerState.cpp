@@ -8,11 +8,11 @@ ABasicPlayerState::ABasicPlayerState()
 	CurHealth = 100;
 	MaxHealth = 100;
 
-	CurStamina = 100;
-	MaxStamina = 100;
+	CurStamina = 200;
+	MaxStamina = 200;
 
 	CurSanity = 100;
 	MaxSanity = 100;
 
-	CurMoney = 100;
+	//CurMoney = 300;
 }

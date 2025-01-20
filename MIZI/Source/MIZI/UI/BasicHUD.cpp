@@ -33,11 +33,11 @@ void ABasicHUD::BeginPlay()
 	//ABasicCharacter* Character = Cast<ABasicCharacter>(GetOwningPawn());
 	//auto test = Character->GetCharacterData()->InventoryWidgetClass;
 
-	InventoryWidget = CreateWidget<UInventoryWidget>(GetWorld(), InventoryWidgetClass);
-	if(InventoryWidget)
-	{
-		InventoryWidget->AddToViewport();
-	}
+	//InventoryWidget = CreateWidget<UInventoryWidget>(GetWorld(), InventoryWidgetClass);
+	//if(InventoryWidget)
+	//{
+	//	InventoryWidget->AddToViewport();
+	//}
 
 	StatusWidget = CreateWidget<UStatusWidget>(GetWorld(), StatusWidgetClass);
 	if (StatusWidget)

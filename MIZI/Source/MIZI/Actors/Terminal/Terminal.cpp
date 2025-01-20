@@ -5,6 +5,7 @@
 
 #include "Framework/BasicGameState.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetStringLibrary.h"
 #include "PlayerCharacter/BasicCharacter.h"
 
@@ -33,7 +34,7 @@ ATerminal::ATerminal()
 	// Screen Widget
 	ScreenWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
 
-	static ConstructorHelpers::FClassFinder<UUserWidget> WidgetClass(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/StoreSystem/WBP_Console.WBP_Console_C'"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> WidgetClass(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Terminal/WBP_Console.WBP_Console_C'"));
 	if (WidgetClass.Succeeded())
 	{
 		ScreenWidget->SetWidgetClass(WidgetClass.Class);
@@ -81,17 +82,46 @@ void ATerminal::SpawnOrderdItem(FString Item, FString Amount)
 		++RepeatNum;
 	}
 
-	// 지정된 아이템을 수량만큼 스폰
-	for (int i = 1; i <= RepeatNum; ++i)
-	{
-		FTransform SpawnTransform = SpawnBox->GetComponentToWorld();
-		FActorSpawnParameters SpawnParams;
-		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
-		AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(*Class, SpawnTransform, SpawnParams);
+	// 드론을 랜덤한 위치에 스폰
+	FVector BoxCenter = SpawnBox->GetComponentLocation();
+	FVector BoxScale = SpawnBox->GetScaledBoxExtent();
+
+	float NewX = UKismetMathLibrary::RandomFloatInRange(-BoxScale.X, BoxScale.X);
+	float NewY = UKismetMathLibrary::RandomFloatInRange(-BoxScale.Y, BoxScale.Y);
+	float NewZ = UKismetMathLibrary::RandomFloatInRange(-BoxScale.Z, BoxScale.Z);
+	FVector NewVector = FVector(NewX, NewY, NewZ);
+	FVector RandomBoxLocation = BoxCenter + NewVector;
+	FTransform SpawnTransform(SpawnBox->GetComponentRotation(), RandomBoxLocation);
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+	AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(DroneClass, SpawnTransform, SpawnParams);
+	if(!SpawnedActor)
+	{
+		ensure(false);
+		return;
 	}
 
+	ADrone* Drone = Cast<ADrone>(SpawnedActor);
+	if(!Drone)
+	{
+		ensure(false);
+		return;
+	}
 
+	Drone->OrderList.Add(*Class, RepeatNum);
+
+	// 지정된 아이템을 수량만큼 스폰
+	//for (int i = 1; i <= RepeatNum; ++i)
+	//{
+	//	FTransform SpawnTransform = SpawnBox->GetComponentToWorld();
+	//	FActorSpawnParameters SpawnParams;
+	//	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+	//	AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(*Class, SpawnTransform, SpawnParams);
+	//}
 }
 
 void ATerminal::OnOverlapBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -117,6 +147,5 @@ void ATerminal::OnOverlapBoxEndOverlap(UPrimitiveComponent* OverlappedComponent,
 
 	Character->SetCanUseConsole(false);
 }
-
 
 

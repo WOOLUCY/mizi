@@ -28,11 +28,11 @@ ARandomItemSpawner::ARandomItemSpawner()
 	Box->SetHiddenInGame(false);
 
 	
-	static ConstructorHelpers::FClassFinder<AActor> ActorBlueprint(TEXT("/Script/Engine.Blueprint'/Game/Blueprint/RandomMap/BP_TestItem.BP_TestItem_C'"));
-	if (ActorBlueprint.Succeeded())
-	{
-		ItemClass = ActorBlueprint.Class;
-	}
+	//static ConstructorHelpers::FClassFinder<AActor> ActorBlueprint(TEXT("/Script/Engine.Blueprint'/Game/Blueprint/RandomMap/BP_TestItem.BP_TestItem_C'"));
+	//if (ActorBlueprint.Succeeded())
+	//{
+	//	ItemClass = ActorBlueprint.Class;
+	//}
 }
 
 void ARandomItemSpawner::SetData(const FDataTableRowHandle& InDataTableRowHandle)

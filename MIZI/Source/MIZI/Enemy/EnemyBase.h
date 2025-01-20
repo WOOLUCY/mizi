@@ -29,6 +29,9 @@ protected:
 protected:
 	virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle);
 
+protected:
+	//virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -40,7 +43,7 @@ public:
 	FEnemyTableRow* GetEnemyData() const { return EnemyData; }
 
 protected:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* StaticMeshComponent;
 
 protected:
@@ -50,4 +53,8 @@ protected:
 	FEnemyTableRow* EnemyData;
 
 	UAnimMontage* CurrentMontage;
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 HP = 100.f;
 };

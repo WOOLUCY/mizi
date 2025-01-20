@@ -42,6 +42,13 @@ public: // Movement
 	UPROPERTY(EditAnywhere, Category = "Character|Movement")
 	float StaminaDrainSpeed = 0.1f;
 
+	UPROPERTY(EditAnywhere, Category = "Character|Movement")
+	float WalkMinSpeed = 400.0f;
+	UPROPERTY(EditAnywhere, Category = "Character|Movement")
+	float WeightThreshold = 40.0f;
+	UPROPERTY(EditAnywhere, Category = "Character|Movement")
+	float WeightNoEffect = 10.0f;
+
 
 public: // Animation
 	UPROPERTY(EditAnywhere, Category = "Character|Animation")
