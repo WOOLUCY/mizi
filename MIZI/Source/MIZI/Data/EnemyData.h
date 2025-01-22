@@ -51,6 +51,10 @@ public: // Animation
 	UPROPERTY(EditAnywhere, Category = "Enemy|Animation")
 	TArray<UAnimMontage*> DieMontage;
 
+public:
+	UPROPERTY(EditAnywhere, Category = "Enemy|AI")
+	TSubclassOf<UBehaviorTree> BehaviorTree;
+
 public: // Combat
 	UPROPERTY(EditAnywhere, Category = "Enemy|Combat")
 	int32 Damage;

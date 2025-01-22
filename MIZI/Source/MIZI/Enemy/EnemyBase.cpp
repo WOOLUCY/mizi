@@ -20,6 +20,10 @@ AEnemyBase::AEnemyBase()
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
 	StaticMeshComponent->SetupAttachment(RootComponent);
 	StaticMeshComponent->SetCanEverAffectNavigation(false);
+
+	// Navigation Invoker 컴포넌트 생성 및 초기화
+	NavigationInvoker = CreateDefaultSubobject<UNavigationInvokerComponent>(TEXT("NavigationInvoker"));
+	NavigationInvoker->SetGenerationRadii(3000.0f, 5000.0f);
 }
 
 // Called when the game starts or when spawned

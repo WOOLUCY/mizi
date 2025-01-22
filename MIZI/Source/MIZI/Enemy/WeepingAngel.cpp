@@ -72,12 +72,12 @@ void AWeepingAngel::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	ABasicAIController* AIController = Cast<ABasicAIController>(GetController());
-	if (!AIController)
-	{
-		ensure(false);
-		return;
-	}
+	//ABasicAIController* AIController = Cast<ABasicAIController>(GetController());
+	//if (!AIController)
+	//{
+	//	ensure(false);
+	//	return;
+	//}
 
 	//if(StaticMeshComponent->UPrimitiveComponent::WasRecentlyRendered())
 	//{

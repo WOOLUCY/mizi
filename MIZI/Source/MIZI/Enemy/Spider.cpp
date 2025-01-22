@@ -1,45 +1,17 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Enemy/EnemyBase.h"
-
-#include "BasicAIController.h"
+#include "Enemy/Spider.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "AI/AIController/SpiderAIController.h"
 #include "Components/CapsuleComponent.h"
-#include "Components/StaticMeshComponent.h"
-#include "Data/EnemyData.h"
-#include "Kismet/GameplayStatics.h"
 
 
-// Sets default values
-AEnemyBase::AEnemyBase()
-{
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
-	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
-	StaticMeshComponent->SetupAttachment(RootComponent);
-	StaticMeshComponent->SetCanEverAffectNavigation(false);
-}
-
-// Called when the game starts or when spawned
-void AEnemyBase::BeginPlay()
-{
-	Super::BeginPlay();
-	SetData(DataTableRowHandle);
-}
-
-void AEnemyBase::OnConstruction(const FTransform& Transform)
-{
-	Super::OnConstruction(Transform);
-	SetData(DataTableRowHandle);
-}
-
-void AEnemyBase::SetData(const FDataTableRowHandle& InDataTableRowHandle)
+void ASpider::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 {
 	DataTableRowHandle = InDataTableRowHandle;
-	if(DataTableRowHandle.IsNull()) {return;}
-	FEnemyTableRow* Data = DataTableRowHandle.GetRow<FEnemyTableRow>(TEXT("BasicEnemy"));
+	if (DataTableRowHandle.IsNull()) { return; }
+	FEnemyTableRow* Data = DataTableRowHandle.GetRow<FEnemyTableRow>(TEXT("Spider"));
 	if (!Data) { ensure(false); return; }
 
 	EnemyData = Data;
@@ -61,7 +33,7 @@ void AEnemyBase::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 			Capsule->SetCapsuleHalfHeight(EnemyData->CollisionCapsuleHalfHeight, false);
 		}
 	}
-	if(EnemyData->SkeletalMesh)
+	if (EnemyData->SkeletalMesh)
 	{
 		USkeletalMeshComponent* SkeletalMeshComponent = GetMesh();
 		SkeletalMeshComponent->SetSkeletalMesh(EnemyData->SkeletalMesh);
@@ -74,7 +46,7 @@ void AEnemyBase::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 		StaticMeshComponent->SetVisibility(false);
 		StaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
-	else if(EnemyData->StaticMesh)
+	else if (EnemyData->StaticMesh)
 	{
 		StaticMeshComponent->SetStaticMesh(EnemyData->StaticMesh);
 		StaticMeshComponent->SetRelativeTransform(EnemyData->MeshTransform);
@@ -86,35 +58,12 @@ void AEnemyBase::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 		GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 	{
-		AIControllerClass = ABasicAIController::StaticClass();
+		AIControllerClass = ASpiderAIController::StaticClass();
 		AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	}
-
 }
 
-// Called every frame
-void AEnemyBase::Tick(float DeltaTime)
+float ASpider::Attack()
 {
-	Super::Tick(DeltaTime);
-
+	return 0.0f;
 }
-
-float AEnemyBase::Attack()
-{
-	GetMovementComponent()->StopMovementImmediately();
-
-	TArray<UAnimMontage*> AttackMontages = EnemyData->AttackMontage;
-	if(AttackMontages.IsEmpty())
-	{
-		ensure(false);
-		return 0.f;
-	}
-
-	TSubclassOf<UDamageType> DamageType;
-
-	float AnimationDuration = PlayAnimMontage(AttackMontages[0]);
-	float Damage = UGameplayStatics::ApplyDamage(UGameplayStatics::GetPlayerPawn(GetWorld(), 0), EnemyData->Damage, nullptr, this, DamageType);
-	UE_LOG(LogTemp, Log, TEXT("%f damaged"), Damage);
-	return AnimationDuration;
-}
-

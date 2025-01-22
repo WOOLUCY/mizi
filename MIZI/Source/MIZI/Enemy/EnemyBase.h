@@ -5,7 +5,8 @@
 #include "CoreMinimal.h"
 #include "AI/Interface/EnemyInterface.h"
 #include "GameFramework/Character.h"
-//#include "Data/EnemyData.h"
+#include "Data/EnemyData.h"
+#include "NavigationInvokerComponent.h"
 
 #include "EnemyBase.generated.h"
 
@@ -45,6 +46,10 @@ public:
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* StaticMeshComponent;
+
+	// Navigation Invoker Component
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Navigation")
+	UNavigationInvokerComponent* NavigationInvoker;
 
 protected:
 	UPROPERTY(EditAnywhere, meta = (RowType = "/Script/MIZI.EnemyTableRow"))

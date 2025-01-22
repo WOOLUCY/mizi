@@ -74,6 +74,7 @@ Plugins/**/Intermediate/*
 DerivedDataCache/*
 /MIZI/Binaries
 /MIZI/Intermediate
-/MIZI/Saved
+MIZI/Saved
 MIZI/Content/StarterContent/Architecture/Floor_400x400.uasset
 MIZI/Content/ModularSciFi/Textures/Water/T_WaterDirt_normal.uasset
+MIZI/enc_temp_folder
