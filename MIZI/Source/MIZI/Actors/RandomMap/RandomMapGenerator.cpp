@@ -385,7 +385,7 @@ void ARandomMapGenerator::GetRandomPointsFromSpawnBox(int32 MaxAttempts)
 
     bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, RandomBoxLocation, EndLocation, ECC_Visibility, CollisionParams);
 
-    DrawDebugLine(GetWorld(), RandomBoxLocation, EndLocation, FColor::Green, false, INFINITY, 0, 1.0f);
+    DrawDebugLine(GetWorld(), RandomBoxLocation, EndLocation, FColor::Green, false, 10.f, 0, 1.0f);
 
 	// 만약 완전히 공중이라면 랜덤한 위치를 다시 구함
     if (!bHit)

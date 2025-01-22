@@ -34,11 +34,7 @@ ATerminal::ATerminal()
 	// Screen Widget
 	ScreenWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
 
-	static ConstructorHelpers::FClassFinder<UUserWidget> WidgetClass(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Terminal/WBP_Console.WBP_Console_C'"));
-	if (WidgetClass.Succeeded())
-	{
-		ScreenWidget->SetWidgetClass(WidgetClass.Class);
-	}
+ 
 
 	ScreenWidget->SetupAttachment(StaticMeshComponent);
 	ScreenWidget->SetRelativeLocation(FVector(0.0f, 0.0f, 100.0f));
