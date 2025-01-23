@@ -16,33 +16,6 @@ UBTTask_MoveToSteppedLocation::UBTTask_MoveToSteppedLocation()
     bNotifyTick = true;
 }
 
-//EBTNodeResult::Type UBTTask_MoveToSteppedLocation::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
-//{
-//	auto* ControlledPawn = OwnerComp.GetAIOwner()->GetPawn();
-//	if (nullptr == ControlledPawn) return EBTNodeResult::Failed;
-//
-//	ASpider* Spider = Cast<ASpider>(ControlledPawn);
-//	if (!Spider) return EBTNodeResult::Failed;
-//
-//	UBlackboardComponent* BlackboardComponent = Spider->GetController()->FindComponentByClass<UBlackboardComponent>();
-//	if (!BlackboardComponent) return EBTNodeResult::Failed;
-//	
-//	FVector NewLocation = BlackboardComponent->GetValueAsVector(FName("SteppedLocation"));
-//	OwnerComp.GetAIOwner()->MoveToLocation(NewLocation);
-//
-//
-//	if (FVector::Dist(NewLocation, Spider->GetActorLocation()) <= 50.0)	// SteppedLocation에 충분히 가깝다면
-//	{
-//		BlackboardComponent->SetValueAsBool(FName("IsStepped"), false);
-//		return EBTNodeResult::Succeeded;
-//	}
-//	else
-//	{
-//		return EBTNodeResult::Failed;
-//	}
-//}
-
-
 EBTNodeResult::Type UBTTask_MoveToSteppedLocation::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
     AAIController* AIController = OwnerComp.GetAIOwner();
