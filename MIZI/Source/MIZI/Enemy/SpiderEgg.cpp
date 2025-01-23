@@ -27,14 +27,13 @@ ASpiderEgg::ASpiderEgg()
 	{
 		StaticMeshComponent->SetStaticMesh(MeshAsset.Object);
 	}
-    else
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Spider Egg's Mesh is not found!"));
-    }
 
 	// Box Collision
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
 	BoxCollision->SetupAttachment(RootComponent);
+	BoxCollision->SetLineThickness(3.f);
+	BoxCollision->bHiddenInGame = false;
+	BoxCollision->AddRelativeLocation(FVector(0.0, 0.0, 30.0));
 
 	// Navigation Invoker Component
 	NavigationInvoker = CreateDefaultSubobject<UNavigationInvokerComponent>(TEXT("NavigationInvoker"));
@@ -65,19 +64,23 @@ void ASpiderEgg::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 	// TODO: 알이 밟히는 소리 처리
 	// Sound Attenuation 사용, 경로 하드 코딩
 
-    AActor* InstigatorActor = GetInstigator();
+	AActor* InstigatorActor = GetInstigator();
     if (!InstigatorActor) { return; }
 
     // Instigator가 AIController인 경우 BlackboardComponent를 가져옴
-    AAIController* AIController = Cast<AAIController>(InstigatorActor);
-    if (AIController)
+	UBlackboardComponent* BlackboardComponent = InstigatorActor->GetInstigatorController()->FindComponentByClass<UBlackboardComponent>();
+	if (BlackboardComponent)
     {
-        UBlackboardComponent* BlackboardComponent = AIController->GetBlackboardComponent();
-        if (BlackboardComponent)
-        {
-            BlackboardComponent->SetValueAsBool(FName("TargetActor"), true);
-			BlackboardComponent->SetValueAsVector(FName("SteppedLocation"), GetActorLocation());
-        }
+        BlackboardComponent->SetValueAsBool(FName("TargetActor"), true);
+
+		FVector ActorLocation = GetActorLocation(); // 액터의 위치 가져오기
+		UE_LOG(LogTemp, Warning, TEXT("Actor Location: X=%f, Y=%f, Z=%f"),
+			ActorLocation.X, ActorLocation.Y, ActorLocation.Z);
+
+		BlackboardComponent->SetValueAsVector(FName("SteppedLocation"), GetActorLocation());
+		BlackboardComponent->SetValueAsBool(FName("IsStepped"), true);
     }
+
+	Destroy();
 }
 

@@ -5,6 +5,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "AI/AIController/SpiderAIController.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 void ASpider::SetData(const FDataTableRowHandle& InDataTableRowHandle)
@@ -65,5 +66,19 @@ void ASpider::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 
 float ASpider::Attack()
 {
-	return 0.0f;
+	//GetMovementComponent()->StopMovementImmediately();
+
+	TArray<UAnimMontage*> AttackMontages = EnemyData->AttackMontage;
+	if (AttackMontages.IsEmpty())
+	{
+		ensure(false);
+		return 0.f;
+	}
+
+	TSubclassOf<UDamageType> DamageType;
+
+	float AnimationDuration = PlayAnimMontage(AttackMontages[0]);
+	float Damage = UGameplayStatics::ApplyDamage(UGameplayStatics::GetPlayerPawn(GetWorld(), 0), EnemyData->Damage, nullptr, this, DamageType);
+	UE_LOG(LogTemp, Log, TEXT("%f damaged"), Damage);
+	return AnimationDuration;
 }

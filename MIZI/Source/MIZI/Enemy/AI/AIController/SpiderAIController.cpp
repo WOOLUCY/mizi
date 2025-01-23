@@ -22,16 +22,16 @@ ASpiderAIController::ASpiderAIController()
 	// AIPerceptionComponent의 DominantSense 설정(우선순위가 되는 감각)
 	AIPerceptionComponent->SetDominantSense(*SightConfig->GetSenseImplementation());
 
-
-	//static ConstructorHelpers::FObjectFinder<UBehaviorTree> BT(TEXT("/Script/AIModule.BehaviorTree'/Game/Enemy/Spider/AI/BT_Spider.BT_Spider'"));
-	//if (BT.Succeeded())
-	//{
-	//	BehaviorTree = BT.Object;
-	//}
-	//static ConstructorHelpers::FObjectFinder<UBlackboardData> BB(TEXT("/Script/AIModule.BlackboardData'/Game/Enemy/Spider/AI/BB_Spider.BB_Spider'"));
-	//if (BB.Succeeded())
-	//{
-	//	//BlackboardComponent = BB.Object;
-	//	BlackboardData = BB.Object;
-	//}
+	// WARNING: 75% loading
+	static ConstructorHelpers::FObjectFinder<UBehaviorTree> BT(TEXT("/Script/AIModule.BehaviorTree'/Game/Enemy/Spider/AI/BT_Spider.BT_Spider'"));
+	if (BT.Succeeded())
+	{
+		BehaviorTree = BT.Object;
+	}
+	static ConstructorHelpers::FObjectFinder<UBlackboardData> BB(TEXT("/Script/AIModule.BlackboardData'/Game/Enemy/Spider/AI/BB_Spider.BB_Spider'"));
+	if (BB.Succeeded())
+	{
+		//BlackboardComponent = BB.Object;
+		BlackboardData = BB.Object;
+	}
 }

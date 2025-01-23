@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Enemy/EnemyBase.h"
 #include "Data/EnemyData.h"
+#include "SpiderEgg.h"
 
 #include "Spider.generated.h"
 
@@ -20,4 +21,7 @@ protected:
 
 public:	// Interface
 	virtual float Attack() override;
+
+public:
+	TMap<ASpiderEgg*, bool> EggLocations;
 };

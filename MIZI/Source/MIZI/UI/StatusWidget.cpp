@@ -172,7 +172,7 @@ void UStatusWidget::OnInventoryChanged()
 	ABasicCharacter* Character = Cast<ABasicCharacter>(GetOwningPlayerPawn());
 	if (!Character)
 	{
-		check(Character);
+		ensure(Character);
 		return;
 	}
 
