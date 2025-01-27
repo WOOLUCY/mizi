@@ -85,6 +85,19 @@ public:	// UI
 	UPROPERTY(EditAnywhere, Category = "Character|UI")
 	TSubclassOf<UUserWidget> InventoryWidgetClass = nullptr;
 
+public: // Camera Shake
+	UPROPERTY(EditAnywhere, Category = "Character|CS")
+	TSubclassOf<UCameraShakeBase> DamageCameraShake01 = nullptr;
+	UPROPERTY(EditAnywhere, Category = "Character|CS")
+	TSubclassOf<UCameraShakeBase> DamageCameraShake02 = nullptr;
+	UPROPERTY(EditAnywhere, Category = "Character|CS")
+	TSubclassOf<UCameraShakeBase> DamageCameraShake03 = nullptr;
+	UPROPERTY(EditAnywhere, Category = "Character|CS")
+	TSubclassOf<UCameraShakeBase> DamageCameraShake04 = nullptr;
+	UPROPERTY(EditAnywhere, Category = "Character|CS")
+	TSubclassOf<UCameraShakeBase> DamageCameraShake05 = nullptr;
+
+
 
 
 //public: // Weapon

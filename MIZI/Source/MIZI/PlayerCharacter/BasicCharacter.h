@@ -51,8 +51,8 @@ private:
 	void ChangeControllerRotationYaw();
 
 protected:
-	virtual void OnStartCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust);
-	virtual void OnEndCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust);
+	virtual void OnStartCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust) override;
+	virtual void OnEndCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust) override;
 
 public:
 	void OnScan();
@@ -70,6 +70,11 @@ public:
 	void OnTerminalReleased();
 
 	float OnSignAttack(TSet<AActor*> DamagedActors);
+
+	void OnDie();
+
+	UFUNCTION()
+	void MoveToDeadCam(ACameraActor* Cam);
 
 public:
 	FCharacterTableRow* GetCharacterData() const { return CharacterData; }
@@ -142,9 +147,11 @@ private:	// Sprint
 protected:
 	UFUNCTION()
 	void ScanRadiusUpdate(float Radius);
-
 	UFUNCTION()
 	void OnScanFinished();
+
+	// Fall Damage
+	virtual void Landed(const FHitResult& Hit) override;
 
 public:
 	bool GetCanOpenDoor() const { return bCanOpenDoor; }
@@ -156,6 +163,9 @@ public:
 private:
 	bool bCanOpenDoor = false;
 	ALockedDoor* OverlappedDoor;
+
+	float FallDamageTolerance = 1000.0f;
+	float FallDamage;
 
 
 	// Parallax HUD
@@ -181,4 +191,8 @@ protected:
 
 private:
 	float CalculatePlayerSpeed();
+
+private:
+	FTimerHandle TimerHandle;
 };
+

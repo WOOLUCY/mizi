@@ -147,6 +147,13 @@ void UStatusWidget::OnMapOff()
 	}
 }
 
+void UStatusWidget::OnDamaged()
+{
+	PlayAnimation(Damaged);
+	CautionText->SetText(FText::FromString("DAMAGED"));
+	PlayAnimation(Caution, 0.0, 5);
+}
+
 void UStatusWidget::ChangeSlotText(uint32 Index, UTextBlock* TextSlot)
 {
 	auto Temp = OwningItems.Find(Index);

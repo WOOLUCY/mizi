@@ -24,6 +24,7 @@ public:
 	int32 GetMaxStamina() const { return MaxStamina; }
 	int32 GetMaxSanity() const { return MaxSanity; }
 	int32 GetCurMoney() const { return CurMoney; }
+	bool GetIsDead() const { return IsDead; }
 
 	void SetCurHealth(int32 InUint) { CurHealth = InUint; }
 	void SetCurStamina(int32 InUint) { CurStamina = InUint; }
@@ -32,6 +33,7 @@ public:
 	void SetMaxStamina(int32 InUint) { MaxStamina = InUint; }
 	void SetMaxSanity(int32 InUint) { MaxSanity = InUint; }
 	void SetCurMoney(int32 InUint) { CurMoney = InUint; }
+	void SetIsDead(bool InBool) { IsDead = InBool; }
 
 public:
 	UPROPERTY(BlueprintReadWrite)
@@ -51,4 +53,8 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	int32 CurMoney = 300;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool IsDead = false;
+
 };

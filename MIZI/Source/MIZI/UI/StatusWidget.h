@@ -38,6 +38,9 @@ public:
 	void OnMapOn();
 	void OnMapOff();
 
+	// Damage
+	void OnDamaged();
+
 	// Inventory
 public:
 	void ChangeSlotText(uint32 Index, UTextBlock* TextSlot);
@@ -73,6 +76,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<UImage> Minimap;
 
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	TObjectPtr<UTextBlock> CautionText;
 
 
 public:
@@ -82,6 +87,10 @@ public:
 	TObjectPtr<UWidgetAnimation> MapOff;
 	UPROPERTY(meta = (BindWidgetAnim), Transient)
 	TObjectPtr<UWidgetAnimation> FireGun;
+	UPROPERTY(meta = (BindWidgetAnim), Transient)
+	TObjectPtr<UWidgetAnimation> Damaged;
+	UPROPERTY(meta = (BindWidgetAnim), Transient)
+	TObjectPtr<UWidgetAnimation> Caution;
 
 	// Inventory
 public:

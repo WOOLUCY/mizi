@@ -4,6 +4,7 @@
 #include "PlayerCharacter/BasicCharacter.h"
 
 #include "Actors/Gimmick/GimmickBase.h"
+#include "Camera/CameraActor.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMaterialLibrary.h"
@@ -64,6 +65,7 @@ ABasicCharacter::ABasicCharacter(const FObjectInitializer& ObjectInitializer)
 	// Widget Interaction
 	WidgetInteraction = CreateDefaultSubobject<UWidgetInteractionComponent>(TEXT("WidgetInteraction"));
 	WidgetInteraction->SetupAttachment(FirstPersonCamera);
+
 }
 
 // Called when the game starts or when spawned
@@ -143,9 +145,45 @@ void ABasicCharacter::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 float ABasicCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
 	class AController* EventInstigator, AActor* DamageCauser)
 {
+	// Decrease HP
 	int32 NewHealth = Status->GetCurHealth() - DamageAmount;
 	UKismetMathLibrary::Clamp(NewHealth, 0, Status->GetMaxHealth());
 	Status->SetCurHealth(NewHealth);
+
+	if (NewHealth <= 0)
+	{
+		OnDie();
+		return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	}
+
+	// HUD
+	ABasicHUD* BasicHUD = Cast<ABasicHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
+	if (!BasicHUD)
+	{
+		ensure(false);
+	}
+	BasicHUD->GetStatusWidget()->OnDamaged();
+
+	// Camera Shake
+	int NewDamage = UKismetMathLibrary::FTrunc(DamageAmount) / 20;
+	switch (NewDamage)
+	{
+	case 1:
+		UGameplayStatics::PlayWorldCameraShake(GetWorld(), CharacterData->DamageCameraShake01, GetActorLocation(), 0.0, 1000.0);
+		break;
+	case 2:
+		UGameplayStatics::PlayWorldCameraShake(GetWorld(), CharacterData->DamageCameraShake02, GetActorLocation(), 0.0, 1000.0);
+		break;
+	case 3:
+		UGameplayStatics::PlayWorldCameraShake(GetWorld(), CharacterData->DamageCameraShake03, GetActorLocation(), 0.0, 1000.0);
+		break;
+	case 4:
+		UGameplayStatics::PlayWorldCameraShake(GetWorld(), CharacterData->DamageCameraShake04, GetActorLocation(), 0.0, 1000.0);
+		break;
+	case 5:
+		UGameplayStatics::PlayWorldCameraShake(GetWorld(), CharacterData->DamageCameraShake05, GetActorLocation(), 0.0, 1000.0);
+		break;
+	}
 
 	return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 }
@@ -449,6 +487,55 @@ float ABasicCharacter::OnSignAttack(TSet<AActor*> DamagedActors)
 }
 
 
+void ABasicCharacter::OnDie()
+{
+	ABasicPlayerState* BasicPlayerState = Cast<ABasicPlayerState>(GetPlayerState());
+	if (!BasicPlayerState)
+	{
+		ensure(false);
+	}
+
+	BasicPlayerState->SetIsDead(true);
+
+	ABasicHUD* BasicHUD = Cast<ABasicHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
+	if (!BasicHUD)
+	{
+		ensure(false);
+	}
+	BasicHUD->GetStatusWidget()->SetVisibility(ESlateVisibility::Hidden);
+
+	GetMesh()->SetSimulatePhysics(true);
+	DisableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+	// Camera
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+	AActor* Cam = GetWorld()->SpawnActor<AActor>(ACameraActor::StaticClass(), GetActorTransform(), SpawnParams);
+
+	ACameraActor* DeadCam = Cast<ACameraActor>(Cam);
+	if (!DeadCam) return;
+
+	//UKismetSystemLibrary::K2_SetTimer(this, TEXT("MoveToDeadCam"), 1.0f, false);
+
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this, DeadCam]()
+		{
+			MoveToDeadCam(DeadCam);
+		}, 1.0f, false);
+}
+
+void ABasicCharacter::MoveToDeadCam(ACameraActor* Cam)
+{
+	FVector NewLocation = GetMesh()->GetSocketLocation(TEXT("FlashSocket")) + FVector(0.0, 0.0, 300.0);
+	Cam->SetActorLocation(NewLocation);
+
+	FRotator NewRotation = UKismetMathLibrary::FindLookAtRotation(Cam->GetActorLocation(), GetMesh()->GetSocketLocation(TEXT("FlashSocket")));
+	Cam->SetActorRotation(NewRotation);
+	UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(Cam, 1);
+
+	// TODO: Play Sequence
+}
+
+
 void ABasicCharacter::DrainStamina()
 {
 	uint32 NewStamina = UKismetMathLibrary::Clamp((Status->GetCurStamina() - 1), 0, Status->GetMaxStamina());
@@ -573,6 +660,23 @@ void ABasicCharacter::OnScanFinished()
 {
 	ScannedItems.Empty();
 	ScannedGimmicks.Empty();
+}
+
+void ABasicCharacter::Landed(const FHitResult& Hit)
+{
+	Super::Landed(Hit);
+
+	if (!GetMovementComponent()->IsFalling()) return;
+
+	float Velocity = GetVelocity().Z;
+	Velocity *= -1.0f;
+
+	if (Velocity <= FallDamageTolerance) return;
+	FallDamage = Velocity / 13.0f;
+
+	TSubclassOf<UDamageType> DamageType;
+	float Damage = UGameplayStatics::ApplyDamage(this, FallDamage, nullptr, this, DamageType);
+	UE_LOG(LogTemp, Warning, TEXT("Fall Damage: %f"), Damage);
 }
 
 void ABasicCharacter::SetParallaxHUDOffset()
