@@ -21,6 +21,9 @@ public: // Base
 	UPROPERTY(EditAnywhere, Category = "Item")
 	UStaticMesh* StaticMesh = nullptr;
 
+	UPROPERTY(EditAnywhere, Category = "Item")
+	USkeletalMesh* SkeletalMesh = nullptr;
+
 	// ���� ���� ����
 	UPROPERTY(EditAnywhere, Category = "Item")
 	bool bEquipped = true;

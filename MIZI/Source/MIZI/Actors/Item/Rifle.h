@@ -23,10 +23,14 @@ public:
 
 public:
 	int32 GetCurBulletAmount() const { return CurBulletAmount; }
-	int32 GetMaxBulletAmount() const { return MaxBulletAMount; }
+	int32 GetMaxBulletAmount() const { return MaxBulletAmount; }
 
 	void SetCurBulletAmount(const int32 InCurBulletAmount) {CurBulletAmount = InCurBulletAmount;}
-	void SetMaxBulletAMount(const int32 InMaxBulletAMount) { MaxBulletAMount = InMaxBulletAMount;}
+	void SetMaxBulletAmount(const int32 InMaxBulletAMount) { MaxBulletAmount = InMaxBulletAMount;}
+
+protected:
+	UFUNCTION()
+	virtual void FireBullet();
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "Rifle")
@@ -49,12 +53,13 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Rifle")
 	int32 CurBulletAmount = 10;
 	UPROPERTY(EditAnywhere, Category = "Rifle")
-	int32 MaxBulletAMount = 30;
+	int32 MaxBulletAmount = 30;
 
 	UPROPERTY(EditAnywhere, Category = "Rifle")
-	float RiffleDamage = 20.f;
+	float Damage = 20.f;
 
-private:
-	UFUNCTION()
-	void FireBullet();
+	UPROPERTY(EditAnywhere, Category = "Rifle")
+	float Range = 3000.f;
+
+
 };

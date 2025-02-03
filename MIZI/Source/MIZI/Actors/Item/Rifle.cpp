@@ -106,7 +106,6 @@ void ARifle::FireBullet()
 		UGameplayStatics::PlaySoundAtLocation(GetWorld(), FireSound, GetActorLocation());
 	}
 
-	// Line Trace
 	ABasicCharacter* Character = Cast<ABasicCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	if(!Character)
 	{
@@ -118,8 +117,9 @@ void ARifle::FireBullet()
 	ABasicHUD* HUD = Cast<ABasicHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
 	HUD->GetStatusWidget()->PlayAnimation(HUD->GetStatusWidget()->FireGun);
 
+	// Line Trace
 	FVector StartLocation = Character->GetCameraWorldLocation();
-	FVector EndLocation = Character->GetCameraForwardVector() * 3000.f + StartLocation;
+	FVector EndLocation = Character->GetCameraForwardVector() * Range + StartLocation;
 	FHitResult HitResult;
 	FCollisionQueryParams CollisionParams;
 	CollisionParams.AddIgnoredActor(this);
@@ -149,19 +149,19 @@ void ARifle::FireBullet()
 
 	//TSubclassOf<UDamageType> DamageTypeClass;
 	//UGameplayStatics::ApplyDamage(HitResult.GetActor(), RiffleDamage, nullptr, GetOwner(), DamageTypeClass);
-	//
+	
 	AActor* HitActor = HitResult.GetActor();
 	if (HitActor)
 	{
 		// 피해를 적용
 		UGameplayStatics::ApplyPointDamage(
-			HitActor,									// 피해를 받을 액터
-			RiffleDamage,								// 기본 피해량
-			EndLocation - StartLocation,				// 피해 방향
-			HitResult,									// 충돌 정보
-			UGameplayStatics::GetPlayerController(GetWorld(), 0),                   // 피해를 입힌 컨트롤러
-			this,										// 피해를 입힌 액터 (총알)
-			UDamageType::StaticClass()					// 피해 유형
+			HitActor,									
+			Damage,								
+			EndLocation - StartLocation,			
+			HitResult,								
+			UGameplayStatics::GetPlayerController(GetWorld(), 0),                  
+			this,									
+			UDamageType::StaticClass()					
 		);
 	}
 }
