@@ -83,7 +83,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Weight = 10.0f;
 
-	UPROPERTY(EditAnywhere, meta = (RowType = "/Script/MIZI.ItemTableRow"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (RowType = "/Script/MIZI.ItemTableRow"))
 	FDataTableRowHandle DataTableRowHandle;
 
 	FItemTableRow* ItemTableRow = nullptr;
