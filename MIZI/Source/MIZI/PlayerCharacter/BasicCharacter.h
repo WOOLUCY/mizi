@@ -7,6 +7,7 @@
 #include "Actors/Gimmick/GimmickBase.h"
 #include "Actors/Item/ItemBase.h"
 #include "Actors/RandomMap/LockedDoor.h"
+#include "Actors/Weapon/GunBase.h"
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"

@@ -16,28 +16,20 @@ ABulletBase::ABulletBase()
 	DefaultSceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultSceneRoot"));
 	RootComponent = DefaultSceneRoot;
 
-	Bullet = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
-	Bullet->SetupAttachment(RootComponent);
-
-	//Shell = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
-	//Shell->SetupAttachment(RootComponent);
-
-	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
-	BoxCollision->SetupAttachment(Bullet);
-
-	BoxCollision->OnComponentEndOverlap.AddDynamic(this, &ABulletBase::OnEndOverlap);
+	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
+	StaticMeshComponent->SetupAttachment(RootComponent);
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> MeshAsset(TEXT("/Script/Engine.StaticMesh'/Game/FPS_Weapon_Bundle/Weapons/Meshes/Ammunition/SM_Shell_45ap.SM_Shell_45ap'"));
+	if (MeshAsset.Succeeded())
+	{
+		StaticMeshComponent->SetStaticMesh(MeshAsset.Object);
+	}
+	StaticMeshComponent->OnComponentBeginOverlap.AddDynamic(this, &ABulletBase::OnOverlapBegin);
+	StaticMeshComponent->AddRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
-	ProjectileMovement->InitialSpeed = 5000.f;
-	ProjectileMovement->MaxSpeed = 5000.f;
-	ProjectileMovement->ProjectileGravityScale = 0.1f;
-
-	// 빔 파티클 시스템을 로드
-	static ConstructorHelpers::FObjectFinder<UParticleSystem> ParticleAsset(TEXT("/Script/Engine.ParticleSystem'/Game/Blueprint/Gimmick/Turret/PS_LaserHit.PS_LaserHit'"));
-	if (ParticleAsset.Succeeded())
-	{
-		ParticleEffect = ParticleAsset.Object;
-	}
+	ProjectileMovement->InitialSpeed = 8000.f;
+	ProjectileMovement->MaxSpeed = 8000.f;
+	ProjectileMovement->ProjectileGravityScale = 0.05f;
 }
 
 // Called when the game starts or when spawned
@@ -54,29 +46,39 @@ void ABulletBase::Tick(float DeltaTime)
 
 }
 
-void ABulletBase::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void ABulletBase::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	ACharacter* Character = Cast<ACharacter>(OtherActor);
-	if (!Character) return;
+	UE_LOG(LogTemp, Warning, TEXT("%s is collided"), *GetName());
+	// TODO: Spawn Emitter
 
-	float BaseDamage = 5.0f;
-	TSubclassOf<UDamageType> DamageTypeClass;
-	UGameplayStatics::ApplyDamage(Character, BaseDamage, nullptr, GetOwner(), DamageTypeClass);
-
-	// Spawn Emitter
-	if (ParticleEffect)
-	{
-		FVector Location = GetActorLocation();
-		FRotator Rotation = FRotator(0.0, 90.0, 0.0);
-		FVector Scale = FVector(0.3, 0.3, 0.3);
-
-		// 파티클 생성
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ParticleEffect, Location, Rotation, Scale, true);
-	}
-
-	// TODO: Play Sound When Play are attacked
+	// TODO: Apply Damage
 
 	Destroy();
 }
+
+//void ABulletBase::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+//	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+//{
+//	//ACharacter* Character = Cast<ACharacter>(OtherActor);
+//	//if (!Character) return;
+//
+//	//float BaseDamage = 5.0f;
+//	//TSubclassOf<UDamageType> DamageTypeClass;
+//	//UGameplayStatics::ApplyDamage(Character, BaseDamage, nullptr, GetOwner(), DamageTypeClass);
+//
+//	//// Spawn Emitter
+//	//if (ParticleEffect)
+//	//{
+//	//	FVector Location = GetActorLocation();
+//	//	FRotator Rotation = FRotator(0.0, 90.0, 0.0);
+//	//	FVector Scale = FVector(0.3, 0.3, 0.3);
+//
+//	//	// 파티클 생성
+//	//	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ParticleEffect, Location, Rotation, Scale, true);
+//	//}
+//
+//	// TODO: Play Sound When Play are attacked
+//
+//	
+//}
 

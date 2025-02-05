@@ -6,6 +6,7 @@
 #include "Actors/Item/ItemBase.h"
 #include "Engine/DataTable.h"
 #include "Data/GunData.h"
+#include "UI/ScannedItemWidget.h"
 
 #include "GunBase.generated.h"
 
@@ -20,17 +21,34 @@ class MIZI_API AGunBase : public AItemBase
 public:
 	AGunBase();
 	virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle) override;
-	virtual void OnConstruction(const FTransform& Transform) override;
+
+	virtual void OnEquiped() override;
+	virtual void OnUnEquiped() override;
+	virtual void OnUsed() override;
+
+public:
+	int32 GetCurBulletAmount() const { return CurBulletAmount; }
+	int32 GetMaxBulletAmount() const { return MaxBulletAmount; }
+
+	void SetCurBulletAmount(const int32 InCurBulletAmount) { CurBulletAmount = InCurBulletAmount; }
+	void SetMaxBulletAmount(const int32 InMaxBulletAMount) { MaxBulletAmount = InMaxBulletAMount; }
+
+protected:
+	virtual void Fire();
+	
+	UFUNCTION()
+	virtual void SetCanFire();
+
+protected:
+	UPROPERTY(EditAnywhere, Category = "Rifle")
+	int32 CurBulletAmount;
+	UPROPERTY(EditAnywhere, Category = "Rifle")
+	int32 MaxBulletAmount;
+
+protected:
+	bool bCanFire = true;
 
 
 protected:
-	virtual void BeginPlay() override;
-
-	FGunTableRow* GetGunTableRow() const{ return GunTableRow; }
-
-protected:
-	UPROPERTY(EditAnywhere, meta = (RowType = "/Script/MIZI.GunTableRow"))
-	FDataTableRowHandle GunDataTableRowHandle;
-
 	FGunTableRow* GunTableRow = nullptr;
 };

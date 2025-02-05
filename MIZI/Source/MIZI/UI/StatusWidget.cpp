@@ -67,14 +67,26 @@ void UStatusWidget::RevealBulletWidget()
 	}
 
 	OwningItems = Character->GetOwningItems();
-	ARifle* Rifle = Cast<ARifle>(OwningItems[Character->GetCurInventoryIndex()]);
-	if (!Rifle)
+	//ARifle* Rifle = Cast<ARifle>(OwningItems[Character->GetCurInventoryIndex()]);
+	//if (!Rifle)
+	//{
+	//	CurBulletAmountText->SetVisibility(ESlateVisibility::Hidden);
+	//	return;
+	//}
+
+	//int32 BulletAmount = Rifle->GetCurBulletAmount();
+	//FString String = FString::FromInt(BulletAmount);
+	//CurBulletAmountText->SetText(FText::FromString(String));
+	//CurBulletAmountText->SetVisibility(ESlateVisibility::Visible);
+
+	AGunBase* SMG = Cast<AGunBase>(OwningItems[Character->GetCurInventoryIndex()]);
+	if (!SMG)
 	{
 		CurBulletAmountText->SetVisibility(ESlateVisibility::Hidden);
 		return;
 	}
 
-	int32 BulletAmount = Rifle->GetCurBulletAmount();
+	int32 BulletAmount = SMG->GetCurBulletAmount();
 	FString String = FString::FromInt(BulletAmount);
 	CurBulletAmountText->SetText(FText::FromString(String));
 	CurBulletAmountText->SetVisibility(ESlateVisibility::Visible);
@@ -129,6 +141,29 @@ void UStatusWidget::UpdateMovemnet()
 	{
 		MoveText->SetText(FText::FromString(TEXT("WALK")));
 	}
+}
+
+void UStatusWidget::UpdateBulletText()
+{
+	ABasicCharacter* Character = Cast<ABasicCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	if (!Character)
+	{
+		ensure(false);
+		return;
+	}
+
+	OwningItems = Character->GetOwningItems();
+
+	AGunBase* SMG = Cast<AGunBase>(OwningItems[Character->GetCurInventoryIndex()]);
+	if (!SMG)
+	{
+		CurBulletAmountText->SetVisibility(ESlateVisibility::Hidden);
+		return;
+	}
+
+	int32 BulletAmount = SMG->GetCurBulletAmount();
+	FString String = FString::FromInt(BulletAmount);
+	CurBulletAmountText->SetText(FText::FromString(String));
 }
 
 void UStatusWidget::OnMapOn()

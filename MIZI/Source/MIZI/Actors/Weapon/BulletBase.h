@@ -27,26 +27,20 @@ public:
 
 protected:
 	UFUNCTION()
-	void OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult);
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "Bullet")
 	USceneComponent* DefaultSceneRoot;
 
 	UPROPERTY(EditAnywhere, Category = "Bullet")
-	UStaticMeshComponent* Bullet;
-
-	UPROPERTY(EditAnywhere, Category = "Bullet")
-	UStaticMeshComponent* Shell;
-
-	UPROPERTY(EditAnywhere, Category = "Bullet")
-	UBoxComponent* BoxCollision;
+	UStaticMeshComponent* StaticMeshComponent;
 
 	UPROPERTY(EditAnywhere, Category = "Bullet")
 	UProjectileMovementComponent* ProjectileMovement;
-
-private:
-	UPROPERTY(EditAnywhere, Category = "Effects")
-	UParticleSystem* ParticleEffect;
 };

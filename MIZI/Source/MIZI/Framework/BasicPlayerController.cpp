@@ -184,7 +184,7 @@ void ABasicPlayerController::SetupInputComponent()
 	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_ItemUse")))
 	{
 		EnhancedInputComponent->BindAction(InputAction,
-			ETriggerEvent::Started, this, &ThisClass::OnUseItem);
+			ETriggerEvent::Triggered, this, &ThisClass::OnUseItem);
 	}
 	else
 	{

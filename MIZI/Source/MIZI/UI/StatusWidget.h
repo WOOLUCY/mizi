@@ -33,6 +33,7 @@ public:
 public:
 	void UpdateWeightText();
 	void UpdateMovemnet();
+	void UpdateBulletText();
 
 	// Minimap
 	void OnMapOn();

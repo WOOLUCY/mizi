@@ -119,6 +119,7 @@ void AItemBase::OnScanned()
 	if (!Widget) { return; }
 	Widget->SetVisibility(true);
 	UScannedItemWidget* ScannedItemWidget = Cast<UScannedItemWidget>(Widget->GetWidget());
+	if (!ScannedItemWidget) { return; }
 	ScannedItemWidget->PlayAnimation(ScannedItemWidget->ScanEffect);
 
 	UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnScanTimer"), 3.f, false);

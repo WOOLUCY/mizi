@@ -278,9 +278,8 @@ void ABasicCharacter::OnPickUpItem()
 		AItemBase* Item = Cast<AItemBase>(Actor);
 		OverlappedItem = Item;
 		OverlappedItem->SetActorEnableCollision(false);
-		//OverlappedItem->SetActorHiddenInGame(true);
-		OverlappedItem->AttachToComponent(GetMesh(), 
-			FAttachmentTransformRules::SnapToTargetIncludingScale, 
+		OverlappedItem->AttachToComponent(GetMesh(),
+			FAttachmentTransformRules::SnapToTargetIncludingScale,
 			OverlappedItem->GetItemTableRow()->EquipSocketName);
 
 		OwningItems.Add(CurInventoryIndex, OverlappedItem);
@@ -288,7 +287,7 @@ void ABasicCharacter::OnPickUpItem()
 		OnInventoryChanged();
 
 		Item->OnPicked();
-
+		
 		break;
 	}
 }
