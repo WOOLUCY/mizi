@@ -48,6 +48,9 @@ protected:
 protected:
 	bool bCanFire = true;
 
+public:
+	UPROPERTY(EditAnywhere, meta = (RowType = "/Script/MIZI.EffectTableRow"))
+	FDataTableRowHandle EffectTableRowHandle;
 
 protected:
 	FGunTableRow* GunTableRow = nullptr;

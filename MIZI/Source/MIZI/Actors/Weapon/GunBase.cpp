@@ -6,7 +6,10 @@
 #include "UI/BasicHUD.h"
 #include "Kismet/GameplayStatics.h"
 #include "Actors/Weapon/BulletBase.h"
+#include "Pool/Effect.h"
+#include "Pool/ActorPoolSubsystem.h"
 #include "GameFramework/PawnMovementComponent.h"
+
 
 
 AGunBase::AGunBase()
@@ -16,6 +19,7 @@ AGunBase::AGunBase()
 
 void AGunBase::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 {
+	// Gun Data Table
 	DataTableRowHandle = InDataTableRowHandle;
 	if (DataTableRowHandle.IsNull()) { return; }
 	FGunTableRow* Data = DataTableRowHandle.GetRow<FGunTableRow>(ItemName);
@@ -29,6 +33,8 @@ void AGunBase::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 
 	MaxBulletAmount = GunTableRow->MaxBulletAmount;
 	CurBulletAmount = GunTableRow->CurBulletAmount;
+	
+
 }
 
 void AGunBase::OnEquiped()
@@ -131,10 +137,10 @@ void AGunBase::Fire()
 	}
 
 	// Play Sound
-	if (GunTableRow->FireSound)
-	{
-		UGameplayStatics::PlaySoundAtLocation(GetWorld(), GunTableRow->FireSound, GetActorLocation());
-	}
+	//if (GunTableRow->FireSound)
+	//{
+	//	UGameplayStatics::PlaySoundAtLocation(GetWorld(), GunTableRow->FireSound, GetActorLocation());
+	//}
 
 	// Camera Shake
 	if (GunTableRow->FireCameraShake)
@@ -150,9 +156,14 @@ void AGunBase::Fire()
 		HUD->GetStatusWidget()->UpdateBulletText();
 	}
 
-	// TODO: Spawn Emitter
+	TArray<FName> RowNames = EffectTableRowHandle.DataTable->GetRowNames();
 
+	if (EffectTableRowHandle.IsNull()) { return; }
+	FEffectTableRow* Data = EffectTableRowHandle.GetRow<FEffectTableRow>(TEXT("Fire"));
 
+	if (!Data) { ensure(false); return; }
+	const FTransform EffectTransform = StaticMeshComponent->GetSocketTransform("MuzzleSocket");
+	StaticMeshComponent->GetWorld()->GetSubsystem<UActorPoolSubsystem>()->SpawnEffect(EffectTransform, EffectTableRowHandle);
 
 	UKismetSystemLibrary::K2_SetTimer(this, TEXT("SetCanFire"), GunTableRow->FireSpeed, false);
 }
