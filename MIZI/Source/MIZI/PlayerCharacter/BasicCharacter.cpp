@@ -443,7 +443,7 @@ void ABasicCharacter::OnUseItem()
 	auto EquippedItem = OwningItems.Find(CurInventoryIndex);
 	if (!EquippedItem) return;
 	(*EquippedItem)->OnUsed();
-}
+ }
 
 void ABasicCharacter::OnTerminalPressed()
 {

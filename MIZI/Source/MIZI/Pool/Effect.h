@@ -33,12 +33,12 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Effect|Particle")
 	FTransform ParticleTransform = FTransform::Identity;
 
-public:
-	UPROPERTY(EditAnywhere, Category = "Effect|Decal")
-	FTransform DecalTransform;
-
-	UPROPERTY(EditAnywhere, Category = "Effect|Decal")
-	UMaterial* DecalMaterial;
+//public:
+//	UPROPERTY(EditAnywhere, Category = "Effect|Decal")
+//	FTransform DecalTransform;
+//
+//	UPROPERTY(EditAnywhere, Category = "Effect|Decal")
+//	UMaterial* DecalMaterial;
 };
 
 

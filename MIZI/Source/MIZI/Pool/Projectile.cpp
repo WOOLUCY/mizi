@@ -3,6 +3,7 @@
 
 #include "Pool/Projectile.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Pool/ActorPoolSubsystem.h"
 
 
 FProjectileTableRow::FProjectileTableRow()
@@ -15,18 +16,11 @@ AProjectile::AProjectile()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	DefaultSceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultSceneRoot"));
-	RootComponent = DefaultSceneRoot;
-
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
-	StaticMeshComponent->SetupAttachment(RootComponent);
-	//static ConstructorHelpers::FObjectFinder<UStaticMesh> MeshAsset(TEXT("/Script/Engine.StaticMesh'/Game/FPS_Weapon_Bundle/Weapons/Meshes/Ammunition/SM_Shell_45ap.SM_Shell_45ap'"));
-	//if (MeshAsset.Succeeded())
-	//{
-	//	StaticMeshComponent->SetStaticMesh(MeshAsset.Object);
-	//}
+	RootComponent = StaticMeshComponent;
+	StaticMeshComponent->SetCollisionProfileName(TEXT("Projectile"));
 	StaticMeshComponent->OnComponentBeginOverlap.AddDynamic(this, &AProjectile::OnOverlapBegin);
-	StaticMeshComponent->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.f));
+	//StaticMeshComponent->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.f));
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
 	ProjectileMovement->InitialSpeed = 0.f;
@@ -43,7 +37,7 @@ void AProjectile::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 
 	ProjectileData = Data;
 
-	SetLifeSpan(5.f);
+	SetLifeSpan(1.f);
 
 	StaticMeshComponent->SetStaticMesh(Data->StaticMesh);
 	StaticMeshComponent->SetRelativeTransform(Data->MeshTransform);
@@ -75,12 +69,23 @@ void AProjectile::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActo
 	UE_LOG(LogTemp, Warning, TEXT("%s is collided"), *GetName());
 	if (!IsValid(this)) { return; }
 
+	UE_LOG(LogTemp, Warning, TEXT("SweepResult.ImpactPoint: %s"), *SweepResult.ImpactPoint.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("SweepResult.ImpactNormal: %s"), *SweepResult.ImpactNormal.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("OtherActor: %s"), OtherActor ? *OtherActor->GetName() : TEXT("NULL"));
+	UE_LOG(LogTemp, Warning, TEXT("bFromSweep: %s"), bFromSweep ? TEXT("TRUE") : TEXT("FALSE"));
+
+	
 	ProjectileMovement->Velocity = FVector::ZeroVector;
 	ProjectileMovement->InitialSpeed = 0.f;
 	ProjectileMovement->MaxSpeed = 0.f;
 	ProjectileMovement->ProjectileGravityScale = 0.f;
-	
+
 	// TODO: Spawn Effect
+	FTransform NewTransform;
+	NewTransform.SetLocation(SweepResult.ImpactPoint);
+	FRotator Rotation = UKismetMathLibrary::Conv_VectorToRotator(SweepResult.ImpactNormal);
+	NewTransform.SetRotation(Rotation.Quaternion());
+	GetWorld()->GetSubsystem<UActorPoolSubsystem>()->SpawnHitEffectWithDecal(NewTransform, ProjectileData->HitEffectTableRowHandle);
 
 
 	// TODO: Apply Damage

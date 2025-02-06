@@ -19,8 +19,17 @@ void UActorPoolSubsystem::SpawnProjectile(const FTransform& SpawnTransform, cons
 	NewProjectile->Shoot();
 }
 
+void UActorPoolSubsystem::SpawnHitEffectWithDecal(const FTransform& SpawnTransform, const FDataTableRowHandle& InDataTableRowHandle)
+{
+	AEffectWithDecal* NewEffect = HitEffectDecalPool.GetActorFromPool();
+	NewEffect->SetData(InDataTableRowHandle);
+	NewEffect->SetActorTransform(SpawnTransform);
+	NewEffect->Play();
+}
+
 void UActorPoolSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 {
 	EffectPool.InitializePool(&InWorld, 20);
 	ProjectilePool.InitializePool(&InWorld, 30);
+	HitEffectDecalPool.InitializePool(&InWorld, 20);
 }

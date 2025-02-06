@@ -92,7 +92,7 @@ void AGunBase::OnUsed()
 
 void AGunBase::Fire()
 {
-	if (CurBulletAmount <= 0) return;
+	//if (CurBulletAmount <= 0) return;
 	if (!bCanFire) return;
 
 	bCanFire = false;

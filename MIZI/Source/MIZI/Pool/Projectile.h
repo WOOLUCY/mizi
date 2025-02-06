@@ -9,7 +9,6 @@
 #include "Components/DecalComponent.h"
 
 
-
 #include "Projectile.generated.h"
 
 /**
@@ -24,6 +23,9 @@ struct MIZI_API FProjectileTableRow : public FTableRowBase
 public:
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 	TSubclassOf<AProjectile> ProjectileClass;
+
+	UPROPERTY(EditAnywhere, Category = "Projectile|Effect", meta = (RowType = "/Script/MIZI.EffectTableRow"))
+	FDataTableRowHandle HitEffectTableRowHandle;
 
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 	UStaticMesh* StaticMesh;
@@ -60,9 +62,6 @@ protected:
 		const FHitResult& SweepResult);
 
 protected:
-	UPROPERTY(VisibleAnywhere)
-	USceneComponent* DefaultSceneRoot = nullptr;
-
 	UPROPERTY(EditAnywhere, Category = "Bullet")
 	UStaticMeshComponent* StaticMeshComponent;
 
