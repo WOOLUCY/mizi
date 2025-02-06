@@ -126,15 +126,17 @@ void AGunBase::Fire()
 	BulletTransform.SetLocation(MuzzleLocation);
 	BulletTransform.SetRotation(ShootDirection.Rotation().Quaternion());
 
-	ABulletBase* Bullet = GetWorld()->SpawnActorDeferred<ABulletBase>(
-		ABulletBase::StaticClass(), BulletTransform, this, this->GetInstigator(), ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn
-	);
+	//ABulletBase* Bullet = GetWorld()->SpawnActorDeferred<ABulletBase>(
+	//	ABulletBase::StaticClass(), BulletTransform, this, this->GetInstigator(), ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn
+	//);
 
-	if (Bullet)
-	{
-		Bullet->SetOwner(this);
-		Bullet->FinishSpawning(BulletTransform);
-	}
+	//if (Bullet)
+	//{
+	//	Bullet->SetOwner(this);
+	//	Bullet->FinishSpawning(BulletTransform);
+	//}
+
+	StaticMeshComponent->GetWorld()->GetSubsystem<UActorPoolSubsystem>()->SpawnProjectile(BulletTransform, GunTableRow->ProjectileRowHandle);
 
 	// Play Sound
 	//if (GunTableRow->FireSound)

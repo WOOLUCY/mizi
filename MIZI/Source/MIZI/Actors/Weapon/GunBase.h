@@ -33,6 +33,8 @@ public:
 	void SetCurBulletAmount(const int32 InCurBulletAmount) { CurBulletAmount = InCurBulletAmount; }
 	void SetMaxBulletAmount(const int32 InMaxBulletAMount) { MaxBulletAmount = InMaxBulletAMount; }
 
+	const FGunTableRow* GetGunTableRow() const { return GunTableRow; }
+
 protected:
 	virtual void Fire();
 	

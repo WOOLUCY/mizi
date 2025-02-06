@@ -32,6 +32,9 @@ public:
 	// Bullet
 	UPROPERTY(EditAnywhere, Category = "Gun|Bullet")
 	TSubclassOf<ABulletBase> Bullet = nullptr;
+
+	UPROPERTY(EditAnywhere, meta = (RowType = "/Script/MIZI.ProjectileTableRow"))
+	FDataTableRowHandle ProjectileRowHandle;
 	
 	// Sound
 	UPROPERTY(EditAnywhere, Category = "Gun|Sound")
@@ -48,16 +51,8 @@ public:
 	TSubclassOf<UCameraShakeBase> FireCameraShake;
 
 	// Effect
-	UPROPERTY(EditAnywhere, Category = "Gun|Effect")
-	UParticleSystem* FireEffect;
-
-	UPROPERTY(EditAnywhere, Category = "Gun|Effect")
-	UParticleSystem* HitEffect;
-
-	// Decal
-	UPROPERTY(EditAnywhere, Category = "Gun|Decal")
-	UMaterialInterface* BulletMarkDecal;
-
+	//UPROPERTY(EditAnywhere, Category = "Gun|Effect")
+	//UParticleSystem* FireEffect;
 
 	// Value
 	UPROPERTY(EditAnywhere, Category = "Gun|Value")

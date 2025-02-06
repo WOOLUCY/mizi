@@ -11,7 +11,16 @@ void UActorPoolSubsystem::SpawnEffect(const FTransform& SpawnTransform, const FD
 	NewEffect->Play();
 }
 
+void UActorPoolSubsystem::SpawnProjectile(const FTransform& SpawnTransform, const FDataTableRowHandle& InDataTableRowHandle)
+{
+	AProjectile* NewProjectile = ProjectilePool.GetActorFromPool();
+	NewProjectile->SetData(InDataTableRowHandle);
+	NewProjectile->SetActorTransform(SpawnTransform);
+	NewProjectile->Shoot();
+}
+
 void UActorPoolSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 {
 	EffectPool.InitializePool(&InWorld, 20);
+	ProjectilePool.InitializePool(&InWorld, 30);
 }
