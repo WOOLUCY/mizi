@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Actors/Item/Rifle.h"
+#include "Actors/Weapon/Rifle.h"
 #include "ShotGun.generated.h"
 
 /**
@@ -17,19 +17,10 @@ class MIZI_API AShotGun : public ARifle
 public:
 	AShotGun();
 	virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle);
-
-	virtual void OnUsed() override;
-
 protected:
-	virtual void FireBullet() override;
-
-	UFUNCTION()
-	void SetFireState();
+	virtual void Fire() override;
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<USkeletalMeshComponent> SkeletalMeshComponent;
-
-protected:
-	bool bIsFiring = false;
 };

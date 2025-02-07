@@ -7,6 +7,9 @@
 #include "Engine/DataTable.h"
 #include "Data/GunData.h"
 #include "UI/ScannedItemWidget.h"
+#include "Pool/Effect.h"
+#include "Pool/ActorPoolSubsystem.h"
+#include "GameFramework/PawnMovementComponent.h"
 
 #include "GunBase.generated.h"
 

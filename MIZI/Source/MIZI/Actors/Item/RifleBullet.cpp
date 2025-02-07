@@ -3,7 +3,7 @@
 
 #include "Actors/Item/RifleBullet.h"
 
-#include "Rifle.h"
+#include "Actors/Weapon/Rifle.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "PlayerCharacter/BasicCharacter.h"

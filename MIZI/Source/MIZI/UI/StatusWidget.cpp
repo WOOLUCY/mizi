@@ -3,7 +3,7 @@
 
 #include "UI/StatusWidget.h"
 
-#include "Actors/Item/Rifle.h"
+#include "Actors/Weapon/Rifle.h"
 #include "Framework/BasicPlayerState.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "Kismet/GameplayStatics.h"

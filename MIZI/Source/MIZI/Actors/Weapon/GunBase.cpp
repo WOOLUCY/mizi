@@ -6,9 +6,6 @@
 #include "UI/BasicHUD.h"
 #include "Kismet/GameplayStatics.h"
 #include "Actors/Weapon/BulletBase.h"
-#include "Pool/Effect.h"
-#include "Pool/ActorPoolSubsystem.h"
-#include "GameFramework/PawnMovementComponent.h"
 
 
 
@@ -63,10 +60,10 @@ void AGunBase::OnEquiped()
 
 void AGunBase::OnUnEquiped()
 {
-	if (GunTableRow->UnequipSound)
-	{
-		UGameplayStatics::PlaySoundAtLocation(GetWorld(), GunTableRow->UnequipSound, GetActorLocation());
-	}
+	//if (GunTableRow->UnequipSound)
+	//{
+	//	UGameplayStatics::PlaySoundAtLocation(GetWorld(), GunTableRow->UnequipSound, GetActorLocation());
+	//}
 
 	ABasicCharacter* Character = Cast<ABasicCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	if (!Character)
@@ -136,14 +133,6 @@ void AGunBase::Fire()
 		Bullet->FinishSpawning(BulletTransform);
 	}
 
-	//StaticMeshComponent->GetWorld()->GetSubsystem<UActorPoolSubsystem>()->SpawnProjectile(BulletTransform, GunTableRow->ProjectileRowHandle);
-
-	// Play Sound
-	//if (GunTableRow->FireSound)
-	//{
-	//	UGameplayStatics::PlaySoundAtLocation(GetWorld(), GunTableRow->FireSound, GetActorLocation());
-	//}
-
 	// Camera Shake
 	if (GunTableRow->FireCameraShake)
 	{
@@ -152,12 +141,14 @@ void AGunBase::Fire()
 
 	// Update Bullet Widget
 	ABasicHUD* HUD = Cast<ABasicHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
+	HUD->GetStatusWidget()->PlayAnimation(HUD->GetStatusWidget()->FireGun);
 
 	if (HUD)
 	{
 		HUD->GetStatusWidget()->UpdateBulletText();
 	}
 
+	// Spawn Fire Effect
 	TArray<FName> RowNames = EffectTableRowHandle.DataTable->GetRowNames();
 
 	if (EffectTableRowHandle.IsNull()) { return; }

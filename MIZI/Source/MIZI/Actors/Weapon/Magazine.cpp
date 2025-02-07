@@ -21,6 +21,12 @@ void AMagazine::OnUsed()
 		return;
 	}
 
+	// 장전 소리 
+	if (ReloadSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), ReloadSound, GetActorLocation());
+	}
+
 	// 장전 애니메이션 몽타주 재생
 	float Duration = Character->PlayAnimMontage(Character->GetCharacterData()->ReloadMontage);
 	Duration -= 1;
@@ -45,12 +51,6 @@ void AMagazine::ReloadBullets()
 	{
 		ensure(false);
 		return;
-	}
-
-	// 장전 소리 
-	if (ReloadSound)
-	{
-		UGameplayStatics::PlaySoundAtLocation(GetWorld(), ReloadSound, GetActorLocation());
 	}
 
 	for (auto& Pair : Character->GetOwningItems())
