@@ -33,7 +33,4 @@ protected:
 	FCircularActorPool<AEffect> EffectPool;
 	FCircularActorPool<AProjectile> ProjectilePool;
 	FCircularActorPool<AEffectWithDecal> HitEffectDecalPool;
-
-
-	
 };

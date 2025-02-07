@@ -33,8 +33,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Gun|Bullet")
 	TSubclassOf<ABulletBase> Bullet = nullptr;
 
-	UPROPERTY(EditAnywhere, meta = (RowType = "/Script/MIZI.ProjectileTableRow"))
-	FDataTableRowHandle ProjectileRowHandle;
+	UPROPERTY(EditAnywhere, Category = "Projectile|Effect", meta = (RowType = "/Script/MIZI.EffectTableRow"))
+	FDataTableRowHandle HitEffectTableRowHandle;
 	
 	// Sound
 	UPROPERTY(EditAnywhere, Category = "Gun|Sound")

@@ -31,6 +31,8 @@ void AEnemyBase::BeginPlay()
 {
 	Super::BeginPlay();
 	SetData(DataTableRowHandle);
+
+	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Enemy"));
 }
 
 void AEnemyBase::OnConstruction(const FTransform& Transform)

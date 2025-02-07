@@ -30,6 +30,6 @@ void UActorPoolSubsystem::SpawnHitEffectWithDecal(const FTransform& SpawnTransfo
 void UActorPoolSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 {
 	EffectPool.InitializePool(&InWorld, 20);
-	ProjectilePool.InitializePool(&InWorld, 30);
+	//ProjectilePool.InitializePool(&InWorld, 30);
 	HitEffectDecalPool.InitializePool(&InWorld, 20);
 }
