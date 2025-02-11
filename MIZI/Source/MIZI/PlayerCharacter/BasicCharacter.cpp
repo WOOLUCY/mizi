@@ -621,37 +621,37 @@ void ABasicCharacter::ScanRadiusUpdate(float Radius)
 		);
 
 		// 히트된 오브젝트들 처리
-		if (bHit && OutHits.Num() > 0)
+		if (!bHit || OutHits.IsEmpty())
 		{
-			for (const FHitResult& Hit : OutHits)
-			{
-				AActor* HitActor = Hit.GetActor();
-				if (HitActor)
-				{
-					// Set에 넣어서 한번 포착됐으면 한 스캔 내에는 다시 포착되지 않도록 수정했음
-					AItemBase* ScannedItem = Cast<AItemBase>(HitActor);
-					if (ScannedItem)
-					{
-						if (!ScannedItems.Contains(ScannedItem))
-						{
-							ScannedItems.Add(ScannedItem);
-							ScannedItem->OnScanned();
-							UE_LOG(LogTemp, Warning, TEXT("Hit Actor: %s"), *HitActor->GetName());
-						}
-					}
+			return;
+		}
 
-					AGimmickBase* ScannedGimmick = Cast<AGimmickBase>(HitActor);
-					if(ScannedGimmick)
-					{
-						if (!ScannedGimmicks.Contains(ScannedGimmick))
-						{
-							ScannedGimmicks.Add(ScannedGimmick);
-							ScannedGimmick->OnScanned();
-						}
-					}
-				}
+		for (const FHitResult& Hit : OutHits)
+		{
+			AActor* HitActor = Hit.GetActor();
+			if (!HitActor)
+			{
+				continue;
+			}
+
+			// 아이템 처리
+			AItemBase* ScannedItem = Cast<AItemBase>(HitActor);
+			if (ScannedItem && !ScannedItems.Contains(ScannedItem))
+			{
+				ScannedItems.Add(ScannedItem);
+				ScannedItem->OnScanned();
+				UE_LOG(LogTemp, Warning, TEXT("Hit Actor: %s"), *HitActor->GetName());
+			}
+
+			// 기믹 처리
+			AGimmickBase* ScannedGimmick = Cast<AGimmickBase>(HitActor);
+			if (ScannedGimmick && !ScannedGimmicks.Contains(ScannedGimmick))
+			{
+				ScannedGimmicks.Add(ScannedGimmick);
+				ScannedGimmick->OnScanned();
 			}
 		}
+
 	}
 }
 
