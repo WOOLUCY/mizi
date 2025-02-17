@@ -16,6 +16,7 @@ AShotGun::AShotGun()
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
 }
 
+
 void AShotGun::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 {
 	Super::SetData(InDataTableRowHandle);

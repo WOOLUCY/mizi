@@ -176,6 +176,10 @@ void AItemBase::OnDropped()
 	}
 }
 
+void AItemBase::OnUsedTriggered()
+{
+}
+
 void AItemBase::OnEquiped()
 {
 }

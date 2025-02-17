@@ -28,6 +28,7 @@ public:
 	virtual void OnEquiped() override;
 	virtual void OnUnEquiped() override;
 	virtual void OnUsed() override;
+	virtual void OnUsedTriggered() override;
 
 public:
 	int32 GetCurBulletAmount() const { return CurBulletAmount; }
@@ -42,7 +43,7 @@ protected:
 	virtual void Fire();
 	
 	UFUNCTION()
-	virtual void SetCanFire();
+	void SetCanFire();
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "Rifle")

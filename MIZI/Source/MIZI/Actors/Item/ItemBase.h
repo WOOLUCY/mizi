@@ -37,6 +37,7 @@ public:
 	virtual void OnUsed();
 	virtual void OnPicked();
 	virtual void OnDropped();
+	virtual void OnUsedTriggered();
 
 	virtual void OnEquiped();
 	virtual void OnUnEquiped();

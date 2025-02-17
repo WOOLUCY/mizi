@@ -84,6 +84,11 @@ void AGunBase::OnUnEquiped()
 
 void AGunBase::OnUsed()
 {
+	Super::OnUsed();
+}
+
+void AGunBase::OnUsedTriggered()
+{
 	Fire();
 }
 

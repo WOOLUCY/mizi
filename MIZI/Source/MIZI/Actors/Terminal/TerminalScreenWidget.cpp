@@ -97,7 +97,8 @@ void UTerminalScreenWidget::SplitCommand(FText WholeCommand)
 		Command = String;
 	}
 
-	ExecuteCommand();
+	if(Command != "")
+		ExecuteCommand();
 }
 
 void UTerminalScreenWidget::ExecuteCommand()
@@ -127,8 +128,9 @@ void UTerminalScreenWidget::ExecuteCommand()
 	case ETerminalCommand::MIZI:
 		OnMizi();
 		break;
+	case ETerminalCommand::UNKNOWN:
+		ChangeOutputText(DataTableRowHandle, "Unknown");
 	default:
-		//ChangeOutputText(DataTableRowHandle, "Unknown");
 		break;
 	}
 }
@@ -143,9 +145,11 @@ ETerminalCommand UTerminalScreenWidget::GetCommandEnum(const FString& InString)
 
 		{"Flash", ETerminalCommand::ITEM},
 		{"Rifle", ETerminalCommand::ITEM},
-		{"RifleBullet", ETerminalCommand::ITEM},
 		{"Shovel", ETerminalCommand::ITEM},
-		{"Grenade", ETerminalCommand::ITEM},
+		{"Shotgun", ETerminalCommand::ITEM},
+		{"SMG", ETerminalCommand::ITEM},
+		{"Magazine", ETerminalCommand::ITEM},
+		{"Key", ETerminalCommand::ITEM},
 
 
 		{"Mizi", ETerminalCommand::MIZI},

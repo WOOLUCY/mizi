@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "PlayerCharacter/BasicCharacter.h"
 
+
 void AKeyCard::OnUsed()
 {
 	ACharacter* Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);

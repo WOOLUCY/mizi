@@ -183,8 +183,8 @@ void ABasicPlayerController::SetupInputComponent()
 	// Item Use
 	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_ItemUse")))
 	{
-		EnhancedInputComponent->BindAction(InputAction,
-			ETriggerEvent::Triggered, this, &ThisClass::OnUseItem);
+		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Triggered, this, &ThisClass::OnUseItemTriggered);
+		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Started, this, &ThisClass::OnUseItem);
 	}
 	else
 	{
@@ -335,6 +335,12 @@ void ABasicPlayerController::OnUseItem(const FInputActionValue& InputActionValue
 {
 	ABasicCharacter* BasicCharacter = Cast<ABasicCharacter>(GetPawn());
 	BasicCharacter->OnUseItem();
+}
+
+void ABasicPlayerController::OnUseItemTriggered(const FInputActionValue& InputActionValue)
+{
+	ABasicCharacter* BasicCharacter = Cast<ABasicCharacter>(GetPawn());
+	BasicCharacter->OnUseItemTriggered();
 }
 
 void ABasicPlayerController::OnCrouch(const FInputActionValue& InputActionValue)

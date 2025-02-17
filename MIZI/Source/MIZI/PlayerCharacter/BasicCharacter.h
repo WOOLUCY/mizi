@@ -66,6 +66,7 @@ public:
 	void StartSprinting();
 	void StopSprinting();
 	void OnUseItem();
+	void OnUseItemTriggered();
 
 	void OnTerminalPressed();
 	void OnTerminalReleased();

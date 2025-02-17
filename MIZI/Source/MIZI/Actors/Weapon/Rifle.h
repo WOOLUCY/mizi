@@ -17,7 +17,6 @@ class MIZI_API ARifle : public AGunBase
 
 public:
 	ARifle();
-	virtual void OnUsed() override;
 
 protected:
 	UFUNCTION()

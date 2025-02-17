@@ -13,8 +13,11 @@ ABasicGameState::ABasicGameState()
     PrimaryActorTick.bCanEverTick = true;
 
     StoreItemList.Add("Rifle");
-    StoreItemList.Add("RifleBullet");
+    StoreItemList.Add("SMG");
+    StoreItemList.Add("Shotgun");
+    StoreItemList.Add("Magazine");
     StoreItemList.Add("Flash");
+    StoreItemList.Add("Key");
 }
 
 void ABasicGameState::OnConstruction(const FTransform& Transform)

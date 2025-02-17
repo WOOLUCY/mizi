@@ -445,6 +445,13 @@ void ABasicCharacter::OnUseItem()
 	(*EquippedItem)->OnUsed();
  }
 
+void ABasicCharacter::OnUseItemTriggered()
+{
+	auto EquippedItem = OwningItems.Find(CurInventoryIndex);
+	if (!EquippedItem) return;
+	(*EquippedItem)->OnUsedTriggered();
+}
+
 void ABasicCharacter::OnTerminalPressed()
 {
 	if(bCanUseConsole)

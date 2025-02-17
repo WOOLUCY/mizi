@@ -46,6 +46,7 @@ protected:
 	void OnInventoryWheel(const FInputActionValue& InputActionValue);
 
 	void OnUseItem(const FInputActionValue& InputActionValue);
+	void OnUseItemTriggered(const FInputActionValue& InputActionValue);
 
 	void OnCrouch(const FInputActionValue& InputActionValue);
 	void OnUnCrouch(const FInputActionValue& InputActionValue);

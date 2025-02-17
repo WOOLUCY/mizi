@@ -16,11 +16,6 @@ ARifle::ARifle()
 	ItemName = TEXT("Rifle");
 }
 
-void ARifle::OnUsed()
-{
-	Fire();
-}
-
 void ARifle::Fire()
 {
 	if (CurBulletAmount <= 0) return;
