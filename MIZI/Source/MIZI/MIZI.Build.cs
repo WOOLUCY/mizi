@@ -12,7 +12,7 @@ public class MIZI : ModuleRules
             new string[]
             {
                 "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput",
-                "UMG", "MoviePlayer", "AIModule", "NavigationSystem", "GamePlayTasks", "SlateCore"
+                "UMG", "MoviePlayer", "AIModule", "NavigationSystem", "GamePlayTasks", "SlateCore",  "Niagara"
             });
 
         PrivateDependencyModuleNames.AddRange(new string[] { });

@@ -2,9 +2,8 @@
 
 
 #include "Enemy/EnemyBase.h"
-
-#include "BasicAIController.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "BasicAIController.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Data/EnemyData.h"
@@ -98,20 +97,12 @@ void AEnemyBase::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 
 }
 
-//float AEnemyBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
-//{
-//	//GetMovementComponent()->StopMovementImmediately();
-//
-//	//TArray<UAnimMontage*> ReactMontages = EnemyData->HitReactMontage;
-//	//if (ReactMontages.IsEmpty())
-//	//{
-//	//	ensure(false);
-//	//	return 0.f;
-//	//}
-//	//float AnimationDuration = PlayAnimMontage(ReactMontages[0]);
-//
-//	return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-//}
+float AEnemyBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	return 0.0f;
+}
+
+
 
 // Called every frame
 void AEnemyBase::Tick(float DeltaTime)
@@ -134,8 +125,8 @@ float AEnemyBase::Attack()
 	TSubclassOf<UDamageType> DamageType;
 
 	float AnimationDuration = PlayAnimMontage(AttackMontages[0]);
-	float Damage = UGameplayStatics::ApplyDamage(UGameplayStatics::GetPlayerPawn(GetWorld(), 0), EnemyData->Damage, nullptr, this, DamageType);
-	UE_LOG(LogTemp, Log, TEXT("%f damaged"), Damage);
+	//float Damage = UGameplayStatics::ApplyDamage(UGameplayStatics::GetPlayerPawn(GetWorld(), 0), EnemyData->Damage, nullptr, this, DamageType);
+	//UE_LOG(LogTemp, Log, TEXT("%f damaged"), Damage);
 	return AnimationDuration;
 }
 

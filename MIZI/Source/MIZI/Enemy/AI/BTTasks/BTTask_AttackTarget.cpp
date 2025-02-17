@@ -46,7 +46,7 @@ EBTNodeResult::Type UBTTask_AttackTarget::ExecuteTask(UBehaviorTreeComponent& Ow
 			{
 				FinishTask(OwnerComp, true);
 
-			}, AnimationDuration + 1.f, false);
+			}, AnimationDuration + 1.5f, false);
 
 		return EBTNodeResult::InProgress;
 	}

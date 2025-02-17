@@ -20,9 +20,9 @@ ABasicAIController::ABasicAIController()
 	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("SightConfig"));
 
 	// 시야 감각 설정 값 조정 (시야 반경, 시야각 등)
-	SightConfig->SightRadius = 800.f;
-	SightConfig->LoseSightRadius = 900.f;
-	SightConfig->PeripheralVisionAngleDegrees = 110.0f;
+	SightConfig->SightRadius = 1000.f;
+	SightConfig->LoseSightRadius = 1200.f;
+	SightConfig->PeripheralVisionAngleDegrees = 180.0f;
 	SightConfig->SetMaxAge(5.0f);
 	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
 	SightConfig->DetectionByAffiliation.bDetectNeutrals = true;

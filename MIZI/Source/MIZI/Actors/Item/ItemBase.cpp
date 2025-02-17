@@ -11,6 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "PlayerCharacter/BasicCharacter.h"
+#include "Components/StaticMeshComponent.h"
 #include "UI/BasicHUD.h"
 
 
@@ -105,6 +106,8 @@ void AItemBase::BeginPlay()
 
 	if (!Widget) { return; }
 	Widget->SetVisibility(false);
+
+	StaticMeshComponent->UActorComponent::SetCanEverAffectNavigation(false);
 }
 
 // Called every frame
