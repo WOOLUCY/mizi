@@ -16,11 +16,6 @@ class MIZI_API AShotGun : public ARifle
 
 public:
 	AShotGun();
-	virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle);
 protected:
 	virtual void Fire() override;
-
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<USkeletalMeshComponent> SkeletalMeshComponent;
 };

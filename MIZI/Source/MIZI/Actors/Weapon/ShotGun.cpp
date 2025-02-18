@@ -11,27 +11,7 @@
 AShotGun::AShotGun()
 {
 	ItemName = TEXT("ShotGun");
-
-	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
-	SkeletalMeshComponent->SetupAttachment(RootComponent);
 }
-
-
-void AShotGun::SetData(const FDataTableRowHandle& InDataTableRowHandle)
-{
-	Super::SetData(InDataTableRowHandle);
-	DataTableRowHandle = InDataTableRowHandle;
-	if (DataTableRowHandle.IsNull()) { return; }
-	FItemTableRow* Data = DataTableRowHandle.GetRow<FItemTableRow>(ItemName);
-	if (!Data) { ensure(false); return; }
-
-	ItemTableRow = Data;
-	SkeletalMeshComponent->SetSkeletalMesh(Data->SkeletalMesh);
-
-	StaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	StaticMeshComponent->SetVisibility(false);
-}
-
 
 void AShotGun::Fire()
 {

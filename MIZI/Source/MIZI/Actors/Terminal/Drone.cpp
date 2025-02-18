@@ -159,6 +159,11 @@ void ADrone::SpawnItems()
 			if(Item)
 			{
 				Item->StaticMeshComponent->SetSimulatePhysics(true);
+				
+				
+
+
+
 				SpawnedItems.Add(Item);
 			}
 		}
