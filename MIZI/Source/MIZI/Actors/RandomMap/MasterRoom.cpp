@@ -66,6 +66,7 @@ AMasterRoom::AMasterRoom()
 	SpawnBox->ShapeColor = FColor::Cyan;
 	SpawnBox->SetLineThickness(2.f);
 
+
 	EnemySpawnPoint = CreateDefaultSubobject<UBoxComponent>(TEXT("Vent"));
 	EnemySpawnPoint->SetupAttachment(RootComponent);
 	EnemySpawnPoint->ShapeColor = FColor::Magenta;
@@ -79,7 +80,15 @@ void AMasterRoom::BeginPlay()
 
 	Arrow->SetHiddenInGame(true);
 
-	
+	//TArray<USceneComponent*> OutChildren;
+	//GeometryFolder->GetChildrenComponents(false, OutChildren);
+	//for (auto d : OutChildren)
+	//{
+	//	d->SetCanEverAffectNavigation(false);
+	//}
+
+	EnemySpawnPoint->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	SpawnBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 // Called every frame

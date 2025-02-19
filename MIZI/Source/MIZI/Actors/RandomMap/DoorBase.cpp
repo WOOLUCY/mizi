@@ -14,6 +14,7 @@ ADoorBase::ADoorBase()
 
 	DoorFrame = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
 	DoorFrame->SetupAttachment(RootComponent);
+	DoorFrame->SetCanEverAffectNavigation(false);
 }
 
 // Called when the game starts or when spawned

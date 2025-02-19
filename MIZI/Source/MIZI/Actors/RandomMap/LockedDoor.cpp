@@ -11,9 +11,13 @@ ALockedDoor::ALockedDoor()
 
 	LeftDoor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LeftDoor"));
 	LeftDoor->SetupAttachment(RootComponent);
+	LeftDoor->SetCanEverAffectNavigation(false);
+
 
 	RightDoor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RightDoor"));
 	RightDoor->SetupAttachment(RootComponent);
+	RightDoor->SetCanEverAffectNavigation(false);
+
 
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
 	BoxCollision->SetupAttachment(RootComponent);

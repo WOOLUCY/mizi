@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Enemy/EnemyBase.h"
+
 #include "Maynard.generated.h"
 
 /**
@@ -19,4 +20,10 @@ protected:
 
 	UFUNCTION()
 	void SetCanMove();
+
+	UFUNCTION()
+	void OnDie();
+
+private:
+	float HP = 100;
 };

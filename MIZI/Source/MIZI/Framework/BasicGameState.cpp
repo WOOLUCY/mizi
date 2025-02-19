@@ -35,6 +35,11 @@ void ABasicGameState::Tick(float DeltaTime)
         UpdateTime(DeltaTime);
         SpawnEnemys();
     }
+
+    else if (UGameplayStatics::GetCurrentLevelName(GetWorld()) == TEXT("TestLevel"))
+    {
+        UpdateTime(DeltaTime);
+    }
 }
 
 void ABasicGameState::SetData(const FDataTableRowHandle& InDataTableRowHandle)

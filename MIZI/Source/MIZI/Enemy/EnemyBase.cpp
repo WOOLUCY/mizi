@@ -20,6 +20,9 @@ AEnemyBase::AEnemyBase()
 	StaticMeshComponent->SetupAttachment(RootComponent);
 	StaticMeshComponent->SetCanEverAffectNavigation(false);
 
+	GetMesh()->SetCanEverAffectNavigation(false);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 	// Navigation Invoker 컴포넌트 생성 및 초기화
 	NavigationInvoker = CreateDefaultSubobject<UNavigationInvokerComponent>(TEXT("NavigationInvoker"));
 	NavigationInvoker->SetGenerationRadii(3000.0f, 5000.0f);

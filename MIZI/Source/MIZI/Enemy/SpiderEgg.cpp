@@ -32,7 +32,7 @@ ASpiderEgg::ASpiderEgg()
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
 	BoxCollision->SetupAttachment(RootComponent);
 	BoxCollision->SetLineThickness(3.f);
-	BoxCollision->bHiddenInGame = false;
+	BoxCollision->bHiddenInGame = true;
 	BoxCollision->AddRelativeLocation(FVector(0.0, 0.0, 30.0));
 
 	// Navigation Invoker Component

@@ -72,24 +72,22 @@ void AWeepingAngel::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//ABasicAIController* AIController = Cast<ABasicAIController>(GetController());
-	//if (!AIController)
-	//{
-	//	ensure(false);
-	//	return;
-	//}
+	ABasicAIController* AIController = Cast<ABasicAIController>(GetController());
+	if (!AIController)
+	{
+		ensure(false);
+		return;
+	}
 
-	//if(StaticMeshComponent->UPrimitiveComponent::WasRecentlyRendered())
+	//if(StaticMeshComponent->UPrimitiveComponent::WasRecentlyRendered(0.05))
 	//{
 	//	auto BB = AIController->GetBlackBoardComponent();
-	//	//BB->SetValueAsBool(FName("IsDetected"), true);
-	//	AIController->GetBlackboardComponent()->SetValueAsBool(FName("IsDetected"), false);
+	//	BB->SetValueAsBool(FName("IsDetected"), true);
 	//}
 	//else
 	//{
 	//	auto BB = AIController->GetBlackBoardComponent();
-	//	//BB->SetValueAsBool(FName("IsDetected"), false);
-	//	AIController->GetBlackboardComponent()->SetValueAsBool(FName("IsDetected"), true);
+	//	BB->SetValueAsBool(FName("IsDetected"), false);
 	//}
 
 }

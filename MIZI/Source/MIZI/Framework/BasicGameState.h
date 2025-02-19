@@ -6,6 +6,8 @@
 #include "Actors/Item/ItemBase.h"
 #include "Actors/RandomMap/RandomMapGenerator.h"
 #include "GameFramework/GameStateBase.h"
+#include "Enemy/EnemyBase.h"
+
 #include "BasicGameState.generated.h"
 
 /**
@@ -62,7 +64,7 @@ public:
 	int32 Battery = 100;
 
 	float CurrentTime = 0.0f;
-	float SecondsInGameDay = 60.0f * 15;
+	float SecondsInGameDay = 60.0f * 3;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 EnemySpawnInterval = 2;

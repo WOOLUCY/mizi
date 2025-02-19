@@ -10,7 +10,7 @@ ASpiderAIController::ASpiderAIController()
 	// 시야 감각 설정 값 조정 (시야 반경, 시야각 등)
 	SightConfig->SightRadius = 1000.f;
 	SightConfig->LoseSightRadius = 1500.f;
-	SightConfig->PeripheralVisionAngleDegrees = 90.f;
+	SightConfig->PeripheralVisionAngleDegrees = 130.f;
 	SightConfig->SetMaxAge(1.0f);
 	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
 	SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
