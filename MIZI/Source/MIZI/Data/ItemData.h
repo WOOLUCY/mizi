@@ -17,23 +17,16 @@ public: // Base
 	UPROPERTY(EditAnywhere, Category = "Item")
 	FText DisplayName;
 
-	// ����ƽ �޽� ����
+	// Mesh
 	UPROPERTY(EditAnywhere, Category = "Item")
 	UStaticMesh* StaticMesh = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = "Item")
-	USkeletalMesh* SkeletalMesh = nullptr;
-
-	// ���� ���� ����
-	UPROPERTY(EditAnywhere, Category = "Item")
 	bool bEquipped = true;
 
-
-	// ��� ���� ����
 	UPROPERTY(EditAnywhere, Category = "Item")
 	bool bUsed = false;
 
-	// �Ǹ� ���� ���ο� ����
 	UPROPERTY(EditAnywhere, Category = "Item")
 	bool bSold = true;
 
@@ -49,14 +42,11 @@ public: // Base
 	UPROPERTY(EditAnywhere, Category = "Item")
 	FName EquipSocketName = TEXT("RightHand");
 
+	// Sound
 	UPROPERTY(EditAnywhere, Category = "Item")
-	UTexture2D* Icon = nullptr;
+	USoundBase* PickSound = nullptr;
 
-public: // Animation
-	//UPROPERTY(EditAnywhere, Category = "Item|Animation")
-	//TSubclassOf<UBaisicCharacterAnimInstance> AnimClass;
-
-	//UPROPERTY(EditAnywhere, Category = "Item|Animation")
-	//UAnimMontage* WeaponAttackMontage;
+	UPROPERTY(EditAnywhere, Category = "Item")
+	USoundBase* DropSound = nullptr;
 
 };

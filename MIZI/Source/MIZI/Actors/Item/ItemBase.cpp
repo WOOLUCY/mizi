@@ -139,6 +139,11 @@ void AItemBase::OnPicked()
 {
 	OnEquiped();
 
+	if (ItemTableRow->PickSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), ItemTableRow->PickSound, GetActorLocation());
+	}
+
 	ABasicGameState* GameState = Cast<ABasicGameState>(UGameplayStatics::GetGameState(GetWorld()));
 	if (!GameState)
 	{
@@ -161,6 +166,11 @@ void AItemBase::OnDropped()
 {
 	OnUnEquiped();
 
+	if (ItemTableRow->DropSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), ItemTableRow->DropSound, GetActorLocation());
+	}
+
 	ABasicGameState* GameState = Cast<ABasicGameState>(UGameplayStatics::GetGameState(GetWorld()));
 	if (!GameState)
 	{
@@ -177,6 +187,7 @@ void AItemBase::OnDropped()
 	{
 		GameState->SpawnedItems[this] = false;
 	}
+
 }
 
 void AItemBase::OnUsedTriggered()

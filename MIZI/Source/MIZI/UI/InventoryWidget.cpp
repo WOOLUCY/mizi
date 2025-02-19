@@ -41,7 +41,7 @@ void UInventoryWidget::ChangeImage(uint32 Index, UImage* ImageSlot)
 	AItemBase* Item = Cast<AItemBase>(*Temp);
 	if(Item)
 	{
-		ImageSlot->SetBrushFromTexture(Item->GetItemTableRow()->Icon);
+		//ImageSlot->SetBrushFromTexture(Item->GetItemTableRow()->Icon);
 		ImageSlot->SetOpacity(1.0);
 	}
 	else
