@@ -126,7 +126,7 @@ void ADrone::FindFloor()
 	}
 
 	StopLocation = HitResult.Location + FVector(0.0, 0.0, 300.0);
-	DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Green, false, 10.f, 0, 1.0f);
+	//DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Green, false, 10.f, 0, 1.0f);
 }
 
 void ADrone::SpawnItems()
