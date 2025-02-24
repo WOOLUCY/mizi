@@ -9,6 +9,9 @@
 - 맵 곳곳에서 파밍할 수 있는 다양한 아이템과 Pick, Drop, Scan 등 상호작용 가능
 - 인기 게임 <Lethal Company>의 주요 요소를 모작
 
+# 소개 영상
+[![Video Label](https://github.com/user-attachments/assets/902a31c0-6346-46b3-b83f-84fc7ff7fb84)](https://youtu.be/dIqmn5tDXec?si=P8Pvi6I-PsjdDMpt')
+
 # 개발 기간
 - 2024.10.14. ~
 
