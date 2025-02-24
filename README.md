@@ -1,5 +1,25 @@
-# 개발 일지
+# MIZI
+괴생명체를 피해 폐품을 모으는 1인칭 SF 공포게임
 
+# 프로젝트 소개
+- Unreal Engine 5를 사용한 1인칭 SF 공포 게임
+- 블루프린트로 데모 버전을 제작 후, 구현 내용을  C++로 바꿔 개발
+- 랜덤맵 생성기를 사용해 플레이마다 새로운 맵을 제공
+- 다양한 행동트리를 가진 몬스터를 피해 폐품을 주워 생존하는 게임
+- 맵 곳곳에서 파밍할 수 있는 다양한 아이템과 Pick, Drop, Scan 등 상호작용 가능
+- 인기 게임 <Lethal Company>의 주요 요소를 모작
+
+# 개발 기간
+- 2024.10.14. ~
+
+# 개발 환경
+- C++
+- Blueprint
+- Github
+- Visual Studio 2022
+- Unreal Engine 5
+
+# 개발 일지
 | 이름 | URL | 주제 |
 | --- | --- | --- |
 | 프롤로그 | [[UE5] 공포게임 MIZI 개발 일지 #0: 들어가기에 앞서](https://velog.io/@woolucy/UE5-%EA%B3%B5%ED%8F%AC%EA%B2%8C%EC%9E%84-MIZI-%EA%B0%9C%EB%B0%9C-%EC%9D%BC%EC%A7%80-0-%EB%93%A4%EC%96%B4%EA%B0%80%EA%B8%B0%EC%97%90-%EC%95%9E%EC%84%9C) |  |
@@ -32,3 +52,10 @@
 | Time Widget | [[UE5] 공포게임 MIZI 개발 일지 #27: Time Widget](https://velog.io/@woolucy/UE5-%EA%B3%B5%ED%8F%AC%EA%B2%8C%EC%9E%84-MIZI-%EA%B0%9C%EB%B0%9C-%EC%9D%BC%EC%A7%80-27-Time-Widget) | UI |
 | Weight System | [[UE5] 공포게임 MIZI 개발 일지 #28: Weight System](https://velog.io/@woolucy/UE5-%EA%B3%B5%ED%8F%AC%EA%B2%8C%EC%9E%84-MIZI-%EA%B0%9C%EB%B0%9C-%EC%9D%BC%EC%A7%80-28-Weight-System) | Character, UI |
 | Level Design(1) | [[UE5] 공포게임 MIZI 개발 일지 #29: Level Design(1)](https://velog.io/@woolucy/UE5-%EA%B3%B5%ED%8F%AC%EA%B2%8C%EC%9E%84-MIZI-%EA%B0%9C%EB%B0%9C-%EC%9D%BC%EC%A7%80-29-Level-Design1) | Level Design |
+| HUD | [[UE5] 공포게임 MIZI 개발 일지 #30: HUD Redesign](https://velog.io/@woolucy/UE5-%EA%B3%B5%ED%8F%AC%EA%B2%8C%EC%9E%84-MIZI-%EA%B0%9C%EB%B0%9C-%EC%9D%BC%EC%A7%80-30-HUD-Redesign) | UI |
+| Spider | [[UE5] 공포게임 MIZI 개발 일지 #31: Spider](https://velog.io/@woolucy/UE5-%EA%B3%B5%ED%8F%AC%EA%B2%8C%EC%9E%84-MIZI-%EA%B0%9C%EB%B0%9C-%EC%9D%BC%EC%A7%80-31-Spider-b2fcimpg) | Enemy |
+| 낙하 대미지 | [[UE5] 공포게임 MIZI 개발 일지 #32: 낙하 대미지](https://velog.io/@woolucy/UE5-%EA%B3%B5%ED%8F%AC%EA%B2%8C%EC%9E%84-MIZI-%EA%B0%9C%EB%B0%9C-%EC%9D%BC%EC%A7%80-32-%EB%82%99%ED%95%98-%EB%8C%80%EB%AF%B8%EC%A7%80) |Character |
+| Mask | [[UE5] 공포게임 MIZI 개발 일지 #33: Mask](https://velog.io/@woolucy/UE5-%EA%B3%B5%ED%8F%AC%EA%B2%8C%EC%9E%84-MIZI-%EA%B0%9C%EB%B0%9C-%EC%9D%BC%EC%A7%80-33-Mask) | Enemy |
+| 오브젝트 풀(액터 풀) | [[UE5] 공포게임 MIZI 개발 일지 #34: Actor Pool](https://velog.io/@woolucy/UE5-%EA%B3%B5%ED%8F%AC%EA%B2%8C%EC%9E%84-MIZI-%EA%B0%9C%EB%B0%9C-%EC%9D%BC%EC%A7%80-34-Actor-Pool) | Gun |
+| SMG | [[UE5] 공포게임 MIZI 개발 일지 #35: SMG](https://velog.io/@woolucy/UE5-%EA%B3%B5%ED%8F%AC%EA%B2%8C%EC%9E%84-MIZI-%EA%B0%9C%EB%B0%9C-%EC%9D%BC%EC%A7%80-35-SMG) | Gun |
+
